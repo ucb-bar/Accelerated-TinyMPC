@@ -1,0 +1,3 @@
+[submodule "src/gemmini-rocc-tests"]
+	path = src/gemmini-rocc-tests
+	url = https://github.com/ucb-bar/gemmini-rocc-tests.git
