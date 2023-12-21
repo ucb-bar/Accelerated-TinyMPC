@@ -1,10 +1,44 @@
 #include <iostream>
-#include <time.h>
-
 
 #include <tinympc/admm.hpp>
 #include "problem_data/quadrotor_20hz_params.hpp"
-#include "trajectory_data/quadrotor_20hz_y_axis_line.hpp"
+#include "mmio.h"
+#include "rose.h"
+
+#include <stdio.h>
+#include <inttypes.h>
+#include <string.h>
+/* The `#include <riscv-pk/encoding.h>` statement is including the header file `encoding.h` from the
+`riscv-pk` library. This library provides functions and definitions related to the RISC-V
+#include <iostream>
+
+#include <tinympc/admm.hpp>
+#include "problem_data/quadrotor_50hz_params_constrained.hpp"
+#include "mmio.h"
+#include "rose.h"
+
+#include <stdio.h>
+#include <inttypes.h>
+#include <string.h>
+/* The `#include <riscv-pk/encoding.h>` statement is including the header file `encoding.h` from the
+`riscv-pk` library. This library provides functions and definitions related to the RISC-V processor
+architecture, specifically for the Privileged Architecture Specification. The `encoding.h` header
+file contains definitions for encoding and decoding RISC-V instructions, as well as other utility
+functions for working with the RISC-V architecture. */
+// #include <riscv-pk/encoding.h>
+
+//OBS:Type of what simulator -> rose 
+#define ROSE_REQ_UAV_OBS 0x16 //input: x y z, attitude (3 Rodriguez parameters), vx vy vz, and attitude rate of change (3 params)
+//Action:
+#define ROSE_SET_FORCE  0x20 //output: a thrust command in the range 0-1 that gets mapped to 0-65535 /
+
+uint32_t buf[8];
+
+void read_uav_obs(float * obs) {
+  send_obs_req(ROSE_REQ_UAV_OBS);//rose->
+  read_obs_rsp((void *) obs);
+}
+
 
 Eigen::IOFormat CleanFmt(4, 0, ", ", "\n", "[", "]");
 
@@ -15,9 +49,6 @@ extern "C"
     TinyWorkspace work;
     TinySettings settings;
     TinySolver solver{&settings, &cache, &work};
-    
-    struct timespec start, end;
-    double time1;
 
     int main()
     {
@@ -34,8 +65,8 @@ extern "C"
         work.Q = Eigen::Map<tiny_VectorNx>(Q_data);
         work.Qf = Eigen::Map<tiny_VectorNx>(Qf_data);
         work.R = Eigen::Map<tiny_VectorNu>(R_data);
-        work.u_min = tiny_MatrixNuNhm1::Constant(-0.5);
-        work.u_max = tiny_MatrixNuNhm1::Constant(0.5);
+        work.u_min = tiny_MatrixNuNhm1::Constant(-0.583);
+        work.u_max = tiny_MatrixNuNhm1::Constant(1-0.583);
         work.x_min = tiny_MatrixNxNh::Constant(-5);
         work.x_max = tiny_MatrixNxNh::Constant(5);
 
@@ -72,46 +103,59 @@ extern "C"
 
         tiny_VectorNx x0, x1; // current and next simulation states
 
-        // Map data from trajectory_data
-        Matrix<tinytype, NSTATES, NTOTAL> Xref_total = Eigen::Map<Matrix<tinytype, NTOTAL, NSTATES, Eigen::RowMajor>>(Xref_data).transpose();
-        work.Xref = Xref_total.block<NSTATES, NHORIZON>(0, 0);
+        // Hovering setpoint
+        tiny_VectorNx Xref_origin;
+        Xref_origin << 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0;
+        work.Xref = Xref_origin.replicate<1, NHORIZON>(); 
 
-        // Initial state
-        x0 = work.Xref.col(0);
+        // Initial state    
+        x0 << 0, 1, 0, 0.2, 0, 0, 0.1, 0, 0, 0, 0, 0;
+        
+        int k = 0;
 
-        // std::cout << work.Xref << std::endl;
+        map_rose_ptr();
 
-        // for (int k = 0; k < 50; ++k)
-        for (int k = 0; k < NTOTAL - NHORIZON - 1; ++k)
+        while (1)
         {
-            std::cout << "tracking error: " << (x0 - work.Xref.col(1)).norm() << std::endl;
+            printf("tracking error at step %2d: %.4f\n", k, (x0 - work.Xref.col(1)).norm());
             
             // 1. Update measurement
-            work.x.col(0) = x0;
+            read_uav_obs(work.x.col(0).data());
 
-            // 2. Update reference 
-            work.Xref = Xref_total.block<NSTATES, NHORIZON>(0, k);
+            // Print received observations using for loop and printf
+            // for (int i = 0; i < NSTATES; ++i) {
+            //     printf("%f ", work.x.col(0).data()[i]);
+            // }
+            // printf("\n");
+            // std::cout << "Obs: " << work.x.col(0).transpose().format(CleanFmt) << std::endl;
 
-            // 3. Reset dual variables if needed
+            // 2. Update reference (if needed)
+
+            // 3. Reset dual variables (if needed)
             work.y = tiny_MatrixNuNhm1::Zero();
             work.g = tiny_MatrixNxNh::Zero();
 
             // 4. Solve MPC problem
-            clock_gettime(CLOCK_MONOTONIC, &start);
             tiny_solve(&solver);
-            clock_gettime(CLOCK_MONOTONIC, &end);
-            // time2 = get_diff_float_time(&start, &end);
-            time1 = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
-            std::cout << "Time for iter " << k << ": " << time1 << std::endl;
+            for(int i = 0; i < 4; i++){
+                work.u.col(0).data()[i] += 0.583;
+            }
+            send_action(work.u.col(0).data(), ROSE_SET_FORCE, 16);
+            // Print sent actions
+            // for (int i = 0; i < 4; ++i) {
+            //     printf("%f ", work.u.col(0).data()[i]);
+            // }
+            // printf("\n");
+            //std::cout << "Act: " << work.u.col(0).transpose().format(CleanFmt) << std::endl;
+
 
             // std::cout << work.iter << std::endl;
             // std::cout << work.u.col(0).transpose().format(CleanFmt) << std::endl;
 
             // 5. Simulate forward
-            x1 = work.Adyn * x0 + work.Bdyn * work.u.col(0);
-            x0 = x1;
 
             // std::cout << x0.transpose().format(CleanFmt) << std::endl;
+            k++;
         }
 
         return 0;
