@@ -182,14 +182,16 @@ extern "C"
             gemmini_loop_ws(1, 1, 3, 0, 3, 0, solver->work->Bdyn_data, solver->work->p.col(i+1).data(), NULL, B_p.data(), 4, 1, 1, 1, true, false, false, false, false, 0, 1, 1, false);
             gemmini_fence();
 
-            tiled_matmul_outer_eigen(solver->cache->Quu_inv, B_p + solver->work->r.col(i), dcol, true, false);
-            // gemmini_extended_config_ex(1, 0, 0, 1, true, false);
-            // gemmini_extended_config_st(4, 0, 1.000000);
-            // gemmini_extended3_config_ld(16, 1.000000, false, 0);
-            // gemmini_extended3_config_ld(4, 1.000000, false, 1);
-            // gemmini_extended3_config_ld(4, 1.000000, false, 2);
-            // gemmini_loop_ws(1, 1, 1, 0, 3, 0, [A], [B], NULL, [C], 4, 1, 1, 1, true, false, false, false, false, 0, 1, 1, false);
-            // gemmini_fence();
+            B_p += solver->work->r.col(i);
+
+            // tiled_matmul_outer_eigen(solver->cache->Quu_inv, B_p, dcol, true, false);
+            gemmini_extended_config_ex(1, 0, 0, 1, true, false);
+            gemmini_extended_config_st(4, 0, 1.000000);
+            gemmini_extended3_config_ld(16, 1.000000, false, 0);
+            gemmini_extended3_config_ld(4, 1.000000, false, 1);
+            gemmini_extended3_config_ld(4, 1.000000, false, 2);
+            gemmini_loop_ws(1, 1, 1, 0, 3, 0, solver->cache->Quu_inv_data, B_p.data(), NULL, dcol.data(), 4, 1, 1, 1, true, false, false, false, false, 0, 1, 1, false);
+            gemmini_fence();
 
             (solver->work->d.col(i)).noalias() = dcol;
 

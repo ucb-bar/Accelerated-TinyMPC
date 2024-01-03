@@ -29,6 +29,7 @@ extern "C" {
         tiny_MatrixNxNx Pinf;
         tinytype * Pinf_data;
         tiny_MatrixNuNu Quu_inv;
+        tinytype * Quu_inv_data;
         tiny_MatrixNxNx AmBKt;
         tinytype * AmBKt_data;
         tiny_MatrixNxNu coeff_d2p;

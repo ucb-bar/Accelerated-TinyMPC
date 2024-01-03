@@ -28,6 +28,7 @@ extern "C"
         cache.Pinf = Eigen::Map<Matrix<tinytype, NSTATES, NSTATES, Eigen::RowMajor>>(Pinf_data);
         cache.Pinf_data = Pinf_data;
         cache.Quu_inv = Eigen::Map<Matrix<tinytype, NINPUTS, NINPUTS, Eigen::RowMajor>>(Quu_inv_data);
+        cache.Quu_inv_data = Quu_inv_data;
         cache.AmBKt = Eigen::Map<Matrix<tinytype, NSTATES, NSTATES, Eigen::RowMajor>>(AmBKt_data);
         cache.AmBKt_data = AmBKt_data;
         cache.coeff_d2p = Eigen::Map<Matrix<tinytype, NSTATES, NINPUTS, Eigen::RowMajor>>(coeff_d2p_data);
@@ -86,8 +87,8 @@ extern "C"
 
         // std::cout << work.Xref << std::endl;
 
-        // for (int k = 0; k < 10; ++k)
-        for (int k = 0; k < NTOTAL - NHORIZON - 1; ++k)
+        for (int k = 0; k < 10; ++k)
+        // for (int k = 0; k < NTOTAL - NHORIZON - 1; ++k)
         {
             std::cout << "tracking error: " << (x0 - work.Xref.col(1)).norm() << std::endl;
             
