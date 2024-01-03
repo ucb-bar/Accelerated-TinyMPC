@@ -116,7 +116,6 @@ extern "C"
                     );
     }
 
-
     void tiled_matmul_auto_eigen (
         const Matrix<float, Dynamic, Dynamic, RowMajor>&A,
         const Matrix<float, Dynamic, Dynamic, RowMajor>&B,
@@ -241,6 +240,40 @@ extern "C"
         }
     }
 
+    void temp_function(
+        const Matrix<float, Dynamic, Dynamic, RowMajor>&A,
+        const Matrix<float, Dynamic, Dynamic, RowMajor>&B,
+        Matrix<float, Dynamic, Dynamic, RowMajor>&C) 
+    {
+            printf("A: \n");
+            for (int j = 0; j < 4; j++) {
+                for(int k = 0; k < 12; k++) {
+                    printf("   %f", A.data()[j*12+k]);
+                }
+                printf("\n");
+            }
+            printf("arr A: ");
+            for (int j = 0; j < 4; j++) {
+                for(int k = 0; k < 12; k++) {
+                    printf("   %f", A.data()[j*12+k]);
+                }
+                printf("\n");
+            }
+        printf("A: %x, B: %x, C: %x\n", A.data(), B.data(), C.data());
+        // printf("Using custom gemmini function\n");
+        gemmini_extended_config_ex(1, 0, 0, 1, false, false);
+        gemmini_extended_config_st(4, 0, 1.0);
+        gemmini_extended3_config_ld(48, 1.000000, false, 0);
+        gemmini_extended3_config_ld(4, 1.000000, false, 1);
+        gemmini_extended3_config_ld(4, 1.000000, false, 2);
+        // printf("Finished configs\n");
+        gemmini_loop_ws(1, 1, 3, 0, 3, 0, A.data(), B.data(), NULL, C.data(), 12, 1, 1, 1, false, false, false, false, false, 0, 1, 1, false);
+        gemmini_fence();
+    }
+
+
+
+
     void forward_pass_unrolled(TinySolver *solver)
     {
         Matrix<float, Dynamic, Dynamic, RowMajor> Kinf_x(NINPUTS, 1);
@@ -249,14 +282,31 @@ extern "C"
 
         for (int i = 0; i < NHORIZON - 1; i++)
         {
-            tiled_matmul_outer_eigen(solver->cache->Kinf, solver->work->x.col(i), Kinf_x, false, false);
+            // tiled_matmul_outer_eigen(solver->cache->Kinf, solver->work->x.col(i), Kinf_x, false, false);
+            temp_function(solver->cache->Kinf, solver->work->x.col(i), Kinf_x);
             // gemmini_extended_config_ex(1, 0, 0, 1, false, false);
-            // gemmini_extended_config_st(4, 0, 0);
+            // gemmini_extended_config_st(4, 0, 1.0);
             // gemmini_extended3_config_ld(48, 1.000000, false, 0);
             // gemmini_extended3_config_ld(4, 1.000000, false, 1);
             // gemmini_extended3_config_ld(4, 1.000000, false, 2);
+            // printf("Finished configs\n");
             // gemmini_loop_ws(1, 1, 3, 0, 3, 0, solver->cache->Kinf.data(), solver->work->x.col(i).data(), NULL, Kinf_x.data(), 12, 1, 1, 1, false, false, false, false, false, 0, 1, 1, false);
             // gemmini_fence();
+            printf("Kinf: %x, x: %x, Kinf_x: %x\n", solver->cache->Kinf.data(), solver->work->x.col(i).data(), Kinf_x.data());
+            std::cout << "Kinf: " << solver->cache->Kinf << std::endl;
+            printf("arr Kinf: ");
+            for (int j = 0; j < 4; j++) {
+                for(int k = 0; k < 12; k++) {
+                    printf("   %f", solver->cache->Kinf.data()[j*12+k]);
+                }
+                printf("\n");
+            }
+            std::cout << "x(0): " << solver->work->x.col(i) << std::endl;
+            printf("arr x(0): ");
+            for (int j = 0; j < 12; j++) {
+                printf("\t %f\n", solver->work->x.col(i).data()[j]);
+            }
+            std::cout << "kinf * x(0): " << solver->cache->Kinf * solver->work->x.col(i) << std::endl;
             std::cout << "Kinf_x: " << Kinf_x << std::endl;
             exit(0);
 
@@ -358,7 +408,7 @@ extern "C"
         // Initialize variables
         solver->work->status = 11;  // TINY_UNSOLVED
         solver->work->iter = 1;
-        forward_pass(solver);
+        forward_pass_unrolled(solver);
         update_slack(solver);
         update_dual(solver);
         update_linear_cost(solver);
