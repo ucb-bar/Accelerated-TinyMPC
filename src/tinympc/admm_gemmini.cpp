@@ -172,8 +172,6 @@ extern "C"
 
         for (int i = NHORIZON - 2; i >= 0; i--)
         {
-            // (solver->work->d.col(i)).noalias() = solver->cache->Quu_inv * (solver->work->Bdyn.transpose() * solver->work->p.col(i + 1) + solver->work->r.col(i));
-            // tiled_matmul_outer_eigen(solver->work->Bdyn, solver->work->p.col(i + 1), B_p, true, false);
             gemmini_extended_config_ex(1, 0, 0, 1, true, false);
             gemmini_extended_config_st(4, 0, 1.000000);
             gemmini_extended3_config_ld(16, 1.000000, false, 0);
@@ -184,7 +182,6 @@ extern "C"
 
             B_p += solver->work->r.col(i);
 
-            // tiled_matmul_outer_eigen(solver->cache->Quu_inv, B_p, dcol, true, false);
             gemmini_extended_config_ex(1, 0, 0, 1, true, false);
             gemmini_extended_config_st(4, 0, 1.000000);
             gemmini_extended3_config_ld(16, 1.000000, false, 0);
@@ -195,8 +192,6 @@ extern "C"
 
             (solver->work->d.col(i)).noalias() = dcol;
 
-            // (solver->work->p.col(i)).noalias() = solver->work->q.col(i) + solver->cache->AmBKt.lazyProduct(solver->work->p.col(i + 1)) - (solver->cache->Kinf.transpose()).lazyProduct(solver->work->r.col(i)); // + solver->cache->coeff_d2p * solver->work->d.col(i); // coeff_d2p always appears to be zeros (faster to comment out)
-            // tiled_matmul_outer_eigen(solver->cache->Kinf, solver->work->r.col(i), K_r, true, false);
             gemmini_extended_config_ex(1, 0, 0, 1, true, false);
             gemmini_extended_config_st(4, 0, 1.000000);
             gemmini_extended3_config_ld(48, 1.000000, false, 0);
@@ -205,7 +200,6 @@ extern "C"
             gemmini_loop_ws(3, 1, 1, 0, 3, 0, solver->cache->Kinf_data, solver->work->r.col(i).data(), NULL, K_r.data(), 12, 1, 1, 1, true, false, false, false, false, 0, 1, 1, false);
             gemmini_fence();
 
-            // tiled_matmul_outer_eigen(solver->cache->AmBKt, solver->work->p.col(i + 1), AmBKt_p, false, false);
             gemmini_extended_config_ex(1, 0, 0, 1, false, false);
             gemmini_extended_config_st(4, 0, 1.000000);
             gemmini_extended3_config_ld(48, 1.000000, false, 0);
@@ -215,7 +209,6 @@ extern "C"
             gemmini_fence();
 
             (solver->work->p.col(i)).noalias() = solver->work->q.col(i) + AmBKt_p - K_r;
-            // exit(0);
         }
     }
 
@@ -243,39 +236,6 @@ extern "C"
         }
     }
 
-    void temp_function(
-        const Matrix<float, Dynamic, Dynamic, RowMajor>&A,
-        const Matrix<float, Dynamic, Dynamic, RowMajor>&B,
-        Matrix<float, Dynamic, Dynamic, RowMajor>&C) 
-    {
-            printf("A: \n");
-            for (int j = 0; j < 4; j++) {
-                for(int k = 0; k < 12; k++) {
-                    printf("   %f", A.data()[j*12+k]);
-                }
-                printf("\n");
-            }
-            printf("arr A: ");
-            for (int j = 0; j < 4; j++) {
-                for(int k = 0; k < 12; k++) {
-                    printf("   %f", A.data()[j*12+k]);
-                }
-                printf("\n");
-            }
-        printf("A: %x, B: %x, C: %x\n", A.data(), B.data(), C.data());
-        // printf("Using custom gemmini function\n");
-        gemmini_extended_config_ex(1, 0, 0, 1, false, false);
-        gemmini_extended_config_st(4, 0, 1.0);
-        gemmini_extended3_config_ld(48, 1.000000, false, 0);
-        gemmini_extended3_config_ld(4, 1.000000, false, 1);
-        gemmini_extended3_config_ld(4, 1.000000, false, 2);
-        // printf("Finished configs\n");
-        gemmini_loop_ws(1, 1, 3, 0, 3, 0, A.data(), B.data(), NULL, C.data(), 12, 1, 1, 1, false, false, false, false, false, 0, 1, 1, false);
-        gemmini_fence();
-    }
-
-
-
 
     void forward_pass_unrolled(TinySolver *solver)
     {
@@ -285,8 +245,6 @@ extern "C"
 
         for (int i = 0; i < NHORIZON - 1; i++)
         {
-            // tiled_matmul_outer_eigen(solver->cache->Kinf, solver->work->x.col(i), Kinf_x, false, false);
-            // temp_function(solver->cache->Kinf, solver->work->x.col(i), Kinf_x);
             gemmini_extended_config_ex(1, 0, 0, 1, false, false);
             gemmini_extended_config_st(4, 0, 1.0);
             gemmini_extended3_config_ld(48, 1.000000, false, 0);
@@ -294,37 +252,10 @@ extern "C"
             gemmini_extended3_config_ld(4, 1.000000, false, 2);
             gemmini_loop_ws(1, 1, 3, 0, 3, 0, solver->cache->Kinf_data, solver->work->x.col(i).data(), NULL, Kinf_x.data(), 12, 1, 1, 1, false, false, false, false, false, 0, 1, 1, false);
             gemmini_fence();
-            // printf("Kinf: %x, x: %x, Kinf_x: %x\n", solver->cache->Kinf.data(), solver->work->x.col(i).data(), Kinf_x.data());
-            // std::cout << "Kinf: " << solver->cache->Kinf << std::endl;
-            // printf("arr Kinf: ");
-            // for (int j = 0; j < 4; j++) {
-            //     for(int k = 0; k < 12; k++) {
-            //         printf("   %f", solver->cache->Kinf.data()[j*12+k]);
-            //     }
-            //     printf("\n");
-            // }
-            // std::cout << "x(0): " << solver->work->x.col(i) << std::endl;
-            // printf("arr x(0): ");
-            // for (int j = 0; j < 12; j++) {
-            //     printf("\t %f\n", solver->work->x.col(i).data()[j]);
-            // }
-            // std::cout << "kinf * x(0): " << solver->cache->Kinf * solver->work->x.col(i) << std::endl;
-            // std::cout << "Kinf_x: " << Kinf_x << std::endl;
-            // exit(0);
 
             (solver->work->u.col(i)).noalias() = -Kinf_x - solver->work->d.col(i);
             // solver->work->u.col(i) << .001, .02, .3, 4;
-            // DEBUG_PRINT("u(0): %f\n", solver->work->u.col(0)(0));
-            // multAdyn(solver->Ax->cache.Adyn, solver->work->x.col(i));
 
-            // tiled_matmul_outer_eigen(solver->work->Adyn, solver->work->x.col(i), A_x, false, false);
-            // gemmini_extended_config_ex(1, 0, 0, 1, false, false);
-            // gemmini_extended_config_st(4, 0, 0);
-            // gemmini_extended3_config_ld(48, 1.000000, false, 0);
-            // gemmini_extended3_config_ld(4, 1.000000, false, 1);
-            // gemmini_extended3_config_ld(4, 1.000000, false, 2);
-            // gemmini_loop_ws(3, 1, 3, 0, 3, 0, solver->work->Adyn_data, solver->work->x.col(i).data(), NULL, A_x.data(), 12, 1, 1, 1, false, false, false, false, false, 0, 1, 1, false);
-            // gemmini_fence();
             gemmini_extended_config_ex(1, 0, 0, 1, false, false);
             gemmini_extended_config_st(4, 0, 1.0);
             gemmini_extended3_config_ld(48, 1.000000, false, 0);
@@ -332,10 +263,7 @@ extern "C"
             gemmini_extended3_config_ld(4, 1.000000, false, 2);
             gemmini_loop_ws(3, 1, 3, 0, 3, 0, solver->work->Adyn_data, solver->work->x.col(i).data(), NULL, A_x.data(), 12, 1, 1, 1, false, false, false, false, false, 0, 1, 1, false);
             gemmini_fence();
-            // std::cout << "Adyn * x(i): " << solver->work->Adyn * solver->work->x.col(i) << std::endl;
-            // std::cout << "A_x: " << A_x << std::endl;
 
-            // tiled_matmul_outer_eigen(solver->work->Bdyn, solver->work->u.col(i), B_u, false, false);
             gemmini_extended_config_ex(1, 0, 0, 1, false, false);
             gemmini_extended_config_st(4, 0, 1.0);
             gemmini_extended3_config_ld(16, 1.000000, false, 0);
