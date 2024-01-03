@@ -24,13 +24,18 @@ extern "C"
         // Map data from problem_data (array in row-major order)
         cache.rho = rho_value;
         cache.Kinf = Eigen::Map<Matrix<tinytype, NINPUTS, NSTATES, Eigen::RowMajor>>(Kinf_data);
+        cache.Kinf_data = Kinf_data;
         cache.Pinf = Eigen::Map<Matrix<tinytype, NSTATES, NSTATES, Eigen::RowMajor>>(Pinf_data);
+        cache.Pinf_data = Pinf_data;
         cache.Quu_inv = Eigen::Map<Matrix<tinytype, NINPUTS, NINPUTS, Eigen::RowMajor>>(Quu_inv_data);
         cache.AmBKt = Eigen::Map<Matrix<tinytype, NSTATES, NSTATES, Eigen::RowMajor>>(AmBKt_data);
+        cache.AmBKt_data = AmBKt_data;
         cache.coeff_d2p = Eigen::Map<Matrix<tinytype, NSTATES, NINPUTS, Eigen::RowMajor>>(coeff_d2p_data);
 
         work.Adyn = Eigen::Map<Matrix<tinytype, NSTATES, NSTATES, Eigen::RowMajor>>(Adyn_data);
+        work.Adyn_data = Adyn_data;
         work.Bdyn = Eigen::Map<Matrix<tinytype, NSTATES, NINPUTS, Eigen::RowMajor>>(Bdyn_data);
+        work.Bdyn_data = Bdyn_data;
         work.Q = Eigen::Map<tiny_VectorNx>(Q_data);
         work.Qf = Eigen::Map<tiny_VectorNx>(Qf_data);
         work.R = Eigen::Map<tiny_VectorNu>(R_data);
@@ -81,7 +86,7 @@ extern "C"
 
         // std::cout << work.Xref << std::endl;
 
-        // for (int k = 0; k < 50; ++k)
+        // for (int k = 0; k < 10; ++k)
         for (int k = 0; k < NTOTAL - NHORIZON - 1; ++k)
         {
             std::cout << "tracking error: " << (x0 - work.Xref.col(1)).norm() << std::endl;

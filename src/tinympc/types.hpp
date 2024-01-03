@@ -25,9 +25,12 @@ extern "C" {
     {
         tinytype rho;
         tiny_MatrixNuNx Kinf;
+        tinytype * Kinf_data;
         tiny_MatrixNxNx Pinf;
+        tinytype * Pinf_data;
         tiny_MatrixNuNu Quu_inv;
         tiny_MatrixNxNx AmBKt;
+        tinytype * AmBKt_data;
         tiny_MatrixNxNu coeff_d2p;
     } TinyCache;
 
@@ -82,7 +85,9 @@ extern "C" {
         tiny_VectorNx Qf;
         tiny_VectorNu R;
         tiny_MatrixNxNx Adyn;
+        tinytype * Adyn_data;
         tiny_MatrixNxNu Bdyn;
+        tinytype * Bdyn_data;
 
         tiny_MatrixNuNhm1 u_min;
         tiny_MatrixNuNhm1 u_max;

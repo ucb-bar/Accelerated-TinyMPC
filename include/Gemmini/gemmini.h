@@ -756,7 +756,7 @@ static void tiled_matmul_outer_simple(size_t dim_I, size_t dim_J, size_t dim_K,
 
   #ifdef CODEGEN
   printf("gemmini_extended_config_ex(%d, %d, %d, %d, %s, %s);\n", dataflow, act & 3, 0, 1, a_transpose ? "true" : "false", b_transpose ? "true" : "false");
-  printf("gemmini_extended_config_st(%d, %d, %d);\n", stride_C * sizeof_C, act & 3, scale);
+  printf("gemmini_extended_config_st(%d, %d, %f);\n", stride_C * sizeof_C, act & 3, scale);
   printf("gemmini_extended3_config_ld(%d, %f, %s, %d);\n", stride_A * sizeof(elem_t), A_scale_factor, "false", 0);
   printf("gemmini_extended3_config_ld(%d, %f, %s, %d);\n", stride_B * sizeof(elem_t), B_scale_factor, "false", 1);
   printf("gemmini_extended3_config_ld(%d, %f, %s, %d);\n", repeating_bias ? 0 : (stride_D * sizeof_D), D_scale_factor, low_D ? "true" : "false", 2);
@@ -807,6 +807,99 @@ static void tiled_matmul_outer_simple(size_t dim_I, size_t dim_J, size_t dim_K,
         //    full_C, low_D,
         //    no_bias, repeating_bias,
         //    act, a_spad_id, b_spad_id);
+          
+        sp_tiled_matmul_ws(A, B, pre, out,
+            A_scale_factor, B_scale_factor, D_scale_factor,
+            I, J, K,
+            pad_I, pad_J, pad_K,
+            stride_A, stride_B, stride_D, stride_C,
+            a_transpose, b_transpose,
+            full_C, low_D,
+            no_bias, repeating_bias,
+            act, a_spad_id, b_spad_id);
+
+  gemmini_fence();
+}
+
+static void tiled_matmul_outer_simple_2(size_t dim_I, size_t dim_J, size_t dim_K,
+        const elem_t* A, const elem_t* B,
+        const void * D, void * C,
+        size_t stride_A, size_t stride_B, size_t stride_D, size_t stride_C,
+        scale_t A_scale_factor, scale_t B_scale_factor, scale_acc_t D_scale_factor,
+        size_t tile_I, size_t tile_J, size_t tile_K,
+        int act, acc_scale_t scale, acc_scale_t bert_scale,
+        bool repeating_bias,
+        bool a_transpose, bool b_transpose,
+        bool full_C, bool low_D,
+        uint8_t weightA,
+        int dataflow) {
+
+  const size_t dim_I_padded = tile_I * DIM;
+  const size_t dim_J_padded = tile_J * DIM;
+  const size_t dim_K_padded = tile_K * DIM;
+
+  const size_t I0 = 1;
+  const size_t J0 = 1;
+  const size_t K0 = 1;
+
+  const size_t last_I = dim_I_padded % (tile_I*DIM) == 0 ? tile_I : (dim_I_padded/DIM) % tile_I;
+  const size_t last_J = dim_J_padded % (tile_J*DIM) == 0 ? tile_J : (dim_J_padded/DIM) % tile_J;
+  const size_t last_K = dim_K_padded % (tile_K*DIM) == 0 ? tile_K : (dim_K_padded/DIM) % tile_K;
+
+  const size_t padding_I = dim_I_padded - dim_I;
+  const size_t padding_J = dim_J_padded - dim_J;
+  const size_t padding_K = dim_K_padded - dim_K;
+
+  const bool no_bias = D == NULL;
+
+  if (no_bias) {
+    D = (void*) 1; // Dummy address which isn't NULL
+  }
+
+  const size_t sizeof_D = low_D ? sizeof(elem_t) : sizeof(acc_t) ;
+  const size_t sizeof_C = full_C ? sizeof(acc_t) : sizeof(elem_t);
+
+  // gemmini_extended_config_ex(dataflow, act & 3, 0, 1, a_transpose, b_transpose);
+  // gemmini_extended_config_st(stride_C * sizeof_C, act & 3, scale);
+  // gemmini_extended3_config_ld(stride_A * sizeof(elem_t), A_scale_factor, false, 0);
+  // gemmini_extended3_config_ld(stride_B * sizeof(elem_t), B_scale_factor, false, 1)
+  // gemmini_extended3_config_ld(repeating_bias ? 0 : (stride_D * sizeof_D), D_scale_factor, low_D, 2);
+
+        gemmini_extended_config_ex(1, 0, 0, 1, false, false);
+        gemmini_extended_config_st(4, 0, 0);
+        gemmini_extended3_config_ld(48, 1.000000, false, 0);
+        gemmini_extended3_config_ld(4, 1.000000, false, 1);
+        gemmini_extended3_config_ld(4, 1.000000, false, 2);
+
+
+  #ifdef CODEGEN
+  printf("gemmini_extended_config_ex(%d, %d, %d, %d, %s, %s);\n", dataflow, act & 3, 0, 1, a_transpose ? "true" : "false", b_transpose ? "true" : "false");
+  printf("gemmini_extended_config_st(%d, %d, %d);\n", stride_C * sizeof_C, act & 3, scale);
+  printf("gemmini_extended3_config_ld(%d, %f, %s, %d);\n", stride_A * sizeof(elem_t), A_scale_factor, "false", 0);
+  printf("gemmini_extended3_config_ld(%d, %f, %s, %d);\n", stride_B * sizeof(elem_t), B_scale_factor, "false", 1);
+  printf("gemmini_extended3_config_ld(%d, %f, %s, %d);\n", repeating_bias ? 0 : (stride_D * sizeof_D), D_scale_factor, low_D ? "true" : "false", 2);
+  #endif
+
+  const size_t i0 = 0;
+  const size_t j0 = 0;
+  const size_t k0 = 0;
+  const int a_spad_id = 1;
+  const int b_spad_id = 1;
+  const void * pre = NULL;
+          size_t bias_row = repeating_bias ? 0 : i0*tile_I*DIM;
+          // pre = &(((acc_t*)D)[bias_row * stride_D + j0 * tile_J * DIM]);
+          pre = (int8_t*)D + (bias_row * stride_D + j0 * tile_J * DIM)*sizeof_D;
+
+        void * out = k0 == K0-1 ? (int8_t*)C + (i0*tile_I*DIM*stride_C + j0*tile_J*DIM)*sizeof_C : NULL;
+        // print("out: %p, C: %p\n", out, C);
+
+        const size_t I = last_I;
+        const size_t J = last_J;
+        const size_t K = last_K;
+
+        const size_t pad_I =  padding_I;
+        const size_t pad_J =  padding_J;
+        const size_t pad_K =  padding_K;
           
         sp_tiled_matmul_ws(A, B, pre, out,
             A_scale_factor, B_scale_factor, D_scale_factor,
