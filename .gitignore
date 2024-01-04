@@ -54,3 +54,6 @@ Testing/
 # Crazyflie firmware build files
 *.o.cmd
 
+.cache
+cmake-build-debug
+

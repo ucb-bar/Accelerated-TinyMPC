@@ -118,6 +118,32 @@ extern "C"
                     );
     }
 
+    void tiled_matmul_spad_dram(
+        const uint32_t sp_A_addr,
+        const Matrix<float, Dynamic, Dynamic, RowMajor>&B,
+        Matrix<float, Dynamic, Dynamic, RowMajor>&C,
+        int i)
+    {
+        int j = B.cols();
+        int k = B.rows();
+        int tile_I = (i + DIM - 1) / DIM;
+        int tile_J = (j + DIM - 1) / DIM;
+        int tile_K = (k + DIM - 1) / DIM;
+
+        tiled_matmul_outer_simple_dram_sp(i, j, k,
+                sp_A_addr, B.data(), NULL, C.data(),
+                k, j, j, j,
+                MVIN_SCALE_IDENTITY, MVIN_SCALE_IDENTITY, MVIN_SCALE_IDENTITY,
+                tile_I, tile_J, tile_K,
+                NO_ACTIVATION, ACC_SCALE_IDENTITY, 0, false,
+                false, false,
+                false, false,
+                0,
+                WS
+                );
+    }
+
+
     void tiled_matmul_auto_eigen (
         const Matrix<float, Dynamic, Dynamic, RowMajor>&A,
         const Matrix<float, Dynamic, Dynamic, RowMajor>&B,
@@ -266,7 +292,8 @@ extern "C"
             // DEBUG_PRINT("u(0): %f\n", solver->work->u.col(0)(0));
             // multAdyn(solver->Ax->cache.Adyn, solver->work->x.col(i));
 
-            tiled_matmul_outer_eigen(solver->work->Adyn, solver->work->x.col(i), A_x, false, false);
+            // tiled_matmul_outer_eigen(solver->work->Adyn, solver->work->x.col(i), A_x, false, false);
+            tiled_matmul_spad_dram(0, solver->work->x.col(i), A_x, NSTATES);
             tiled_matmul_outer_eigen(solver->work->Bdyn, solver->work->u.col(i), B_u, false, false);
             fflush(stdout);
             (solver->work->x.col(i + 1)).noalias() = A_x + B_u;
@@ -417,9 +444,24 @@ extern "C"
         solver->work->p.col(NHORIZON - 1) -= solver->cache->rho * (solver->work->vnew.col(NHORIZON - 1) - solver->work->g.col(NHORIZON - 1));
     }
 
-    
+    // define spad addresses for cached matrices
+    // spad is row addressed and each row is 4 elements wide
+    static uint32_t A_sp_addr = 0; // 144 elements, 0 to 35
+    static uint32_t B_sp_addr = 36; // 48 elements, 36 to 47
+    static uint32_t Kinf_sp_addr = 48; // 48 elements, 48 to 59
+    static uint32_t C1_sp_addr = 60; // 16 elements, 60 to 63
+    static uint32_t C2_sp_addr = 64; // 144 elements, 64 to 99
+    // next available spad address is 100
+
     int tiny_solve(TinySolver *solver)
     {
+        /************ setup scratchpad with matrices ************/
+        // move in Adyn
+        gemmini_extended3_config_ld(48, 1.0, false, 0);
+        for (int i = 0; i < 3; i++) {
+            gemmini_extended_mvin(solver->work->Adyn.data() + i*(48*4), A_sp_addr + i*12, 12, 4);
+        }
+
         // Initialize variables
         solver->work->status = 11;  // TINY_UNSOLVED
         solver->work->iter = 1;
@@ -440,8 +482,6 @@ extern "C"
         {
 
             // Solve linear system with Riccati and roll out to get new trajectory
-/* The above code is likely written in C++ and it is calling a function named "update_primal" with a
-parameter named "solver". */
             update_primal(solver);
 
             // Project slack variables into feasible domain
