@@ -122,10 +122,10 @@ extern "C"
         const uint32_t sp_A_addr,
         const Matrix<float, Dynamic, Dynamic, RowMajor>&B,
         Matrix<float, Dynamic, Dynamic, RowMajor>&C,
-        int i)
+        int i, bool transpose_A, bool transpose_B)
     {
-        int j = B.cols();
-        int k = B.rows();
+        int j = transpose_B ? B.rows() : B.cols();
+        int k = transpose_B ? B.cols() : B.rows();
         int tile_I = (i + DIM - 1) / DIM;
         int tile_J = (j + DIM - 1) / DIM;
         int tile_K = (k + DIM - 1) / DIM;
@@ -136,7 +136,7 @@ extern "C"
                 MVIN_SCALE_IDENTITY, MVIN_SCALE_IDENTITY, MVIN_SCALE_IDENTITY,
                 tile_I, tile_J, tile_K,
                 NO_ACTIVATION, ACC_SCALE_IDENTITY, 0, false,
-                false, false,
+                transpose_A, transpose_B,
                 false, false,
                 0,
                 WS
@@ -165,6 +165,15 @@ extern "C"
                     );
     }
 
+    // define spad addresses for cached matrices
+    // spad is row addressed and each row is 4 elements wide
+    static uint32_t A_sp_addr = 0; // 144 elements, 0 to 35
+    static uint32_t B_sp_addr = 36; // 48 elements, 36 to 47
+    static uint32_t Kinf_sp_addr = 48; // 48 elements, 48 to 59
+    static uint32_t C1_sp_addr = 60; // 16 elements, 60 to 63
+    static uint32_t C2_sp_addr = 64; // 144 elements, 64 to 99
+    // next available spad address is 100
+
     /**
      * Update linear terms from Riccati backward pass
      */
@@ -178,13 +187,18 @@ extern "C"
         for (int i = NHORIZON - 2; i >= 0; i--)
         {
             // (solver->work->d.col(i)).noalias() = solver->cache->Quu_inv * (solver->work->Bdyn.transpose() * solver->work->p.col(i + 1) + solver->work->r.col(i));
-            tiled_matmul_outer_eigen(solver->work->Bdyn, solver->work->p.col(i + 1), B_p, true, false);
-            tiled_matmul_outer_eigen(solver->cache->Quu_inv, B_p + solver->work->r.col(i), dcol, true, false);
+            // tiled_matmul_outer_eigen(solver->work->Bdyn, solver->work->p.col(i + 1), B_p, true, false);
+            tiled_matmul_spad_dram(B_sp_addr, solver->work->p.col(i + 1), B_p, NINPUTS, true, false);
+
+            // tiled_matmul_outer_eigen(solver->cache->Quu_inv, B_p + solver->work->r.col(i), dcol, true, false);
+            tiled_matmul_spad_dram(C1_sp_addr, B_p + solver->work->r.col(i), dcol, NINPUTS, true, false);
             (solver->work->d.col(i)).noalias() = dcol;
 
             // (solver->work->p.col(i)).noalias() = solver->work->q.col(i) + solver->cache->AmBKt.lazyProduct(solver->work->p.col(i + 1)) - (solver->cache->Kinf.transpose()).lazyProduct(solver->work->r.col(i)); // + solver->cache->coeff_d2p * solver->work->d.col(i); // coeff_d2p always appears to be zeros (faster to comment out)
-            tiled_matmul_outer_eigen(solver->cache->Kinf, solver->work->r.col(i), K_r, true, false);
-            tiled_matmul_outer_eigen(solver->cache->AmBKt, solver->work->p.col(i + 1), AmBKt_p, false, false);
+            // tiled_matmul_outer_eigen(solver->cache->Kinf, solver->work->r.col(i), K_r, true, false);
+            tiled_matmul_spad_dram(Kinf_sp_addr, solver->work->r.col(i), K_r, NSTATES, true, false);
+            // tiled_matmul_outer_eigen(solver->cache->AmBKt, solver->work->p.col(i + 1), AmBKt_p, false, false);
+            tiled_matmul_spad_dram(C2_sp_addr, solver->work->p.col(i + 1), AmBKt_p, NSTATES, false, false);
             (solver->work->p.col(i)).noalias() = solver->work->q.col(i) + AmBKt_p - K_r;
         }
     }
@@ -286,20 +300,23 @@ extern "C"
 
         for (int i = 0; i < NHORIZON - 1; i++)
         {
-            tiled_matmul_outer_eigen(solver->cache->Kinf, solver->work->x.col(i), Kinf_x, false, false);
+            // tiled_matmul_outer_eigen(solver->cache->Kinf, solver->work->x.col(i), Kinf_x, false, false);
+            tiled_matmul_spad_dram(Kinf_sp_addr, solver->work->x.col(i), Kinf_x, NINPUTS, false, false);
+
             (solver->work->u.col(i)).noalias() = -Kinf_x - solver->work->d.col(i);
             // solver->work->u.col(i) << .001, .02, .3, 4;
             // DEBUG_PRINT("u(0): %f\n", solver->work->u.col(0)(0));
             // multAdyn(solver->Ax->cache.Adyn, solver->work->x.col(i));
 
+            // printf("calculatingx Ax \n");
             // tiled_matmul_outer_eigen(solver->work->Adyn, solver->work->x.col(i), A_x, false, false);
-            tiled_matmul_spad_dram(0, solver->work->x.col(i), A_x, NSTATES);
-            tiled_matmul_outer_eigen(solver->work->Bdyn, solver->work->u.col(i), B_u, false, false);
+            tiled_matmul_spad_dram(A_sp_addr, solver->work->x.col(i), A_x, NSTATES, false, false);
+            // tiled_matmul_outer_eigen(solver->work->Bdyn, solver->work->u.col(i), B_u, false, false);
+            tiled_matmul_spad_dram(B_sp_addr, solver->work->u.col(i), B_u, NSTATES, false, false);
             fflush(stdout);
             (solver->work->x.col(i + 1)).noalias() = A_x + B_u;
         }
     }
-
 
     void forward_pass_unrolled(TinySolver *solver)
     {
@@ -444,22 +461,30 @@ extern "C"
         solver->work->p.col(NHORIZON - 1) -= solver->cache->rho * (solver->work->vnew.col(NHORIZON - 1) - solver->work->g.col(NHORIZON - 1));
     }
 
-    // define spad addresses for cached matrices
-    // spad is row addressed and each row is 4 elements wide
-    static uint32_t A_sp_addr = 0; // 144 elements, 0 to 35
-    static uint32_t B_sp_addr = 36; // 48 elements, 36 to 47
-    static uint32_t Kinf_sp_addr = 48; // 48 elements, 48 to 59
-    static uint32_t C1_sp_addr = 60; // 16 elements, 60 to 63
-    static uint32_t C2_sp_addr = 64; // 144 elements, 64 to 99
-    // next available spad address is 100
-
     int tiny_solve(TinySolver *solver)
     {
         /************ setup scratchpad with matrices ************/
         // move in Adyn
         gemmini_extended3_config_ld(48, 1.0, false, 0);
         for (int i = 0; i < 3; i++) {
-            gemmini_extended_mvin(solver->work->Adyn_data + i*(48*4), A_sp_addr + i*12, 12, 4);
+            gemmini_extended_mvin(solver->work->Adyn_data + i*48, A_sp_addr + i*12, 12, 4);
+        }
+        // TODO use different configuration registers; i.e. mvin1, mvin2, etc?
+        // move in Bdyn
+        gemmini_extended3_config_ld(16, 1.0, false, 0);
+        for (int i = 0; i < 3; i++) {
+            gemmini_extended_mvin(solver->work->Bdyn_data + i*16, B_sp_addr + i*4, 4, 4);
+        }
+        // move in Kinf
+        gemmini_extended3_config_ld(48, 1.0, false, 0);
+        gemmini_extended_mvin(solver->cache->Kinf_data, Kinf_sp_addr, 12, 4);
+        // move in C1 (Quu_inv in code)
+        gemmini_extended3_config_ld(16, 1.0, false, 0);
+        gemmini_extended_mvin(solver->cache->Quu_inv_data, C1_sp_addr, 4, 4);
+        // move in C2 (AmBKt in code)
+        gemmini_extended3_config_ld(48, 1.0, false, 0);
+        for (int i = 0; i < 3; i++) {
+            gemmini_extended_mvin(solver->cache->AmBKt_data + i*48, C2_sp_addr + i*12, 12, 4);
         }
 
         // Initialize variables

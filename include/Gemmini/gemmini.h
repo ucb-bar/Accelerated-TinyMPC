@@ -562,6 +562,7 @@ static inline void sp_tiled_matmul_ws(
             const size_t blocks = k + A_blocks <= K ? A_blocks : K-k;
             const size_t cols = blocks * DIM - (k + blocks >= K ? pad_K : 0);
             const size_t rows = DIM - (i == I-1 ? pad_I : 0);
+            // printf("mvin: A_dram_addr %d, A_sp_addr %d, cols %d, rows %d\n", A_dram_addr, A_sp_addr, cols, rows);
             gemmini_extended_mvin(A_dram_addr, A_sp_addr, cols, rows);
           }
         }
@@ -658,8 +659,8 @@ static inline void dram_sp_tiled_matmul_ws(
   const uint32_t D_sp_addr_start = 1 << (ADDR_LEN-1);
   const uint32_t C_sp_addr_start = 3 << (ADDR_LEN-2) | (full_C << (ADDR_LEN-3));
 
-  const int A_blocks = a_transpose ? (I <= MAX_BLOCK_LEN ? I : MAX_BLOCK_LEN) :
-    (K <= MAX_BLOCK_LEN ? K : MAX_BLOCK_LEN);
+  // const int A_blocks = a_transpose ? (I <= MAX_BLOCK_LEN ? I : MAX_BLOCK_LEN) :
+  //   (K <= MAX_BLOCK_LEN ? K : MAX_BLOCK_LEN);
   const int B_blocks = b_transpose ? (K <= MAX_BLOCK_LEN ? K : MAX_BLOCK_LEN) :
     (J <= MAX_BLOCK_LEN ? J : MAX_BLOCK_LEN);
   const int D_blocks = low_D ? (J <= MAX_BLOCK_LEN ? J : MAX_BLOCK_LEN) :
