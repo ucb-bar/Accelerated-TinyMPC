@@ -459,7 +459,7 @@ extern "C"
         // move in Adyn
         gemmini_extended3_config_ld(48, 1.0, false, 0);
         for (int i = 0; i < 3; i++) {
-            gemmini_extended_mvin(solver->work->Adyn.data() + i*(48*4), A_sp_addr + i*12, 12, 4);
+            gemmini_extended_mvin(solver->work->Adyn_data + i*(48*4), A_sp_addr + i*12, 12, 4);
         }
 
         // Initialize variables
