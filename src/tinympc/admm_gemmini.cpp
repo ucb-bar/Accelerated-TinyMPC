@@ -9,6 +9,7 @@
 #include <cstdlib>
 
 #define DEBUG_MODULE "TINYALG"
+#define UNROLLED
 #define OPTIMIZED
 
 using namespace Eigen;
@@ -166,10 +167,10 @@ extern "C"
      */
     void backward_pass_grad_unrolled(TinySolver *solver)
     {
-        Matrix<float, Dynamic, Dynamic, RowMajor> B_p(NINPUTS, 1);
-        Matrix<float, Dynamic, Dynamic, RowMajor> dcol(NINPUTS, 1);
-        Matrix<float, Dynamic, Dynamic, RowMajor> K_r(NSTATES, 1);
-        Matrix<float, Dynamic, Dynamic, RowMajor> AmBKt_p(NSTATES, 1);
+        tiny_VectorNu B_p;
+        tiny_VectorNu dcol;
+        tiny_VectorNx K_r;
+        tiny_VectorNx AmBKt_p;
 
         for (int i = NHORIZON - 2; i >= 0; i--)
         {
@@ -275,9 +276,9 @@ extern "C"
 
     void forward_pass_unrolled(TinySolver *solver)
     {
-        Matrix<float, Dynamic, Dynamic, RowMajor> Kinf_x(NINPUTS, 1);
-        Matrix<float, Dynamic, Dynamic, RowMajor> A_x(NSTATES, 1);
-        Matrix<float, Dynamic, Dynamic, RowMajor> B_u(NSTATES, 1);
+        tiny_VectorNu Kinf_x;
+        tiny_VectorNx A_x;
+        tiny_VectorNx B_u;
 
         for (int i = 0; i < NHORIZON - 1; i++)
         {
@@ -348,8 +349,18 @@ extern "C"
      */
     void update_primal(TinySolver *solver)
     {
+        #ifdef UNROLLED
+        #ifdef OPTIMIZED
         backward_pass_grad_unrolled_opt(solver);
         forward_pass_unrolled_opt(solver);
+        #else
+        backward_pass_grad_unrolled(solver);
+        forward_pass_unrolled(solver);
+        #endif
+        #else
+        backward_pass_grad(solver);
+        forward_pass(solver);
+        #endif
     }
 
     /**
@@ -412,7 +423,16 @@ extern "C"
         // Initialize variables
         solver->work->status = 11;  // TINY_UNSOLVED
         solver->work->iter = 1;
+        #ifdef UNROLLED
+        #ifdef OPTIMIZED
         forward_pass_unrolled_opt(solver);
+        #else
+        forward_pass_unrolled(solver);
+        #endif
+        #else
+        forward_pass(solver);
+        #endif
+
         update_slack(solver);
         update_dual(solver);
         update_linear_cost(solver);
