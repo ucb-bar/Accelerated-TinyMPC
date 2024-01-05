@@ -3,6 +3,7 @@
 
 #include "admm.hpp"
 #include "glob_opts.hpp"
+#include "tinympc/types.hpp"
 
 #include <Eigen/Dense>
 #include <vector>
@@ -22,6 +23,13 @@ extern "C"
         uint64_t cycles;
         asm volatile ("rdcycle %0" : "=r" (cycles));
         return cycles;
+    }
+
+    static void print_cycle_cnt(void (*func)(TinySolver*), const char* name, TinySolver *solver) {
+        int cycles_before = read_cycles();
+        func(solver);
+        int cycles_after = read_cycles();
+        printf("%s: %d\n", name, cycles_after - cycles_before);
     }
 // static void sp_tiled_matmul_ws(
 //         const elem_t * A, const elem_t * B, const void * D, void * C,
@@ -503,6 +511,7 @@ extern "C"
         update_slack(solver);
         update_dual(solver);
         update_linear_cost(solver);
+
         for (int i = 0; i < solver->settings->max_iter; i++)
         {
 
