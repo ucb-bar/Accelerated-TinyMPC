@@ -9,6 +9,7 @@
 #include <cstdlib>
 
 #define DEBUG_MODULE "TINYALG"
+#define OPTIMIZED
 
 using namespace Eigen;
 
@@ -213,6 +214,41 @@ extern "C"
     }
 
     /**
+     * Update linear terms from Riccati backward pass
+     */
+    void backward_pass_grad_unrolled_opt(TinySolver *solver)
+    {
+        tiny_VectorNu B_p;
+        tiny_VectorNx K_r;
+        tiny_VectorNx AmBKt_p;
+
+        gemmini_extended3_config_ld(4, 1.000000, false, 1);
+        gemmini_extended3_config_ld(4, 1.000000, false, 2);
+        gemmini_extended_config_st(4, 0, 1.000000);
+        gemmini_extended_config_ex(1, 0, 0, 1, true, false);
+        gemmini_extended3_config_ld(16, 1.000000, false, 0);
+        for (int i = NHORIZON - 2; i >= 0; i--)
+        {
+            gemmini_loop_ws(1, 1, 3, 0, 3, 0, solver->work->Bdyn_data, solver->work->p.col(i+1).data(), NULL, B_p.data(), 4, 1, 1, 1, true, false, false, false, false, 0, 1, 1, false);
+
+            gemmini_extended3_config_ld(48, 1.000000, false, 0);
+            gemmini_loop_ws(3, 1, 1, 0, 3, 0, solver->cache->Kinf_data, solver->work->r.col(i).data(), NULL, K_r.data(), 12, 1, 1, 1, true, false, false, false, false, 0, 1, 1, false);
+
+            gemmini_extended_config_ex(1, 0, 0, 1, false, false);
+            gemmini_loop_ws(3, 1, 3, 0, 3, 0, solver->cache->AmBKt_data, solver->work->p.col(i+1).data(), NULL, AmBKt_p.data(), 12, 1, 1, 1, false, false, false, false, false, 0, 1, 1, false);
+            gemmini_fence();
+
+            B_p += solver->work->r.col(i);
+            gemmini_extended_config_ex(1, 0, 0, 1, true, false);
+            gemmini_extended3_config_ld(16, 1.000000, false, 0);
+
+            gemmini_loop_ws(1, 1, 1, 0, 3, 0, solver->cache->Quu_inv_data, B_p.data(), NULL, solver->work->d.col(i).data(), 4, 1, 1, 1, true, false, false, false, false, 0, 1, 1, false);
+
+            (solver->work->p.col(i)).noalias() = solver->work->q.col(i) + AmBKt_p - K_r;
+        }
+    }
+
+    /**
      * Use LQR feedback policy to roll out trajectory
      */
     void forward_pass(TinySolver *solver)
@@ -278,14 +314,42 @@ extern "C"
         }
     }
 
+    void forward_pass_unrolled_opt(TinySolver *solver)
+    {
+        tiny_VectorNx B_u;
+
+        gemmini_extended_config_ex(1, 0, 0, 1, false, false);
+        gemmini_extended3_config_ld(4, 1.000000, false, 1);
+        gemmini_extended3_config_ld(4, 1.000000, false, 2);
+        for (int i = 0; i < NHORIZON - 1; i++)
+        {
+            gemmini_extended_config_st(4, 0, -1.0);
+            gemmini_extended3_config_ld(48, 1.000000, false, 0);
+            gemmini_loop_ws(1, 1, 3, 0, 3, 0, solver->cache->Kinf_data, solver->work->x.col(i).data(), NULL, solver->work->u.col(i).data(), 12, 1, 1, 1, false, false, false, false, false, 0, 1, 1, false);
+
+            // solver->work->u.col(i) << .001, .02, .3, 4;
+
+            gemmini_extended_config_st(4, 0, 1.0);
+            gemmini_loop_ws(3, 1, 3, 0, 3, 0, solver->work->Adyn_data, solver->work->x.col(i).data(), NULL, solver->work->x.col(i+1).data(), 12, 1, 1, 1, false, false, false, false, false, 0, 1, 1, false);
+            gemmini_fence();
+            (solver->work->u.col(i)).noalias() -= solver->work->d.col(i);
+
+            gemmini_extended3_config_ld(16, 1.000000, false, 0);
+            gemmini_loop_ws(3, 1, 1, 0, 3, 0, solver->work->Bdyn_data, solver->work->u.col(i).data(), NULL, B_u.data(), 4, 1, 1, 1, false, false, false, false, false, 0, 1, 1, false);
+            gemmini_fence();
+
+            (solver->work->x.col(i + 1)).noalias() += B_u;
+        }
+    }
+
 
     /**
      * Do backward Riccati pass then forward roll out
      */
     void update_primal(TinySolver *solver)
     {
-        backward_pass_grad_unrolled(solver);
-        forward_pass_unrolled(solver);
+        backward_pass_grad_unrolled_opt(solver);
+        forward_pass_unrolled_opt(solver);
     }
 
     /**
@@ -348,7 +412,7 @@ extern "C"
         // Initialize variables
         solver->work->status = 11;  // TINY_UNSOLVED
         solver->work->iter = 1;
-        forward_pass_unrolled(solver);
+        forward_pass_unrolled_opt(solver);
         update_slack(solver);
         update_dual(solver);
         update_linear_cost(solver);
@@ -356,6 +420,8 @@ extern "C"
         {
 
             // Solve linear system with Riccati and roll out to get new trajectory
+/* The above code is likely written in C++ and it is calling a function named "update_primal" with a
+parameter named "solver". */
             update_primal(solver);
 
             // Project slack variables into feasible domain
