@@ -3,14 +3,19 @@
 
 #include "admm.hpp"
 #include "glob_opts.hpp"
+#include "tinympc/types.hpp"
 
 #include <Eigen/Dense>
 #include <vector>
 #include <cstdlib>
+#include <fstream>
 
 #define DEBUG_MODULE "TINYALG"
 #define UNROLLED
 #define OPTIMIZED
+// NOTE: memory optimization is only implemented when UNROLLED is NOT defined
+#define MEMORY
+#define MEASURE_CYCLES
 
 using namespace Eigen;
 
@@ -23,6 +28,20 @@ extern "C"
         asm volatile ("rdcycle %0" : "=r" (cycles));
         return cycles;
     }
+
+    #ifdef MEASURE_CYCLES
+    std::ofstream outputFile("cycle_output.csv");
+    #define CYCLE_CNT_WRAPPER(func, arg, name) \
+        do { \
+            int cycles_before = read_cycles(); \
+            func(arg); \
+            int cycles_after = read_cycles(); \
+            outputFile << name << ", " << cycles_after - cycles_before << std::endl; \
+        } while(0)
+    #else
+    #define CYCLE_CNT_WRAPPER(func, arg, name) func(arg)
+    #endif
+
 // static void sp_tiled_matmul_ws(
 //         const elem_t * A, const elem_t * B, const void * D, void * C,
 //         scale_t A_scale_factor, scale_t B_scale_factor, scale_acc_t D_scale_factor,
@@ -118,6 +137,32 @@ extern "C"
                     );
     }
 
+    void tiled_matmul_spad_dram(
+        const uint32_t sp_A_addr,
+        const Matrix<float, Dynamic, Dynamic, RowMajor>&B,
+        Matrix<float, Dynamic, Dynamic, RowMajor>&C,
+        int i, bool transpose_A, bool transpose_B)
+    {
+        int j = transpose_B ? B.rows() : B.cols();
+        int k = transpose_B ? B.cols() : B.rows();
+        int tile_I = (i + DIM - 1) / DIM;
+        int tile_J = (j + DIM - 1) / DIM;
+        int tile_K = (k + DIM - 1) / DIM;
+
+        tiled_matmul_outer_simple_dram_sp(i, j, k,
+                sp_A_addr, B.data(), NULL, C.data(),
+                k, j, j, j,
+                MVIN_SCALE_IDENTITY, MVIN_SCALE_IDENTITY, MVIN_SCALE_IDENTITY,
+                tile_I, tile_J, tile_K,
+                NO_ACTIVATION, ACC_SCALE_IDENTITY, 0, false,
+                transpose_A, transpose_B,
+                false, false,
+                0,
+                WS
+                );
+    }
+
+
     void tiled_matmul_auto_eigen (
         const Matrix<float, Dynamic, Dynamic, RowMajor>&A,
         const Matrix<float, Dynamic, Dynamic, RowMajor>&B,
@@ -139,6 +184,15 @@ extern "C"
                     );
     }
 
+    // define spad addresses for cached matrices
+    // spad is row addressed and each row is 4 elements wide
+    static uint32_t A_sp_addr = 0; // 144 elements, 0 to 35
+    static uint32_t B_sp_addr = 36; // 48 elements, 36 to 47
+    static uint32_t Kinf_sp_addr = 48; // 48 elements, 48 to 59
+    static uint32_t C1_sp_addr = 60; // 16 elements, 60 to 63
+    static uint32_t C2_sp_addr = 64; // 144 elements, 64 to 99
+    // next available spad address is 100
+
     /**
      * Update linear terms from Riccati backward pass
      */
@@ -151,14 +205,24 @@ extern "C"
 
         for (int i = NHORIZON - 2; i >= 0; i--)
         {
-            // (solver->work->d.col(i)).noalias() = solver->cache->Quu_inv * (solver->work->Bdyn.transpose() * solver->work->p.col(i + 1) + solver->work->r.col(i));
+            #ifdef MEMORY
+            tiled_matmul_spad_dram(B_sp_addr, solver->work->p.col(i + 1), B_p, NINPUTS, true, false);
+            tiled_matmul_spad_dram(C1_sp_addr, B_p + solver->work->r.col(i), dcol, NINPUTS, true, false);
+            #else
             tiled_matmul_outer_eigen(solver->work->Bdyn, solver->work->p.col(i + 1), B_p, true, false);
             tiled_matmul_outer_eigen(solver->cache->Quu_inv, B_p + solver->work->r.col(i), dcol, true, false);
+            #endif
+
             (solver->work->d.col(i)).noalias() = dcol;
 
-            // (solver->work->p.col(i)).noalias() = solver->work->q.col(i) + solver->cache->AmBKt.lazyProduct(solver->work->p.col(i + 1)) - (solver->cache->Kinf.transpose()).lazyProduct(solver->work->r.col(i)); // + solver->cache->coeff_d2p * solver->work->d.col(i); // coeff_d2p always appears to be zeros (faster to comment out)
+            #ifdef MEMORY
+            tiled_matmul_spad_dram(Kinf_sp_addr, solver->work->r.col(i), K_r, NSTATES, true, false);
+            tiled_matmul_spad_dram(C2_sp_addr, solver->work->p.col(i + 1), AmBKt_p, NSTATES, false, false);
+            #else
             tiled_matmul_outer_eigen(solver->cache->Kinf, solver->work->r.col(i), K_r, true, false);
             tiled_matmul_outer_eigen(solver->cache->AmBKt, solver->work->p.col(i + 1), AmBKt_p, false, false);
+            #endif
+            
             (solver->work->p.col(i)).noalias() = solver->work->q.col(i) + AmBKt_p - K_r;
         }
     }
@@ -260,19 +324,25 @@ extern "C"
 
         for (int i = 0; i < NHORIZON - 1; i++)
         {
+            #ifdef MEMORY
+            tiled_matmul_spad_dram(Kinf_sp_addr, solver->work->x.col(i), Kinf_x, NINPUTS, false, false);
+            #else
             tiled_matmul_outer_eigen(solver->cache->Kinf, solver->work->x.col(i), Kinf_x, false, false);
+            #endif
+            
             (solver->work->u.col(i)).noalias() = -Kinf_x - solver->work->d.col(i);
-            // solver->work->u.col(i) << .001, .02, .3, 4;
-            // DEBUG_PRINT("u(0): %f\n", solver->work->u.col(0)(0));
-            // multAdyn(solver->Ax->cache.Adyn, solver->work->x.col(i));
 
+            #ifdef MEMORY
+            tiled_matmul_spad_dram(A_sp_addr, solver->work->x.col(i), A_x, NSTATES, false, false);
+            tiled_matmul_spad_dram(B_sp_addr, solver->work->u.col(i), B_u, NSTATES, false, false);
+            #else
             tiled_matmul_outer_eigen(solver->work->Adyn, solver->work->x.col(i), A_x, false, false);
             tiled_matmul_outer_eigen(solver->work->Bdyn, solver->work->u.col(i), B_u, false, false);
-            fflush(stdout);
+            #endif
+            
             (solver->work->x.col(i + 1)).noalias() = A_x + B_u;
         }
     }
-
 
     void forward_pass_unrolled(TinySolver *solver)
     {
@@ -351,15 +421,15 @@ extern "C"
     {
         #ifdef UNROLLED
         #ifdef OPTIMIZED
-        backward_pass_grad_unrolled_opt(solver);
-        forward_pass_unrolled_opt(solver);
+        CYCLE_CNT_WRAPPER(backward_pass_grad_unrolled_opt, solver, "update_primal_backward_pass");
+        CYCLE_CNT_WRAPPER(forward_pass_unrolled_opt, solver, "update_primal_forward_pass");
         #else
-        backward_pass_grad_unrolled(solver);
-        forward_pass_unrolled(solver);
+        CYCLE_CNT_WRAPPER(backward_pass_grad_unrolled, solver, "update_primal_backward_pass");
+        CYCLE_CNT_WRAPPER(forward_pass_unrolled, solver, "update_primal_forward_pass");
         #endif
         #else
-        backward_pass_grad(solver);
-        forward_pass(solver);
+        CYCLE_CNT_WRAPPER(backward_pass_grad, solver, "update_primal_backward_pass");
+        CYCLE_CNT_WRAPPER(forward_pass, solver, "update_primal_forward_pass");
         #endif
     }
 
@@ -412,46 +482,69 @@ extern "C"
         solver->work->q = -(solver->work->Xref.array().colwise() * solver->work->Q.array());
         (solver->work->q).noalias() -= solver->cache->rho * (solver->work->vnew - solver->work->g);
         // solver->work->p.col(NHORIZON - 1) = -(solver->work->Xref.col(NHORIZON - 1).transpose().lazyProduct(solver->cache->Pinf));
+        // TODO cache Pinf as well
         tiled_matmul_outer_eigen(solver->work->Xref.col(NHORIZON - 1), solver->cache->Pinf, Xref_Pinf, true, false);
         solver->work->p.col(NHORIZON - 1) = -Xref_Pinf;
         solver->work->p.col(NHORIZON - 1) -= solver->cache->rho * (solver->work->vnew.col(NHORIZON - 1) - solver->work->g.col(NHORIZON - 1));
     }
 
-    
     int tiny_solve(TinySolver *solver)
     {
+        /************ setup scratchpad with matrices ************/
+        // move in Adyn
+        gemmini_extended3_config_ld(48, 1.0, false, 0);
+        for (int i = 0; i < 3; i++) {
+            gemmini_extended_mvin(solver->work->Adyn_data + i*48, A_sp_addr + i*12, 12, 4);
+        }
+        // TODO use different configuration registers; i.e. mvin1, mvin2, etc?
+        // move in Bdyn
+        gemmini_extended3_config_ld(16, 1.0, false, 0);
+        for (int i = 0; i < 3; i++) {
+            gemmini_extended_mvin(solver->work->Bdyn_data + i*16, B_sp_addr + i*4, 4, 4);
+        }
+        // move in Kinf
+        gemmini_extended3_config_ld(48, 1.0, false, 0);
+        gemmini_extended_mvin(solver->cache->Kinf_data, Kinf_sp_addr, 12, 4);
+        // move in C1 (Quu_inv in code)
+        gemmini_extended3_config_ld(16, 1.0, false, 0);
+        gemmini_extended_mvin(solver->cache->Quu_inv_data, C1_sp_addr, 4, 4);
+        // move in C2 (AmBKt in code)
+        gemmini_extended3_config_ld(48, 1.0, false, 0);
+        for (int i = 0; i < 3; i++) {
+            gemmini_extended_mvin(solver->cache->AmBKt_data + i*48, C2_sp_addr + i*12, 12, 4);
+        }
+
         // Initialize variables
         solver->work->status = 11;  // TINY_UNSOLVED
         solver->work->iter = 1;
         #ifdef UNROLLED
         #ifdef OPTIMIZED
-        forward_pass_unrolled_opt(solver);
+        CYCLE_CNT_WRAPPER(forward_pass_unrolled_opt, solver, "forward_pass");
         #else
-        forward_pass_unrolled(solver);
+        CYCLE_CNT_WRAPPER(forward_pass_unrolled, solver, "forward_pass");
         #endif
         #else
-        forward_pass(solver);
+        CYCLE_CNT_WRAPPER(forward_pass, solver, "forward_pass");
         #endif
 
-        update_slack(solver);
-        update_dual(solver);
-        update_linear_cost(solver);
+        CYCLE_CNT_WRAPPER(update_slack, solver, "update_slack");
+        CYCLE_CNT_WRAPPER(update_dual, solver, "update_dual");
+        CYCLE_CNT_WRAPPER(update_linear_cost, solver, "update_linear_cost");
+
         for (int i = 0; i < solver->settings->max_iter; i++)
         {
 
             // Solve linear system with Riccati and roll out to get new trajectory
-/* The above code is likely written in C++ and it is calling a function named "update_primal" with a
-parameter named "solver". */
             update_primal(solver);
 
             // Project slack variables into feasible domain
-            update_slack(solver);
+            CYCLE_CNT_WRAPPER(update_slack, solver, "update_slack");
 
             // Compute next iteration of dual variables
-            update_dual(solver);
+            CYCLE_CNT_WRAPPER(update_dual, solver, "update_dual");
 
             // Update linear control cost terms using reference trajectory, duals, and slack variables
-            update_linear_cost(solver);
+            CYCLE_CNT_WRAPPER(update_linear_cost, solver, "update_linear_cost");
 
             if (solver->work->iter % solver->settings->check_termination == 0)
             {
