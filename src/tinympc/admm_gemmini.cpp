@@ -15,7 +15,7 @@
 #define OPTIMIZED
 // NOTE: memory optimization is only implemented when UNROLLED is NOT defined
 #define MEMORY
-#define MEASURE_CYCLES
+// #define MEASURE_CYCLES
 
 using namespace Eigen;
 
@@ -226,6 +226,180 @@ extern "C"
             (solver->work->p.col(i)).noalias() = solver->work->q.col(i) + AmBKt_p - K_r;
         }
     }
+
+    /**
+     * Update linear terms from Riccati backward pass
+     */
+    void backward_pass_grad_unrolled_fine(TinySolver *solver)
+    {
+        tiny_VectorNu B_p;
+        tiny_VectorNx K_r;
+        tiny_VectorNx AmBKt_p;
+
+        for (int i = NHORIZON - 2; i >= 0; i--)
+        {
+            // tiled_matmul_spad_dram(B_sp_addr, solver->work->p.col(i + 1), B_p, NINPUTS, true, false);
+            gemmini_extended_config_ex(1, 0, 0, 1, true, false);
+            gemmini_extended_config_st(4, 0, 1.000000);
+            gemmini_extended3_config_ld(48, 1.000000, false, 0);
+            gemmini_extended3_config_ld(4, 1.000000, false, 1);
+            gemmini_extended3_config_ld(4, 1.000000, false, 2);
+            gemmini_extended_mvin2(solver->work->p.col(i+1).data() + 0x0, 0x3ff4, 1, 4);
+            gemmini_extended_preload(0x3ff4, 0x80000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x24, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvin2(solver->work->p.col(i+1).data() + 0x4, 0x3ff8, 1, 4);
+            gemmini_extended_preload(0x3ff8, 0xc0000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x28, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvin2(solver->work->p.col(i+1).data() + 0x8, 0x3ffc, 1, 4);
+            gemmini_extended_preload(0x3ffc, 0xc0000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x2c, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(B_p.data() + 0x0, 0xc0000000, 1, 4);
+            gemmini_fence();
+
+            B_p += solver->work->r.col(i);
+
+            // tiled_matmul_spad_dram(C1_sp_addr, B_p, dcol, NINPUTS, true, false);
+            gemmini_extended_config_ex(1, 0, 0, 1, true, false);
+            gemmini_extended_config_st(4, 0, 1.000000);
+            gemmini_extended3_config_ld(16, 1.000000, false, 0);
+            gemmini_extended3_config_ld(4, 1.000000, false, 1);
+            gemmini_extended3_config_ld(4, 1.000000, false, 2);
+            gemmini_extended_mvin2(B_p.data() + 0x0, 0x3ffc, 1, 4);
+            gemmini_extended_preload(0x3ffc, 0x80000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x3c, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(solver->work->d.col(i).data() + 0x0, 0xc0000000, 1, 4);
+            gemmini_fence();
+
+            // tiled_matmul_spad_dram(Kinf_sp_addr, solver->work->r.col(i), K_r, NSTATES, true, false);
+            gemmini_extended_config_ex(1, 0, 0, 1, true, false);
+            gemmini_extended_config_st(4, 0, 1.000000);
+            gemmini_extended3_config_ld(16, 1.000000, false, 0);
+            gemmini_extended3_config_ld(4, 1.000000, false, 1);
+            gemmini_extended3_config_ld(4, 1.000000, false, 2);
+            gemmini_extended_mvin2(solver->work->r.col(i).data() + 0x0, 0x3ffc, 1, 4);
+            gemmini_extended_preload(0x3ffc, 0x80000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x30, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(K_r.data() + 0x0, 0xc0000000, 1, 4);
+            gemmini_extended_preload(0xffffffff, 0x80000004, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x34, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(K_r.data() + 0x4, 0xc0000004, 1, 4);
+            gemmini_extended_preload(0xffffffff, 0x80000008, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x38, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(K_r.data() + 0x8, 0xc0000008, 1, 4);
+            gemmini_fence();
+
+            // tiled_matmul_spad_dram(C2_sp_addr, solver->work->p.col(i + 1), AmBKt_p, NSTATES, false, false);
+            gemmini_extended_config_ex(1, 0, 0, 1, false, false);
+            gemmini_extended_config_st(4, 0, 1.000000);
+            gemmini_extended3_config_ld(48, 1.000000, false, 0);
+            gemmini_extended3_config_ld(4, 1.000000, false, 1);
+            gemmini_extended3_config_ld(4, 1.000000, false, 2);
+            gemmini_extended_mvin2(solver->work->p.col(i+1).data() + 0x0, 0x3ff4, 1, 4);
+            gemmini_extended_preload(0x3ff4, 0x80000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x40, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0xffffffff, 0x80000004, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x4c, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0xffffffff, 0x80000008, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x58, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvin2(solver->work->p.col(i+1).data() + 0x4, 0x3ff8, 1, 4);
+            gemmini_extended_preload(0x3ff8, 0xc0000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x44, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0xffffffff, 0xc0000004, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x50, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0xffffffff, 0xc0000008, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x5c, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvin2(solver->work->p.col(i+1).data() + 0x8, 0x3ffc, 1, 4);
+            gemmini_extended_preload(0x3ffc, 0xc0000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x48, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(AmBKt_p.data() + 0x0, 0xc0000000, 1, 4);
+            gemmini_extended_preload(0xffffffff, 0xc0000004, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x54, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(AmBKt_p.data() + 0x4, 0xc0000004, 1, 4);
+            gemmini_extended_preload(0xffffffff, 0xc0000008, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x60, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(AmBKt_p.data() + 0x8, 0xc0000008, 1, 4);
+            gemmini_fence();
+            
+            (solver->work->p.col(i)).noalias() = solver->work->q.col(i) + AmBKt_p - K_r;
+        }
+    }
+
+    /**
+     * Update linear terms from Riccati backward pass
+     */
+    void backward_pass_grad_unrolled_fine_opt(TinySolver *solver)
+    {
+        tiny_VectorNu B_p;
+        tiny_VectorNx K_r;
+        tiny_VectorNx AmBKt_p;
+
+        gemmini_extended_config_st(4, 0, 1.000000);
+        gemmini_extended3_config_ld(4, 1.000000, false, 1);
+        gemmini_extended3_config_ld(4, 1.000000, false, 2);
+        for (int i = NHORIZON - 2; i >= 0; i--)
+        {
+
+            // tiled_matmul_spad_dram(C2_sp_addr, solver->work->p.col(i + 1), AmBKt_p, NSTATES, false, false);
+            gemmini_extended_config_ex(1, 0, 0, 1, false, false);
+            gemmini_extended3_config_ld(48, 1.000000, false, 0);
+            gemmini_extended_mvin2(solver->work->p.col(i+1).data() + 0x0, 0x3ff4, 1, 12);
+            gemmini_extended_preload(0x3ff4, 0x80000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x40, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0xffffffff, 0x80000004, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x4c, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0xffffffff, 0x80000008, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x58, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0x3ff8, 0xc0000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x44, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0xffffffff, 0xc0000004, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x50, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0xffffffff, 0xc0000008, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x5c, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0x3ffc, 0xc0000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x48, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0xffffffff, 0xc0000004, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x54, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0xffffffff, 0xc0000008, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x60, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(AmBKt_p.data() + 0x0, 0xc0000000, 1, 12);
+
+            // tiled_matmul_spad_dram(B_sp_addr, solver->work->p.col(i + 1), B_p, NINPUTS, true, false);
+            gemmini_extended_config_ex(1, 0, 0, 1, true, false);
+            gemmini_extended_preload(0x3ff4, 0x80000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x24, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0x3ff8, 0xc0000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x28, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0x3ffc, 0xc0000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x2c, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(B_p.data() + 0x0, 0xc0000000, 1, 4);
+            gemmini_fence();
+
+            B_p += solver->work->r.col(i);
+
+            // tiled_matmul_spad_dram(C1_sp_addr, B_p, dcol, NINPUTS, true, false);
+            gemmini_extended3_config_ld(16, 1.000000, false, 0);
+            gemmini_extended_mvin2(B_p.data() + 0x0, 0x3ffc, 1, 4);
+            gemmini_extended_preload(0x3ffc, 0x80000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x3c, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(solver->work->d.col(i).data() + 0x0, 0xc0000000, 1, 4);
+
+            // tiled_matmul_spad_dram(Kinf_sp_addr, solver->work->r.col(i), K_r, NSTATES, true, false);
+            gemmini_extended_mvin2(solver->work->r.col(i).data() + 0x0, 0x3ffc, 1, 4);
+            gemmini_extended_preload(0x3ffc, 0x80000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x30, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0xffffffff, 0x80000004, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x34, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0xffffffff, 0x80000008, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x38, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(K_r.data() + 0x0, 0xc0000000, 1, 12);
+            gemmini_fence();
+
+            
+            (solver->work->p.col(i)).noalias() = solver->work->q.col(i) + AmBKt_p - K_r;
+        }
+    }
+
+
     /**
      * Update linear terms from Riccati backward pass
      */
@@ -344,6 +518,172 @@ extern "C"
         }
     }
 
+    /**
+     * Use LQR feedback policy to roll out trajectory
+     */
+    void forward_pass_unrolled_fine(TinySolver *solver)
+    {
+        tiny_VectorNu Kinf_x;
+        tiny_VectorNx A_x;
+        tiny_VectorNx B_u;
+
+        for (int i = 0; i < NHORIZON - 1; i++)
+        {
+            // tiled_matmul_spad_dram(Kinf_sp_addr, solver->work->x.col(i), Kinf_x, NINPUTS, false, false);
+            gemmini_extended_config_ex(1, 0, 0, 1, false, false);
+            gemmini_extended_config_st(4, 0, 1.000000);
+            gemmini_extended3_config_ld(48, 1.000000, false, 0);
+            gemmini_extended3_config_ld(4, 1.000000, false, 1);
+            gemmini_extended3_config_ld(4, 1.000000, false, 2);
+            gemmini_extended_mvin2(solver->work->x.col(i).data() + 0x0, 0x3ff4, 1, 4);
+            gemmini_extended_preload(0x3ff4, 0x80000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x30, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvin2(solver->work->x.col(i).data() + 0x4, 0x3ff8, 1, 4);
+            gemmini_extended_preload(0x3ff8, 0xc0000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x34, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvin2(solver->work->x.col(i).data() + 0x8, 0x3ffc, 1, 4);
+            gemmini_extended_preload(0x3ffc, 0xc0000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x38, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(Kinf_x.data() + 0x0, 0xc0000000, 1, 4);
+            gemmini_fence();
+            
+            (solver->work->u.col(i)).noalias() = -Kinf_x - solver->work->d.col(i);
+
+            // tiled_matmul_spad_dram(A_sp_addr, solver->work->x.col(i), A_x, NSTATES, false, false);
+            gemmini_extended_config_ex(1, 0, 0, 1, false, false);
+            gemmini_extended_config_st(4, 0, 1.000000);
+            gemmini_extended3_config_ld(48, 1.000000, false, 0);
+            gemmini_extended3_config_ld(4, 1.000000, false, 1);
+            gemmini_extended3_config_ld(4, 1.000000, false, 2);
+            gemmini_extended_mvin2(solver->work->x.col(i).data() + 0x0, 0x3ff4, 1, 4);
+            gemmini_extended_preload(0x3ff4, 0x80000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x0, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0xffffffff, 0x80000004, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0xc, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0xffffffff, 0x80000008, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x18, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvin2(solver->work->x.col(i).data() + 0x4, 0x3ff8, 1, 4);
+            gemmini_extended_preload(0x3ff8, 0xc0000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x4, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0xffffffff, 0xc0000004, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x10, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0xffffffff, 0xc0000008, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x1c, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvin2(solver->work->x.col(i).data() + 0x8, 0x3ffc, 1, 4);
+            gemmini_extended_preload(0x3ffc, 0xc0000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x8, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(A_x.data() + 0x0, 0xc0000000, 1, 4);
+            gemmini_extended_preload(0xffffffff, 0xc0000004, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x14, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(A_x.data() + 0x4, 0xc0000004, 1, 4);
+            gemmini_extended_preload(0xffffffff, 0xc0000008, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x20, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(A_x.data() + 0x8, 0xc0000008, 1, 4);
+            gemmini_fence();
+            
+            // tiled_matmul_spad_dram(B_sp_addr, solver->work->u.col(i), B_u, NSTATES, false, false);
+            gemmini_extended_config_ex(1, 0, 0, 1, false, false);
+            gemmini_extended_config_st(4, 0, 1.000000);
+            gemmini_extended3_config_ld(16, 1.000000, false, 0);
+            gemmini_extended3_config_ld(4, 1.000000, false, 1);
+            gemmini_extended3_config_ld(4, 1.000000, false, 2);
+            gemmini_extended_mvin2(solver->work->u.col(i).data() + 0x0, 0x3ffc, 1, 4);
+            gemmini_extended_preload(0x3ffc, 0x80000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x24, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(B_u.data() + 0x0, 0xc0000000, 1, 4);
+            gemmini_extended_preload(0xffffffff, 0x80000004, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x28, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(B_u.data() + 0x4, 0xc0000004, 1, 4);
+            gemmini_extended_preload(0xffffffff, 0x80000008, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x2c, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(B_u.data() + 0x8, 0xc0000008, 1, 4);
+            gemmini_fence();
+            
+            (solver->work->x.col(i + 1)).noalias() = A_x + B_u;
+
+
+        }
+    }
+
+    /**
+     * Use LQR feedback policy to roll out trajectory
+     */
+    void forward_pass_unrolled_fine_opt(TinySolver *solver)
+    {
+        tiny_VectorNu Kinf_x;
+        tiny_VectorNx A_x;
+        tiny_VectorNx B_u;
+
+        gemmini_extended_config_ex(1, 0, 0, 1, false, false);
+        gemmini_extended_config_st(4, 0, 1.000000);
+        gemmini_extended3_config_ld(4, 1.000000, false, 1);
+        gemmini_extended3_config_ld(4, 1.000000, false, 2);
+        for (int i = 0; i < NHORIZON - 1; i++)
+        {
+            // tiled_matmul_spad_dram(Kinf_sp_addr, solver->work->x.col(i), Kinf_x, NINPUTS, false, false);
+            gemmini_extended3_config_ld(48, 1.000000, false, 0);
+            gemmini_extended_mvin2(solver->work->x.col(i).data() + 0x0, 0x3ff4, 1, 12);
+            gemmini_extended_preload(0x3ff4, 0x80000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x30, 0xffffffff, 4, 4, 4, 4);
+
+            gemmini_extended_preload(0x3ff8, 0xc0000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x34, 0xffffffff, 4, 4, 4, 4);
+
+            gemmini_extended_preload(0x3ffc, 0xc0000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x38, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(Kinf_x.data() + 0x0, 0xc0000000, 1, 4);
+            
+
+            // tiled_matmul_spad_dram(A_sp_addr, solver->work->x.col(i), A_x, NSTATES, false, false);
+            gemmini_extended_preload(0x3ff4, 0x80000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x0, 0xffffffff, 4, 4, 4, 4);
+
+            gemmini_extended_preload(0xffffffff, 0x80000004, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0xc, 0xffffffff, 4, 4, 4, 4);
+
+            gemmini_extended_preload(0xffffffff, 0x80000008, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x18, 0xffffffff, 4, 4, 4, 4);
+
+            gemmini_extended_preload(0x3ff8, 0xc0000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x4, 0xffffffff, 4, 4, 4, 4);
+
+            gemmini_extended_preload(0xffffffff, 0xc0000004, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x10, 0xffffffff, 4, 4, 4, 4);
+
+            gemmini_extended_preload(0xffffffff, 0xc0000008, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x1c, 0xffffffff, 4, 4, 4, 4);
+
+            gemmini_extended_preload(0x3ffc, 0xc0000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x8, 0xffffffff, 4, 4, 4, 4);
+
+            gemmini_extended_preload(0xffffffff, 0xc0000004, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x14, 0xffffffff, 4, 4, 4, 4);
+
+            gemmini_extended_preload(0xffffffff, 0xc0000008, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x20, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(A_x.data() + 0x0, 0xc0000000, 1, 12);
+
+            gemmini_fence();
+            (solver->work->u.col(i)).noalias() = -Kinf_x - solver->work->d.col(i);
+            
+            // tiled_matmul_spad_dram(B_sp_addr, solver->work->u.col(i), B_u, NSTATES, false, false);
+            gemmini_extended3_config_ld(16, 1.000000, false, 0);
+            gemmini_extended_mvin2(solver->work->u.col(i).data() + 0x0, 0x3ffc, 1, 4);
+            gemmini_extended_preload(0x3ffc, 0x80000000, 1, 4, 1, 4);
+            gemmini_extended_compute_preloaded(0x24, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0xffffffff, 0x80000004, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x28, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_preload(0xffffffff, 0x80000008, 1, 4, 1, 4);
+            gemmini_extended_compute_accumulated(0x2c, 0xffffffff, 4, 4, 4, 4);
+            gemmini_extended_mvout(B_u.data() + 0x0, 0xc0000000, 1, 12);
+            gemmini_fence();
+            
+            (solver->work->x.col(i + 1)).noalias() = A_x + B_u;
+
+
+        }
+    }
+
     void forward_pass_unrolled(TinySolver *solver)
     {
         tiny_VectorNu Kinf_x;
@@ -378,7 +718,6 @@ extern "C"
             gemmini_extended3_config_ld(4, 1.000000, false, 2);
             gemmini_loop_ws(3, 1, 1, 0, 3, 0, solver->work->Bdyn_data, solver->work->u.col(i).data(), NULL, B_u.data(), 4, 1, 1, 1, false, false, false, false, false, 0, 1, 1, false);
             gemmini_fence();
-            fflush(stdout);
 
 
             (solver->work->x.col(i + 1)).noalias() = A_x + B_u;
@@ -420,12 +759,22 @@ extern "C"
     void update_primal(TinySolver *solver)
     {
         #ifdef UNROLLED
+        #ifdef MEMORY
+        #ifdef OPTIMIZED
+        CYCLE_CNT_WRAPPER(backward_pass_grad_unrolled_fine_opt, solver, "update_primal_backward_pass");
+        CYCLE_CNT_WRAPPER(forward_pass_unrolled_fine_opt, solver, "update_primal_forward_pass");
+        #else
+        CYCLE_CNT_WRAPPER(backward_pass_grad_unrolled_fine, solver, "update_primal_backward_pass");
+        CYCLE_CNT_WRAPPER(forward_pass_unrolled_fine, solver, "update_primal_forward_pass");
+        #endif
+        #else
         #ifdef OPTIMIZED
         CYCLE_CNT_WRAPPER(backward_pass_grad_unrolled_opt, solver, "update_primal_backward_pass");
         CYCLE_CNT_WRAPPER(forward_pass_unrolled_opt, solver, "update_primal_forward_pass");
         #else
         CYCLE_CNT_WRAPPER(backward_pass_grad_unrolled, solver, "update_primal_backward_pass");
         CYCLE_CNT_WRAPPER(forward_pass_unrolled, solver, "update_primal_forward_pass");
+        #endif
         #endif
         #else
         CYCLE_CNT_WRAPPER(backward_pass_grad, solver, "update_primal_backward_pass");
@@ -488,6 +837,32 @@ extern "C"
         solver->work->p.col(NHORIZON - 1) -= solver->cache->rho * (solver->work->vnew.col(NHORIZON - 1) - solver->work->g.col(NHORIZON - 1));
     }
 
+    /**
+     * Update linear control cost terms in the Riccati feedback using the changing
+     * slack and dual variables from ADMM
+     */
+    void update_linear_cost_unrolled(TinySolver *solver)
+    {
+        // solver->work->r = -(solver->Uref.array().colwise() * solver->work->r.array()); // Uref = 0 so commented out for speed up. Need to uncomment if using Uref
+
+        solver->work->r = -solver->cache->rho * (solver->work->znew - solver->work->y);
+        // TODO does Gemmini do component-wise multiplication?
+        solver->work->q = -(solver->work->Xref.array().colwise() * solver->work->Q.array());
+        (solver->work->q).noalias() -= solver->cache->rho * (solver->work->vnew - solver->work->g);
+        // solver->work->p.col(NHORIZON - 1) = -(solver->work->Xref.col(NHORIZON - 1).transpose().lazyProduct(solver->cache->Pinf));
+        // TODO cache Pinf as well
+        // tiled_matmul_outer_eigen(solver->work->Xref.col(NHORIZON - 1), solver->cache->Pinf, Xref_Pinf, true, false);
+        gemmini_extended_config_ex(1, 0, 0, 1, true, false);
+        gemmini_extended_config_st(48, 0, -1.000000);
+        gemmini_extended3_config_ld(4, 1.000000, false, 0);
+        gemmini_extended3_config_ld(48, 1.000000, false, 1);
+        gemmini_extended3_config_ld(48, 1.000000, false, 2);
+        gemmini_loop_ws(1, 3, 3, 3, 0, 0, solver->work->Xref.col(NHORIZON - 1).data(), solver->cache->Pinf_data, NULL, solver->work->p.col(NHORIZON - 1).data(), 1, 12, 12, 12, true, false, false, false, false, 0, 1, 1, false);
+
+
+        solver->work->p.col(NHORIZON - 1) -= solver->cache->rho * (solver->work->vnew.col(NHORIZON - 1) - solver->work->g.col(NHORIZON - 1));
+    }
+
     int tiny_solve(TinySolver *solver)
     {
         /************ setup scratchpad with matrices ************/
@@ -518,10 +893,18 @@ extern "C"
         solver->work->status = 11;  // TINY_UNSOLVED
         solver->work->iter = 1;
         #ifdef UNROLLED
+        #ifdef MEMORY 
+        #ifdef OPTIMIZED
+        CYCLE_CNT_WRAPPER(forward_pass_unrolled_fine_opt, solver, "forward_pass");
+        #else
+        CYCLE_CNT_WRAPPER(forward_pass_unrolled_fine, solver, "forward_pass");
+        #endif
+        #else
         #ifdef OPTIMIZED
         CYCLE_CNT_WRAPPER(forward_pass_unrolled_opt, solver, "forward_pass");
         #else
         CYCLE_CNT_WRAPPER(forward_pass_unrolled, solver, "forward_pass");
+        #endif
         #endif
         #else
         CYCLE_CNT_WRAPPER(forward_pass, solver, "forward_pass");
@@ -529,7 +912,11 @@ extern "C"
 
         CYCLE_CNT_WRAPPER(update_slack, solver, "update_slack");
         CYCLE_CNT_WRAPPER(update_dual, solver, "update_dual");
-        CYCLE_CNT_WRAPPER(update_linear_cost, solver, "update_linear_cost");
+            #ifdef UNROLLED
+            CYCLE_CNT_WRAPPER(update_linear_cost_unrolled, solver, "update_linear_cost");
+            #else
+            CYCLE_CNT_WRAPPER(update_linear_cost, solver, "update_linear_cost");
+            #endif
 
         for (int i = 0; i < solver->settings->max_iter; i++)
         {
@@ -544,7 +931,11 @@ extern "C"
             CYCLE_CNT_WRAPPER(update_dual, solver, "update_dual");
 
             // Update linear control cost terms using reference trajectory, duals, and slack variables
+            #ifdef UNROLLED
+            CYCLE_CNT_WRAPPER(update_linear_cost_unrolled, solver, "update_linear_cost");
+            #else
             CYCLE_CNT_WRAPPER(update_linear_cost, solver, "update_linear_cost");
+            #endif
 
             if (solver->work->iter % solver->settings->check_termination == 0)
             {
