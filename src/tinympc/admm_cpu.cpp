@@ -93,6 +93,10 @@ extern "C"
         solver->work->p.col(NHORIZON - 1) -= solver->cache->rho * (solver->work->vnew.col(NHORIZON - 1) - solver->work->g.col(NHORIZON - 1));
     }
 
+    void tiny_init(TinySolver *solver) {
+        
+    }
+
     int tiny_solve(TinySolver *solver)
     {
         // Initialize variables

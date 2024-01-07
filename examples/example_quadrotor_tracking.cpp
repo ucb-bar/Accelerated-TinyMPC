@@ -87,6 +87,8 @@ extern "C"
 
         // std::cout << work.Xref << std::endl;
 
+        tiny_init(&solver);
+
         for (int k = 0; k < 10; ++k)
         // for (int k = 0; k < NTOTAL - NHORIZON - 1; ++k)
         {
@@ -106,7 +108,6 @@ extern "C"
             clock_gettime(CLOCK_MONOTONIC, &start);
             tiny_solve(&solver);
             clock_gettime(CLOCK_MONOTONIC, &end);
-            // time2 = get_diff_float_time(&start, &end);
             time1 = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
             std::cout << "Time for iter " << k << ": " << time1 << std::endl;
 
