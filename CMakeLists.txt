@@ -38,17 +38,38 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(USE_GEMMINI)
     add_definitions(-DUSE_GEMMINI)
 endif()
+if(MEMORY)
+    add_definitions(-DMEMORY)
+endif()
+if(UNROLLED)
+    add_definitions(-DUNROLLED)
+endif()
+if(OPTIMIZED)
+    add_definitions(-DOPTIMIZED)
+endif()
+if(MEASURE_CYCLES)
+    add_definitions(-DMEASURE_CYCLES)
+endif()
 
 option(USE_GEMMINI "Use Gemmini implementation" ON)
+option(MEMORY "Use Memory Optimizations" ON)
+option(UNROLLED "Use Unrolling Optimizations" ON)
+option(OPTIMIZED "Use Extra Optimizations" ON)
+option(MEASURE_CYCLES "Measure Cycles" OFF)
+
+# set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
+
 
 # Add optimization flags
 set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -lm -fno-common -fno-builtin-printf -specs=htif_nano.specs") 
 
 set(STATIC_LINKING TRUE)
 set(CMAKE_EXE_LINKER_FLAGS "-static")
 
 set(CMAKE_CXX_COMPILER riscv64-unknown-linux-gnu-g++)
+# set(CMAKE_CXX_COMPILER riscv64-unknown-elf-g++)
 # set(CMAKE_CXX_COMPILER g++)
 
 include_directories(include/Eigen)

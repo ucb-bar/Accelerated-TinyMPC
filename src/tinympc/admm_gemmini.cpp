@@ -9,13 +9,13 @@
 #include <vector>
 #include <cstdlib>
 #include <fstream>
+#include <time.h>
 
 #define DEBUG_MODULE "TINYALG"
-#define UNROLLED
-#define OPTIMIZED
+// #define UNROLLED
+// #define OPTIMIZED
 // NOTE: memory optimization is only implemented when UNROLLED is NOT defined
-#define MEMORY
-// #define MEASURE_CYCLES
+// #define MEMORY
 
 using namespace Eigen;
 
@@ -33,10 +33,12 @@ extern "C"
     std::ofstream outputFile("cycle_output.csv");
     #define CYCLE_CNT_WRAPPER(func, arg, name) \
         do { \
-            int cycles_before = read_cycles(); \
+            struct timespec start, end; \
+            clock_gettime(CLOCK_MONOTONIC, &start); \
             func(arg); \
-            int cycles_after = read_cycles(); \
-            outputFile << name << ", " << cycles_after - cycles_before << std::endl; \
+            clock_gettime(CLOCK_MONOTONIC, &end); \
+            uint64_t timediff = (end.tv_sec - start.tv_sec)* 1e9 + (end.tv_nsec - start.tv_nsec); \
+            outputFile << name << ", " << timediff << std::endl; \
         } while(0)
     #else
     #define CYCLE_CNT_WRAPPER(func, arg, name) func(arg)
@@ -1147,6 +1149,10 @@ extern "C"
             CYCLE_CNT_WRAPPER(update_linear_cost, solver, "update_linear_cost");
             #endif
 
+            #ifdef MEASURE_CYCLES
+            struct timespec start, end; 
+            clock_gettime(CLOCK_MONOTONIC, &start); 
+            #endif
             if (solver->work->iter % solver->settings->check_termination == 0)
             {
                 solver->work->primal_residual_state = (solver->work->x - solver->work->vnew).cwiseAbs().maxCoeff();
@@ -1169,6 +1175,12 @@ extern "C"
             solver->work->z = solver->work->znew;
 
             solver->work->iter += 1;
+            #ifdef MEASURE_CYCLES
+            clock_gettime(CLOCK_MONOTONIC, &end); 
+            std::ofstream outputFile("cycle_output.csv");
+            uint64_t timediff = (end.tv_sec - start.tv_sec)* 1e9 + (end.tv_nsec - start.tv_nsec);
+            outputFile << "termination_check" << ", " << timediff << std::endl; 
+            #endif
 
             // std::cout << solver->work->primal_residual_state << std::endl;
             // std::cout << solver->work->dual_residual_state << std::endl;

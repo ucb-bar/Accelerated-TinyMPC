@@ -536,6 +536,9 @@ static inline void sp_tiled_matmul_ws(
         size_t blocks = j + D_blocks <= J ? D_blocks : J-j;
         const size_t cols = blocks * DIM - (j + blocks >= J ? pad_J : 0);
         gemmini_extended_mvin3(D_dram_addr, D_sp_addr_acc, cols, rows);
+        #ifdef CODEGEN
+        printf("gemmini_extended_mvin3([D] + 0x%x, 0x%x, %d, %d);\n", (bias_row * D_row_stride + j)*DIM, D_sp_addr_acc, cols, rows);
+        #endif
       }
     }
   }
@@ -555,6 +558,9 @@ static inline void sp_tiled_matmul_ws(
             const size_t cols = blocks * DIM - (i + blocks >= I ? pad_I : 0);
             const size_t rows = DIM - (k == K-1 ? pad_K : 0);
             gemmini_extended_mvin(A_dram_addr, A_sp_addr, cols, rows);
+            #ifdef CODEGEN
+            printf("gemmini_extended_mvin([A] + 0x%x, 0x%x, %d, %d);\n", (k*A_row_stride + i)*DIM, A_sp_addr, cols, rows);
+            #endif
           }
         } else {
           if (j == 0 && k % A_blocks == 0) {
@@ -564,6 +570,9 @@ static inline void sp_tiled_matmul_ws(
             const size_t rows = DIM - (i == I-1 ? pad_I : 0);
             // printf("mvin: A_dram_addr %d, A_sp_addr %d, cols %d, rows %d\n", A_dram_addr, A_sp_addr, cols, rows);
             gemmini_extended_mvin(A_dram_addr, A_sp_addr, cols, rows);
+            #ifdef CODEGEN
+            printf("gemmini_extended_mvin([A] + 0x%x, 0x%x, %d, %d);\n", (i*A_row_stride + k)*DIM, A_sp_addr, cols, rows);
+            #endif
           }
         }
         // Mvin B
@@ -574,6 +583,9 @@ static inline void sp_tiled_matmul_ws(
             const size_t cols = blocks * DIM - (k + blocks >= K ? pad_K : 0);
             const size_t rows = DIM - (j == J-1 ? pad_J : 0);
             gemmini_extended_mvin2(B_dram_addr, B_sp_addr, cols, rows);
+            #ifdef CODEGEN
+            printf("gemmini_extended_mvin2([B] + 0x%x, 0x%x, %d, %d);\n", (j*B_row_stride + k)*DIM, B_sp_addr, cols, rows);
+            #endif
           }
         } else {
           if (i == 0 && j % B_blocks == 0) {
@@ -582,6 +594,9 @@ static inline void sp_tiled_matmul_ws(
             const size_t cols = blocks * DIM - (j + blocks >= J ? pad_J : 0);
             const size_t rows = DIM - (k == K-1 ? pad_K : 0);
             gemmini_extended_mvin2(B_dram_addr, B_sp_addr, cols, rows);
+            #ifdef CODEGEN
+            printf("gemmini_extended_mvin2([B] + 0x%x, 0x%x, %d, %d);\n", (k*B_row_stride + j)*DIM, B_sp_addr, cols, rows);
+            #endif
           }
         }
         // Compute
@@ -601,10 +616,20 @@ static inline void sp_tiled_matmul_ws(
           const size_t C_cols = DIM - (j == J - 1 ? pad_J : 0);
           const size_t C_rows = DIM - (i == I - 1 ? pad_I : 0);
           gemmini_extended_preload(pre_sp_addr, out_sp_addr, B_cols, B_rows, C_cols, C_rows);
+          #ifdef CODEGEN
+          printf("gemmini_extended_preload(0x%x, 0x%x, %d, %d, %d, %d);\n", pre_sp_addr, out_sp_addr, B_cols, B_rows, C_cols, C_rows);
+          #endif
           if (i == 0) { // First iteration
             gemmini_extended_compute_preloaded(A_sp_addr, GARBAGE_ADDR, A_cols, A_rows, DIM, DIM);
+            #ifdef CODEGEN
+            printf("gemmini_extended_compute_preloaded(0x%x, 0x%x, %d, %d, %d, %d);\n", A_sp_addr, GARBAGE_ADDR, A_cols, A_rows, DIM, DIM);
+            #endif
+
           } else { // All other iterations
             gemmini_extended_compute_accumulated(A_sp_addr, GARBAGE_ADDR, A_cols, A_rows, DIM, DIM);
+            #ifdef CODEGEN
+            printf("gemmini_extended_compute_accumulated(0x%x, 0x%x, %d, %d, %d, %d);\n", A_sp_addr, GARBAGE_ADDR, A_cols, A_rows, DIM, DIM);
+            #endif
           }
         }
 
@@ -620,6 +645,9 @@ static inline void sp_tiled_matmul_ws(
           const size_t rows = DIM - (i == I - 1 ? pad_I : 0);
 
           gemmini_extended_mvout(C_dram_addr, rounded_C_sp_addr, cols, rows);
+          #ifdef CODEGEN
+          printf("gemmini_extended_mvout([C] + 0x%x, 0x%x, %d, %d);\n", (i*C_row_stride + rounded_j)*DIM, rounded_C_sp_addr, cols, rows);
+          #endif
         }
       }
     }
@@ -633,13 +661,7 @@ static inline void sp_tiled_matmul_ws(
   //   act, a_spad_id, b_spad_id, false);
 
     #ifdef CODEGEN
-    printf("gemmini_loop_ws(%d, %d, %d, %d, %d, %d, [A], [B], %s, [C], %d, %d, %d, %d, %s, %s, %s, %s, %s, %d, %d, %d, %s);\n",
-          I, J, K, pad_I, pad_J, pad_K, no_bias ? "NULL" : "[D]",
-          A_row_stride, B_row_stride, repeating_bias ? 0 : D_row_stride, C_row_stride,
-          a_transpose ? "true" : "false", b_transpose ? "true" : "false",
-          full_C ? "true" : "false", low_D ? "true" : "false", !no_bias || D == NULL ? "true" : "false",
-          act, a_spad_id, b_spad_id, "false");
-    printf("gemmini_fence();\n");
+    printf("gemmini_fence();\n\n");
     #endif
 }
 
