@@ -1177,7 +1177,6 @@ extern "C"
             solver->work->iter += 1;
             #ifdef MEASURE_CYCLES
             clock_gettime(CLOCK_MONOTONIC, &end); 
-            std::ofstream outputFile("cycle_output.csv");
             uint64_t timediff = (end.tv_sec - start.tv_sec)* 1e9 + (end.tv_nsec - start.tv_nsec);
             outputFile << "termination_check" << ", " << timediff << std::endl; 
             #endif

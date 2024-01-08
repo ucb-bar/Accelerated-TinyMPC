@@ -8,14 +8,28 @@ extern "C"
 {
 
     static uint64_t startTimestamp;
+    #ifdef MEASURE_CYCLES
+    std::ofstream outputFile("cycle_output.csv");
+    #define CYCLE_CNT_WRAPPER(func, arg, name) \
+        do { \
+            struct timespec start, end; \
+            clock_gettime(CLOCK_MONOTONIC, &start); \
+            func(arg); \
+            clock_gettime(CLOCK_MONOTONIC, &end); \
+            uint64_t timediff = (end.tv_sec - start.tv_sec)* 1e9 + (end.tv_nsec - start.tv_nsec); \
+            outputFile << name << ", " << timediff << std::endl; \
+        } while(0)
+    #else
+    #define CYCLE_CNT_WRAPPER(func, arg, name) func(arg)
+    #endif
 
     /**
      * Do backward Riccati pass then forward roll out
      */
     void update_primal(TinySolver *solver)
     {
-        backward_pass_grad(solver);
-        forward_pass(solver);
+        CYCLE_CNT_WRAPPER(backward_pass_grad, solver, "update_primal_backward_pass");
+        CYCLE_CNT_WRAPPER(forward_pass, solver, "update_primal_forward_pass");
     }
 
     /**
@@ -103,10 +117,10 @@ extern "C"
         solver->work->status = 11; // TINY_UNSOLVED
         solver->work->iter = 1;
 
-        forward_pass(solver);
-        update_slack(solver);
-        update_dual(solver);
-        update_linear_cost(solver);
+        CYCLE_CNT_WRAPPER(forward_pass, solver, "forward_pass");
+        CYCLE_CNT_WRAPPER(update_slack, solver, "update_slack");
+        CYCLE_CNT_WRAPPER(update_dual, solver, "update_dual");
+        CYCLE_CNT_WRAPPER(update_linear_cost, solver, "update_linear_cost");
         for (int i = 0; i < solver->settings->max_iter; i++)
         {
 
@@ -114,14 +128,18 @@ extern "C"
             update_primal(solver);
 
             // Project slack variables into feasible domain
-            update_slack(solver);
+            CYCLE_CNT_WRAPPER(update_slack, solver, "update_slack");
 
             // Compute next iteration of dual variables
-            update_dual(solver);
+            CYCLE_CNT_WRAPPER(update_dual, solver, "update_dual");
 
             // Update linear control cost terms using reference trajectory, duals, and slack variables
-            update_linear_cost(solver);
+            CYCLE_CNT_WRAPPER(update_linear_cost, solver, "update_linear_cost");
 
+            #ifdef MEASURE_CYCLES
+            struct timespec start, end; 
+            clock_gettime(CLOCK_MONOTONIC, &start); 
+            #endif
             if (solver->work->iter % solver->settings->check_termination == 0)
             {
                 solver->work->primal_residual_state = (solver->work->x - solver->work->vnew).cwiseAbs().maxCoeff();
@@ -144,6 +162,11 @@ extern "C"
             solver->work->z = solver->work->znew;
 
             solver->work->iter += 1;
+            #ifdef MEASURE_CYCLES
+            clock_gettime(CLOCK_MONOTONIC, &end); 
+            uint64_t timediff = (end.tv_sec - start.tv_sec)* 1e9 + (end.tv_nsec - start.tv_nsec);
+            outputFile << "termination_check" << ", " << timediff << std::endl; 
+            #endif
 
             // std::cout << solver->work->primal_residual_state << std::endl;
             // std::cout << solver->work->dual_residual_state << std::endl;
