@@ -4,6 +4,7 @@
 #include "admm.hpp"
 
 #define DEBUG_MODULE "TINYALG"
+#define MEASURE_CYCLES
 
 extern "C"
 {
@@ -11,6 +12,7 @@ extern "C"
     static uint64_t startTimestamp;
     #ifdef MEASURE_CYCLES
     std::ofstream outputFile("cycle_output.csv");
+    char opt_level[] = "baseline_cpu";
     #define CYCLE_CNT_WRAPPER(func, arg, name) \
         do { \
             struct timespec start, end; \
@@ -18,7 +20,7 @@ extern "C"
             func(arg); \
             clock_gettime(CLOCK_MONOTONIC, &end); \
             uint64_t timediff = (end.tv_sec - start.tv_sec)* 1e9 + (end.tv_nsec - start.tv_nsec); \
-            outputFile << name << ", " << timediff << std::endl; \
+            outputFile << opt_level << "," << name << "," << timediff << std::endl; \
         } while(0)
     #else
     #define CYCLE_CNT_WRAPPER(func, arg, name) func(arg)
@@ -166,7 +168,7 @@ extern "C"
             #ifdef MEASURE_CYCLES
             clock_gettime(CLOCK_MONOTONIC, &end); 
             uint64_t timediff = (end.tv_sec - start.tv_sec)* 1e9 + (end.tv_nsec - start.tv_nsec);
-            outputFile << "termination_check" << ", " << timediff << std::endl; 
+            outputFile << opt_level << "," << "termination_check" << "," << timediff << std::endl; 
             #endif
 
             // std::cout << solver->work->primal_residual_state << std::endl;

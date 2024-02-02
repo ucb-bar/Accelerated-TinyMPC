@@ -89,7 +89,7 @@ extern "C"
 
         tiny_init(&solver);
 
-        for (int k = 0; k < 10; ++k)
+        for (int k = 0; k < 1; ++k)
         // for (int k = 0; k < NTOTAL - NHORIZON - 1; ++k)
         {
             std::cout << "tracking error: " << (x0 - work.Xref.col(1)).norm() << std::endl;

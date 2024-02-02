@@ -1,5 +1,5 @@
 #include <iostream>
-#include "gemmini.h"
+#include "gemmini_robotics.h"
 
 #include "admm.hpp"
 #include "glob_opts.hpp"
@@ -12,10 +12,11 @@
 #include <time.h>
 
 #define DEBUG_MODULE "TINYALG"
-// #define UNROLLED
-// #define OPTIMIZED
+#define UNROLLED
+#define OPTIMIZED
 // NOTE: memory optimization is only implemented when UNROLLED is NOT defined
-// #define MEMORY
+#define MEMORY
+#define MEASURE_CYCLES
 
 using namespace Eigen;
 
@@ -30,7 +31,8 @@ extern "C"
     }
 
     #ifdef MEASURE_CYCLES
-    std::ofstream outputFile("cycle_output.csv");
+    char opt_level[] = "memory_unrolled_opt";
+    std::ofstream outputFile("fine_cycle_output.csv");
     #define CYCLE_CNT_WRAPPER(func, arg, name) \
         do { \
             struct timespec start, end; \
@@ -38,7 +40,7 @@ extern "C"
             func(arg); \
             clock_gettime(CLOCK_MONOTONIC, &end); \
             uint64_t timediff = (end.tv_sec - start.tv_sec)* 1e9 + (end.tv_nsec - start.tv_nsec); \
-            outputFile << name << ", " << timediff << std::endl; \
+            outputFile << opt_level << "," << name << "," << timediff << std::endl; \
         } while(0)
     #else
     #define CYCLE_CNT_WRAPPER(func, arg, name) func(arg)
@@ -164,6 +166,30 @@ extern "C"
                 );
     }
 
+    void tiled_matmul_spad_spad(
+        const uint32_t sp_A_addr,
+        const uint32_t sp_B_addr,
+        const uint32_t sp_C_addr,
+        int i, int j, int k,
+        bool transpose_A, bool transpose_B) 
+    {
+        int tile_I = (i + DIM - 1) / DIM;
+        int tile_J = (j + DIM - 1) / DIM;
+        int tile_K = (k + DIM - 1) / DIM;
+
+        tiled_matmul_outer_simple_spad_spad(i, j, k,
+                sp_A_addr, sp_B_addr, NULL, sp_C_addr,
+                transpose_A ? i : k, transpose_B ? k : j, j, j,
+                MVIN_SCALE_IDENTITY, MVIN_SCALE_IDENTITY, MVIN_SCALE_IDENTITY,
+                tile_I, tile_J, tile_K,
+                NO_ACTIVATION, ACC_SCALE_IDENTITY, 0, false,
+                transpose_A, transpose_B,
+                false, false,
+                0,
+                WS
+                );
+    }
+
 
     void tiled_matmul_auto_eigen (
         const Matrix<float, Dynamic, Dynamic, RowMajor>&A,
@@ -186,14 +212,25 @@ extern "C"
                     );
     }
 
-    // define spad addresses for cached matrices
+    // define spad addresses for cached matrices TODO make these dynamic with constants
     // spad is row addressed and each row is 4 elements wide
     static uint32_t A_sp_addr = 0; // 144 elements, 0 to 35
     static uint32_t B_sp_addr = 36; // 48 elements, 36 to 47
     static uint32_t Kinf_sp_addr = 48; // 48 elements, 48 to 59
     static uint32_t C1_sp_addr = 60; // 16 elements, 60 to 63
     static uint32_t C2_sp_addr = 64; // 144 elements, 64 to 99
-    // next available spad address is 100
+    static uint32_t Bp_sp_addr = 100; // 4 elements, 100
+    static uint32_t pi_sp_addr = 101; // 12 elements, 101 to 103
+    static uint32_t r_sp_addr = 104; // 36 elements, 104 to 112
+    static uint32_t Kr_sp_addr = 113; // 12 elements, 113 to 115
+    static uint32_t AmBKtp_sp_addr = 116; // 12 elements, 116 to 118
+    static uint32_t q_sp_addr = 119; // 120 elements, 119 to 238
+    static uint32_t Kinfx_sp_addr = 239; // 4 elements, 239
+    static uint32_t Ax_sp_addr = 240; // 12 elements, 240 to 242
+    static uint32_t Bu_sp_addr = 243; // 12 elements, 243 to 245
+    static uint32_t x_sp_addr = 246; // 30 elements, 246 to 275
+    static uint32_t u_sp_addr = 276; // 36 elements, 276 to 311
+    // next available spad address is 312
 
     /**
      * Update linear terms from Riccati backward pass
@@ -1178,7 +1215,7 @@ extern "C"
             #ifdef MEASURE_CYCLES
             clock_gettime(CLOCK_MONOTONIC, &end); 
             uint64_t timediff = (end.tv_sec - start.tv_sec)* 1e9 + (end.tv_nsec - start.tv_nsec);
-            outputFile << "termination_check" << ", " << timediff << std::endl; 
+            outputFile << opt_level << "," << "termination_check" << "," << timediff << std::endl; 
             #endif
 
             // std::cout << solver->work->primal_residual_state << std::endl;
