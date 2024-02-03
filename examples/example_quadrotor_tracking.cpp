@@ -39,6 +39,7 @@ extern "C"
         work.Bdyn_data = Bdyn_data;
         work.Q = Eigen::Map<tiny_VectorNx>(Q_data);
         work.Qf = Eigen::Map<tiny_VectorNx>(Qf_data);
+        work.P_k = work.Q;
         work.R = Eigen::Map<tiny_VectorNu>(R_data);
         work.u_min = tiny_MatrixNuNhm1::Constant(-0.5);
         work.u_max = tiny_MatrixNuNhm1::Constant(0.5);

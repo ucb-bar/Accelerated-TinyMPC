@@ -39,9 +39,13 @@ extern "C"
     void backward_pass_grad(TinySolver *solver)
     {
         for (int i = NHORIZON - 2; i >= 0; i--)
-        {
+        {   
+            solver->cache->Quu_inv = (solver->work->R + solver->work->Bdyn.transpose() * solver->work->P_k * solver->work->Bdyn).inverse();
+            solver->work->K = solver->cache->Quu_inv * (solver->work->Bdyn.transpose() * solver->work->P_k * solver->work->Adyn);
+            solver->cache->AmBKt = (solver->work->Adyn - solver->work->Bdyn * solver->work->K).transpose();
             (solver->work->d.col(i)).noalias() = solver->cache->Quu_inv * (solver->work->Bdyn.transpose() * solver->work->p.col(i + 1) + solver->work->r.col(i));
             (solver->work->p.col(i)).noalias() = solver->work->q.col(i) + solver->cache->AmBKt.lazyProduct(solver->work->p.col(i + 1)) - (solver->cache->Kinf.transpose()).lazyProduct(solver->work->r.col(i)); // + solver->cache->coeff_d2p * solver->work->d.col(i); // coeff_d2p always appears to be zeros (faster to comment out)
+            solver->work->P_k = solver->work->Q + solver->work->K.transpose() * solver->work->R * solver->work->K + solver->cache->AmBKt * solver->work->P_k * solver->cache->AmBKt.tranpose();
         }
     }
 
@@ -52,7 +56,7 @@ extern "C"
     {
         for (int i = 0; i < NHORIZON - 1; i++)
         {
-            (solver->work->u.col(i)).noalias() = -solver->cache->Kinf.lazyProduct(solver->work->x.col(i)) - solver->work->d.col(i);
+            (solver->work->u.col(i)).noalias() = -solver->work->K.lazyProduct(solver->work->x.col(i)) - solver->work->d.col(i);
             // solver->work->u.col(i) << .001, .02, .3, 4;
             // DEBUG_PRINT("u(0): %f\n", solver->work->u.col(0)(0));
             // multAdyn(solver->Ax->cache.Adyn, solver->work->x.col(i));

@@ -97,6 +97,10 @@ extern "C" {
         tiny_MatrixNxNh Xref;   // Nx x Nh
         tiny_MatrixNuNhm1 Uref; // Nu x Nh-1
 
+        // Quadratic Ricatti terms
+        tiny_MatrixNuNx K;
+        tiny_MatrixNxNx P_k; // TODO intit to Qf
+
         // Temporaries
         tiny_VectorNu Qu;
     } TinyWorkspace;
