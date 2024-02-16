@@ -1,4 +1,7 @@
+#include <cstddef>
+#include <cstdint>
 #include <iostream>
+#include "gemmini.h"
 #include "gemmini_robotics.h"
 
 #include "admm.hpp"
@@ -177,17 +180,9 @@ extern "C"
         int tile_J = (j + DIM - 1) / DIM;
         int tile_K = (k + DIM - 1) / DIM;
 
-        tiled_matmul_outer_simple_spad_spad(i, j, k,
+        sp_tiled_matmul_auto_full_spad_ws(i, j, k,
                 sp_A_addr, sp_B_addr, NULL, sp_C_addr,
-                transpose_A ? i : k, transpose_B ? k : j, j, j,
-                MVIN_SCALE_IDENTITY, MVIN_SCALE_IDENTITY, MVIN_SCALE_IDENTITY,
-                tile_I, tile_J, tile_K,
-                NO_ACTIVATION, ACC_SCALE_IDENTITY, 0, false,
-                transpose_A, transpose_B,
-                false, false,
-                0,
-                WS
-                );
+                NO_ACTIVATION)
     }
 
 
@@ -214,23 +209,58 @@ extern "C"
 
     // define spad addresses for cached matrices TODO make these dynamic with constants
     // spad is row addressed and each row is 4 elements wide
-    static uint32_t A_sp_addr = 0; // 144 elements, 0 to 35
-    static uint32_t B_sp_addr = 36; // 48 elements, 36 to 47
-    static uint32_t Kinf_sp_addr = 48; // 48 elements, 48 to 59
-    static uint32_t C1_sp_addr = 60; // 16 elements, 60 to 63
-    static uint32_t C2_sp_addr = 64; // 144 elements, 64 to 99
-    static uint32_t Bp_sp_addr = 100; // 4 elements, 100
-    static uint32_t pi_sp_addr = 101; // 12 elements, 101 to 103
-    static uint32_t r_sp_addr = 104; // 36 elements, 104 to 112
-    static uint32_t Kr_sp_addr = 113; // 12 elements, 113 to 115
-    static uint32_t AmBKtp_sp_addr = 116; // 12 elements, 116 to 118
-    static uint32_t q_sp_addr = 119; // 120 elements, 119 to 238
-    static uint32_t Kinfx_sp_addr = 239; // 4 elements, 239
-    static uint32_t Ax_sp_addr = 240; // 12 elements, 240 to 242
-    static uint32_t Bu_sp_addr = 243; // 12 elements, 243 to 245
-    static uint32_t x_sp_addr = 246; // 30 elements, 246 to 275
-    static uint32_t u_sp_addr = 276; // 36 elements, 276 to 311
-    // next available spad address is 312
+    // constant matrices
+    uint32_t A_sp_size = (NSTATES * NSTATES) / DIM;
+    uint32_t B_sp_size = (NSTATES * NINPUTS) / DIM;
+    uint32_t Kinf_sp_size = (NINPUTS * NSTATES) / DIM;
+    uint32_t C1_sp_size = (NINPUTS * NINPUTS) / DIM;
+    uint32_t C2_sp_size = (NSTATES * NSTATES) / DIM;
+
+    // backward pass
+    // p vectors
+    uint32_t p_sp_size = (NSTATES * NHORIZON) / DIM;
+    uint32_t p_k_sp_size = (NSTATES * 1) / DIM;
+    uint32_t d_sp_size = (NINPUTS * (NHORIZON - 1)) / DIM;
+    uint32_t d_k_sp_size = (NINPUTS * 1) / DIM;
+    uint32_t Btpk_sp_size = (NINPUTS * 1) / DIM;
+    uint32_t AmBKt_p1_sp_size = (NSTATES * 1) / DIM;
+    uint32_t Kt_r_sp_size = (NSTATES * 1) / DIM;
+
+
+    // forward pass
+    uint32_t x_sp_size = (NSTATES * NHORIZON) / DIM;
+    uint32_t u_sp_size = (NINPUTS * (NHORIZON-1)) / DIM;
+    uint32_t Ax_sp_size = (NSTATES * 1) / DIM;
+    uint32_t Bu_sp_size = (NSTATES * 1) / DIM;
+    
+    uint32_t r_sp_size = (NINPUTS * (NHORIZON - 1)) / DIM;
+    uint32_t r_k_sp_size = (NINPUTS * 1) / DIM;
+    uint32_t Kr_sp_size = (NSTATES * 1) / DIM;
+    uint32_t AmBKtp_sp_size = (NSTATES * 1) / DIM;
+    uint32_t q_sp_size = (NSTATES * NHORIZON) / DIM;
+    uint32_t Kinfx_sp_size = (NINPUTS * 1) / DIM;
+    
+    
+    // setup static spad addresses TODO move to setup function
+    static uint32_t A_sp_addr = 0;
+    static uint32_t B_sp_addr = A_sp_addr + A_sp_size;
+    static uint32_t Kinf_sp_addr = B_sp_addr + B_sp_size;
+    static uint32_t C1_sp_addr = Kinf_sp_addr + Kinf_sp_size;
+    static uint32_t C2_sp_addr = C1_sp_addr + C1_sp_size;
+
+    static uint32_t p_sp_addrs[NHORIZON];
+    for (int i = 0; i < NHORIZON; i++) {
+        p_sp_addrs[i] = C2_sp_addr + C2_sp_size + (p_k_sp_size * i);
+    }
+    static uint32_t d_sp_addrs[NHORIZON - 1];
+    for (int i = 0; i < NHORIZON - 1; i++) {
+        d_sp_addrs[i] = p_sp_addrs[0] + p_sp_size + (d_k_sp_size * i);
+    }
+    static uint32_t Btpk_sp_addr = d_sp_addrs[0] + d_sp_size;
+
+    static uint32_t r_sp_addrs[NHORIZON - 1];
+    static uint32_t Kr_sp_addr = r_sp_addrs[0] + r_sp_size;
+    static uint32_t AmBKtp_sp_addr = Kr_sp_addr + Kt_r_sp_size;
 
     /**
      * Update linear terms from Riccati backward pass
@@ -245,24 +275,32 @@ extern "C"
         for (int i = NHORIZON - 2; i >= 0; i--)
         {
             #ifdef MEMORY
-            tiled_matmul_spad_dram(B_sp_addr, solver->work->p.col(i + 1), B_p, NINPUTS, true, false);
-            tiled_matmul_spad_dram(C1_sp_addr, B_p + solver->work->r.col(i), dcol, NINPUTS, true, false);
+            // d_k = C1 (B^T p_{k+1} + r_k)
+            tiled_matmul_spad_spad(B_sp_addr, p_sp_addrs[i+1], Btpk_sp_addr, NINPUTS, NSTATES, 1, true, false);
+            // resadd Btpk + r_k, need to keep in accumulator and move in r_k
+            tiled_matmul_spad_spad(C1_sp_addr, Btpk_sp_addr, d_sp_addrs[i], NINPUTS, NINPUTS, 1, false, false);
             #else
             tiled_matmul_outer_eigen(solver->work->Bdyn, solver->work->p.col(i + 1), B_p, true, false);
             tiled_matmul_outer_eigen(solver->cache->Quu_inv, B_p + solver->work->r.col(i), dcol, true, false);
+            (solver->work->d.col(i)).noalias() = dcol;
             #endif
 
-            (solver->work->d.col(i)).noalias() = dcol;
 
             #ifdef MEMORY
+
+            // p_k = q_k + AmBKt p_{k+1} - K_{inf}^T r_k
+
             tiled_matmul_spad_dram(Kinf_sp_addr, solver->work->r.col(i), K_r, NSTATES, true, false);
             tiled_matmul_spad_dram(C2_sp_addr, solver->work->p.col(i + 1), AmBKt_p, NSTATES, false, false);
+
+            tiled_matmul_spad_spad(Kinf_sp_addr, r_sp_addrs[i], Kr_sp_addr, NSTATES, NINPUTS, 1, true, false);
+            tiled_matmul_spad_spad(C2_sp_addr, p_sp_addrs[i+1], AmBKtp_sp_addr, NSTATES, NSTATES, 1, false, false);
+            // do accumulation stuff
             #else
             tiled_matmul_outer_eigen(solver->cache->Kinf, solver->work->r.col(i), K_r, true, false);
             tiled_matmul_outer_eigen(solver->cache->AmBKt, solver->work->p.col(i + 1), AmBKt_p, false, false);
-            #endif
-            
             (solver->work->p.col(i)).noalias() = solver->work->q.col(i) + AmBKt_p - K_r;
+            #endif
         }
     }
 
