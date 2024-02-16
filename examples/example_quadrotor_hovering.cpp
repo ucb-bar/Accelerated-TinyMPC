@@ -13,6 +13,7 @@
 
 #include <tinympc/admm.hpp>
 #include "problem_data/quadrotor_50hz_params_unconstrained.hpp"
+#include "tinympc/glob_opts.hpp"
 #include <fstream>
 #include <Eigen/Dense>
 

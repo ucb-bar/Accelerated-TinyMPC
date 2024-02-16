@@ -98,8 +98,8 @@ extern "C" {
         tiny_MatrixNuNhm1 Uref; // Nu x Nh-1
 
         // Quadratic Ricatti terms
-        tiny_MatrixNuNx K;
-        tiny_MatrixNxNx P_k; // TODO intit to Qf
+        tiny_MatrixNuNx K[NHORIZON-1];
+        tiny_MatrixNxNx P[NHORIZON];
 
         // Temporaries
         tiny_VectorNu Qu;
