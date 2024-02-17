@@ -174,7 +174,7 @@ extern "C"
         const uint32_t sp_B_addr,
         const uint32_t sp_C_addr,
         int i, int j, int k,
-        bool transpose_A, bool transpose_B) 
+        bool transpose_A, bool transpose_B, bool keep_in_acc) 
     {
         int tile_I = (i + DIM - 1) / DIM;
         int tile_J = (j + DIM - 1) / DIM;
@@ -182,7 +182,7 @@ extern "C"
 
         sp_tiled_matmul_auto_full_spad_ws(i, j, k,
                 sp_A_addr, sp_B_addr, NULL, sp_C_addr,
-                NO_ACTIVATION)
+                NO_ACTIVATION, keep_in_acc)
     }
 
 
@@ -247,20 +247,14 @@ extern "C"
     static uint32_t Kinf_sp_addr = B_sp_addr + B_sp_size;
     static uint32_t C1_sp_addr = Kinf_sp_addr + Kinf_sp_size;
     static uint32_t C2_sp_addr = C1_sp_addr + C1_sp_size;
-
-    static uint32_t p_sp_addrs[NHORIZON];
-    for (int i = 0; i < NHORIZON; i++) {
-        p_sp_addrs[i] = C2_sp_addr + C2_sp_size + (p_k_sp_size * i);
-    }
-    static uint32_t d_sp_addrs[NHORIZON - 1];
-    for (int i = 0; i < NHORIZON - 1; i++) {
-        d_sp_addrs[i] = p_sp_addrs[0] + p_sp_size + (d_k_sp_size * i);
-    }
     static uint32_t Btpk_sp_addr = d_sp_addrs[0] + d_sp_size;
 
     static uint32_t r_sp_addrs[NHORIZON - 1];
     static uint32_t Kr_sp_addr = r_sp_addrs[0] + r_sp_size;
     static uint32_t AmBKtp_sp_addr = Kr_sp_addr + Kt_r_sp_size;
+
+    static uint32_t x_sp_addrs[NHORIZON];
+    
 
     /**
      * Update linear terms from Riccati backward pass
@@ -276,9 +270,11 @@ extern "C"
         {
             #ifdef MEMORY
             // d_k = C1 (B^T p_{k+1} + r_k)
-            tiled_matmul_spad_spad(B_sp_addr, p_sp_addrs[i+1], Btpk_sp_addr, NINPUTS, NSTATES, 1, true, false);
-            // resadd Btpk + r_k, need to keep in accumulator and move in r_k
-            tiled_matmul_spad_spad(C1_sp_addr, Btpk_sp_addr, d_sp_addrs[i], NINPUTS, NINPUTS, 1, false, false);
+            // TODO add flag to keep in accumulator, and add function to add matrix to accumulator
+            tiled_matmul_spad_spad(B_sp_addr, p_sp_addrs[i+1], Btpk_sp_addr, NINPUTS, NSTATES, 1, true, false, true);
+            mvin_accumulator(NINPUTS, 1, solver->work->r.col(i).data(), 3 << (ADDR_LEN-2), true);
+            gemmini_mvout_spad(Btpk_sp_addr, 3 << (ADDR_LEN-2), NINPUTS, 0);
+            tiled_matmul_spad_spad(C1_sp_addr, Btpk_sp_addr, d_sp_addrs[i], NINPUTS, NINPUTS, 1, false, false, false);
             #else
             tiled_matmul_outer_eigen(solver->work->Bdyn, solver->work->p.col(i + 1), B_p, true, false);
             tiled_matmul_outer_eigen(solver->cache->Quu_inv, B_p + solver->work->r.col(i), dcol, true, false);
@@ -293,8 +289,11 @@ extern "C"
             tiled_matmul_spad_dram(Kinf_sp_addr, solver->work->r.col(i), K_r, NSTATES, true, false);
             tiled_matmul_spad_dram(C2_sp_addr, solver->work->p.col(i + 1), AmBKt_p, NSTATES, false, false);
 
-            tiled_matmul_spad_spad(Kinf_sp_addr, r_sp_addrs[i], Kr_sp_addr, NSTATES, NINPUTS, 1, true, false);
-            tiled_matmul_spad_spad(C2_sp_addr, p_sp_addrs[i+1], AmBKtp_sp_addr, NSTATES, NSTATES, 1, false, false);
+            tiled_matmul_spad_spad(Kinf_sp_addr, r_sp_addrs[i], Kr_sp_addr, NSTATES, NINPUTS, 1, true, false, true);
+            // TODO need to invert next result to get subtraction
+            tiled_matmul_spad_spad(C2_sp_addr, p_sp_addrs[i+1], AmBKtp_sp_addr, NSTATES, NSTATES, 1, false, false, true);
+            mvin_accumulator(NSTATES, 1, solver->work.q.col(i).data(), 3 << (ADDR_LEN-2), true);
+            gemmini_mvout_spad(p_sp_addrs[i], 3 << (ADDR_LEN-2), NSTATES, 0);
             // do accumulation stuff
             #else
             tiled_matmul_outer_eigen(solver->cache->Kinf, solver->work->r.col(i), K_r, true, false);
@@ -655,6 +654,8 @@ extern "C"
         {
             #ifdef MEMORY
             tiled_matmul_spad_dram(Kinf_sp_addr, solver->work->x.col(i), Kinf_x, NINPUTS, false, false);
+
+            tiled_matmul_spad_spad(Kinf_sp_addr, x_sp_addrs[i], , int i, int j, int k, bool transpose_A, bool transpose_B, bool keep_in_acc);
             #else
             tiled_matmul_outer_eigen(solver->cache->Kinf, solver->work->x.col(i), Kinf_x, false, false);
             #endif
@@ -1171,6 +1172,17 @@ extern "C"
 
     int tiny_solve(TinySolver *solver)
     {
+
+
+        // TODO setup spad memory, probably make an init function
+        static uint32_t p_sp_addrs[NHORIZON];
+        for (int i = 0; i < NHORIZON; i++) {
+            p_sp_addrs[i] = C2_sp_addr + C2_sp_size + (p_k_sp_size * i);
+        }
+        static uint32_t d_sp_addrs[NHORIZON - 1];
+        for (int i = 0; i < NHORIZON - 1; i++) {
+            d_sp_addrs[i] = p_sp_addrs[0] + p_sp_size + (d_k_sp_size * i);
+        }
 
         // Initialize variables
         solver->work->status = 11;  // TINY_UNSOLVED

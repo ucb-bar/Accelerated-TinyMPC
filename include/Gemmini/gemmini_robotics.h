@@ -249,7 +249,7 @@ static void tiled_matmul_outer_simple_dram_sp(size_t dim_I, size_t dim_J, size_t
 static void sp_tiled_matmul_auto_full_spad_ws(size_t dim_I, size_t dim_J, size_t dim_K,
         uint32_t A_spad_addr_start, uint32_t B_spad_addr_start,
         const void * D, uint32_t C_spad_addr_start,
-        int act) {
+        int act, bool keep_in_acc) {
         
         size_t stride_A = dim_K;
         size_t stride_B = dim_J;
@@ -286,7 +286,7 @@ static void sp_tiled_matmul_auto_full_spad_ws(size_t dim_I, size_t dim_J, size_t
           full_C, low_D,
           true, repeating_bias,
           act,
-          1, 1);
+          1, 1, keep_in_acc);
 }
 
 // modified from 290 lab 2
@@ -299,7 +299,7 @@ static void sp_tiled_matmul_full_spad_ws(const uint32_t A_sp_addr_start, const u
         bool full_C, bool low_D,
         bool no_bias, bool repeating_bias,
         int act,
-        int a_spad_id, int b_spad_id) {
+        int a_spad_id, int b_spad_id, bool keep_in_acc) {
 
   const uint32_t D_sp_addr_start = 1 << (ADDR_LEN-1);
   const uint32_t C_sp_addr_start = 3 << (ADDR_LEN-2) | (full_C << (ADDR_LEN-3));
@@ -371,7 +371,7 @@ static void sp_tiled_matmul_full_spad_ws(const uint32_t A_sp_addr_start, const u
           }
         }
         // Move-out C (if not normalizing)
-        if (((act != LAYERNORM) && (act != SOFTMAX)) && (j == J-1 || j % C_blocks == C_blocks-1)) {
+        if (((act != LAYERNORM) && (act != SOFTMAX)) && (j == J-1 || j % C_blocks == C_blocks-1) && !keep_in_acc) {
           const size_t rounded_j = (j / C_blocks) * C_blocks;
           const uint32_t rounded_C_sp_addr = C_sp_addr_start + (i*J + rounded_j)*DIM;
           const uint32_t C_dst_addr = C_dst_sp_addr_start+ (i*C_row_stride + rounded_j)*DIM*sizeof_C;
@@ -406,6 +406,21 @@ static void mvout_matrix(size_t I, size_t J, uint32_t spad_addr, elem_t * A) {
   for(int i = 0; i < I/DIM; i++) {
     for(int j = 0; j < J/DIM; j++) {
       gemmini_extended_mvout(&A[i*DIM*J + j*DIM], spad_addr + j*DIM + i*DIM*(J/DIM), DIM, DIM);
+    }
+  }
+  gemmini_fence();
+}
+
+/***
+moves a matrix from dram to the accumulator. Assumes if you want to accumulate, a matrix with the same dims is already in the accumulator
+at the starting accumulator address
+***/
+static void mvin_accumulator(size_t I, size_t J, const acc_t * A, uint32_t acc_address, bool accumulate) {
+  const uint32_t acc_start_address = accumulate ? 3 << (ADDR_LEN-2) : 1 << (ADDR_LEN-1);
+  gemmini_extended_config_st(J * sizeof(acc_t), NO_ACTIVATION, ACC_SCALE_IDENTITY);
+  for(int i = 0; i < I/DIM; i++) {
+    for(int j = 0; j < J/DIM; j++) {
+      gemmini_extended_mvin(&A[i*DIM*J + j*DIM], acc_address + j*DIM + i*DIM*(J/DIM), DIM, DIM);
     }
   }
   gemmini_fence();
