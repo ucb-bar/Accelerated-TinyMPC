@@ -1,6 +1,6 @@
 #pragma once
 
-#include <tinympc/types.hpp>
+#include <tinympc/admm.hpp>
 
 tinytype Xref_data[NTOTAL*NSTATES] = {
   0.0000000,	0.0000000,	1.0000000,	0.0000000,	0.0000000,	0.0000000,	0.0000000,	0.0000000,	0.0000000,	0.0000000,	0.0000000,	0.0000000,	

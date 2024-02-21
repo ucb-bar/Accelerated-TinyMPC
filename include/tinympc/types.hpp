@@ -1,4 +1,6 @@
 #pragma once
+#ifndef TINYMPC_TYPES_H
+#define TINYMPC_TYPES_H
 
 #include <Eigen.h>
 #include "glob_opts.hpp"
@@ -113,4 +115,5 @@ extern "C" {
 
 #ifdef __cplusplus
 }
+#endif
 #endif

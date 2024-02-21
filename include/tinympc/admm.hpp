@@ -1,6 +1,10 @@
 #pragma once
 
+#ifdef USE_RVV
+#include "types_rvv.hpp"
+#else
 #include "types.hpp"
+#endif
 
 #ifdef __cplusplus
 extern "C"

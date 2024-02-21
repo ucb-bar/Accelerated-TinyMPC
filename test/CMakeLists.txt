@@ -1,5 +1,10 @@
+if(USE_GEMMINI)
+    add_executable(test_gemmini test_gemmini.cpp)
+    target_link_libraries(test_gemmini LINK_PUBLIC tinympc)
+endif(USE_GEMMINI)
 
-add_executable(test1 test1.cpp)
-add_executable(test_gemmini test_gemmini.cpp)
-
-target_link_libraries(test_gemmini LINK_PUBLIC tinympc)
+if(USE_RVV)
+    add_executable(test_rvv_matlib rvv_matlib/test_rvv_matlib.cpp)
+    target_link_libraries(test_rvv_matlib LINK_PUBLIC rvv_matlib)
+    target_include_directories (rvv_matlib PUBLIC rvv_matlib)
+endif(USE_RVV)
