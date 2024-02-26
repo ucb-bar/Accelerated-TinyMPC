@@ -47,36 +47,21 @@ void update_primal(TinySolver *solver)
  */
 void backward_pass_grad(TinySolver *solver)
 {
-    for (int i = NHORIZON - 2; i >= 0; i--)
-    {
-        matadd(solver->work->p.col(i + 1).data, solver->work->r.col(i).data, x1.data, 1, NSTATES);
-        matmul(x1.data, BdynT.data, u1.data, 1, NINPUTS, NSTATES);
-        matmul(u1.data, solver->cache->Quu_inv.data, solver->work->d.col(i).data, 1, NINPUTS, NINPUTS);
-
-        matmul(solver->work->r.col(i).data, KinfT.data, x1.data, 1, NSTATES, NINPUTS);
-        matmul(solver->work->p.col(i + 1).data, solver->cache->AmBKt.data, x1.data, 1, NSTATES, NSTATES);
-        matsub(x1.data, x2.data, x3.data, 1, NSTATES);
-        matadd(x3.data, solver->work->q.col(i).data, solver->work->p.col(i).data, 1, NSTATES);
+    for (int i = NHORIZON - 2; i >= 0; i--) {
+        backward_pass_1(solver, i, BdynT, u1, u2);
+        backward_pass_2(solver, i, KinfT, x1, x2, x3);
     }
 }
 
 /**
  * Use LQR feedback policy to roll out trajectory
  */
+
 void forward_pass(TinySolver *solver)
 {
-    for (int i = 0; i < NHORIZON - 1; i++)
-    {
-        print_array_2d(solver->work->x.col(i).data, 1, NSTATES, "float", "x_i");
-        print_array_2d(solver->cache->Kinf.data, NINPUTS, NSTATES, "float", "Kinf");
-        matmul(solver->work->x.col(i).data, solver->cache->Kinf.data, u1.data, 1, NINPUTS, NSTATES);
-        print_array_2d(u1.data, 1, NINPUTS, "float", "u1");
-        matadd(u1.data, solver->work->d.col(i).data, u2.data, 1, NINPUTS);
-        matneg(u2.data, solver->work->u.col(i).data, 1, NINPUTS);
-
-        matmul(solver->work->x.col(i).data, solver->work->Adyn.data, x1.data, 1, NSTATES, NSTATES);
-        matmul(solver->work->u.col(i).data, solver->work->Bdyn.data, x2.data, 1, NSTATES, NSTATES);
-        matadd(x1.data, x2.data, solver->work->x.col(i + 1).data, 1, NSTATES);
+    for (int i = 0; i < NHORIZON - 1; i++) {
+        forward_pass_1(solver, i, u1, u2);
+        forward_pass_2(solver, i, x1, x2);
     }
 }
 
@@ -86,21 +71,8 @@ void forward_pass(TinySolver *solver)
  */
 void update_slack(TinySolver *solver)
 {
-    matadd(solver->work->u.data, solver->work->y.data, solver->work->znew.data, NHORIZON - 1, NINPUTS);
-    // Box constraints on input
-    if (solver->settings->en_input_bound)
-    {
-        cwisemax(solver->work->u_min.data, solver->work->znew.data, m1.data, NHORIZON - 1, NINPUTS);
-        cwisemin(solver->work->u_max.data, m1.data, solver->work->znew.data, NHORIZON - 1, NINPUTS);
-    }
-
-    matadd(solver->work->x.data, solver->work->g.data, solver->work->vnew.data, NHORIZON, NSTATES);
-    // Box constraints on state
-    if (solver->settings->en_state_bound)
-    {
-        cwisemax(solver->work->x_min.data, solver->work->vnew.data, s1.data, NHORIZON, NSTATES);
-        cwisemin(solver->work->x_max.data, s1.data, solver->work->vnew.data, NHORIZON, NSTATES);
-    }
+    update_slack_1(solver, m1);
+    update_slack_2(solver, s1);
 }
 
 /**
@@ -109,10 +81,7 @@ void update_slack(TinySolver *solver)
  */
 void update_dual(TinySolver *solver)
 {
-    matadd(solver->work->y.data, solver->work->u.data, m1.data, NHORIZON - 1, NINPUTS);
-    matsub(m1.data, solver->work->znew.data, solver->work->y.data, NHORIZON - 1, NINPUTS);
-    matadd(solver->work->g.data, solver->work->x.data, s1.data, NHORIZON, NSTATES);
-    matsub(s1.data, solver->work->vnew.data, solver->work->g.data, NHORIZON, NSTATES);
+    update_dual_1(solver, m1, s1);
 }
 
 /**
@@ -121,23 +90,12 @@ void update_dual(TinySolver *solver)
  */
 void update_linear_cost(TinySolver *solver)
 {
-    matsub(solver->work->znew.data, solver->work->y.data, m1.data, NHORIZON - 1, NINPUTS);
-    matmulf(m1.data, solver->work->r.data, -solver->cache->rho, NHORIZON - 1, NINPUTS);
-
+    update_linear_cost_1(solver, m1);
     for (int i = 0; i < NHORIZON; i++) {
-        cwisemul(solver->work->Xref.col(i).data, solver->work->Q.data, x1.data, 1, NSTATES);
-        matmulf(x1.data, solver->work->q.col(i).data, -1, 1, NSTATES);
+        update_linear_cost_2(solver, i, x1);
     }
-    matsub(solver->work->vnew.data, solver->work->g.data, s1.data, NHORIZON, NSTATES);
-    matmulf(s1.data, s2.data, solver->cache->rho, NHORIZON, NSTATES);
-    matsub(solver->work->q.data, s2.data, s1.data, NHORIZON, NSTATES);
-    solver->work->q = s1;
-
-    matsub(solver->work->vnew.col(NHORIZON - 1).data, solver->work->g.col(NHORIZON - 1).data, x1.data, 1, NSTATES);
-    matmulf(x1.data, x2.data, solver->cache->rho, 1, NSTATES);
-    matmul(solver->work->Xref.col(NHORIZON - 1).data, PinfT.data, x1.data, 1, NSTATES, NSTATES);
-    matadd(x1.data, x2.data, x3.data, 1, NSTATES);
-    matneg(x3.data, solver->work->p.col(NHORIZON - 1).data, 1, NSTATES);
+    update_linear_cost_3(solver, s1, s2);
+    update_linear_cost_4(solver, PinfT, x1, x2, x3);
 }
 
 void tiny_init(TinySolver *solver) {
@@ -146,8 +104,13 @@ void tiny_init(TinySolver *solver) {
 
 int tiny_solve(TinySolver *solver)
 {
+    u1 = 0.0;
+    u2 = 0.0;
+
     // Transpose these matrices once
     transpose(solver->work->Bdyn.data, BdynT.data, NSTATES, NINPUTS);
+    print_array_2d(solver->work->Bdyn.data, NSTATES, NINPUTS, "float", "Bdyn" );
+    print_array_2d(BdynT.data, NINPUTS, NSTATES, "float", "BdynT" );
     transpose(solver->cache->Kinf.data, KinfT.data, NINPUTS, NSTATES);
     transpose(solver->cache->Pinf.data, PinfT.data, NSTATES, NSTATES);
 
@@ -161,8 +124,9 @@ int tiny_solve(TinySolver *solver)
     CYCLE_CNT_WRAPPER(update_linear_cost, solver, "update_linear_cost");
     for (int i = 0; i < solver->settings->max_iter; i++)
     {
+        printf("%d ------------------------\n", i);
         // Solve linear system with Riccati and roll out to get new trajectory
-        update_primal(solver);
+        CYCLE_CNT_WRAPPER(update_primal, solver, "update_primal");
         // Project slack variables into feasible domain
         CYCLE_CNT_WRAPPER(update_slack, solver, "update_slack");
         // Compute next iteration of dual variables
@@ -176,29 +140,18 @@ int tiny_solve(TinySolver *solver)
         #endif
         if (solver->work->iter % solver->settings->check_termination == 0)
         {
-            matsub(solver->work->x.data, solver->work->vnew.data, s1.data, NHORIZON, NSTATES);
-            cwiseabs(s1.data, s2.data, NHORIZON, NSTATES);
-            solver->work->primal_residual_state = maxcoeff(s2.data, NHORIZON, NSTATES);
-
-            matsub(solver->work->v.data, solver->work->vnew.data, s1.data, NHORIZON, NSTATES);
-            cwiseabs(s1.data, s2.data, NHORIZON, NSTATES);
-            solver->work->dual_residual_state = maxcoeff(s2.data, NHORIZON, NSTATES) * solver->cache->rho;
-
-            matsub(solver->work->u.data, solver->work->znew.data, m1.data, NHORIZON - 1, NINPUTS);
-            cwiseabs(m1.data, m2.data, NHORIZON - 1, NINPUTS);
-            solver->work->primal_residual_input = maxcoeff(m2.data, NHORIZON - 1, NINPUTS);
-
-            matsub(solver->work->z.data, solver->work->znew.data, m1.data, NHORIZON - 1, NINPUTS);
-            cwiseabs(m1.data, m2.data, NHORIZON - 1, NINPUTS);
-            solver->work->dual_residual_input = maxcoeff(m2.data, NHORIZON - 1, NINPUTS) * solver->cache->rho;
-
+            primal_residual_state(solver, s1, s2);
+            dual_residual_state(solver, s1, s2);
+            primal_residual_input(solver, m1, m2);
+            dual_residual_input(solver, m1, m2);
             if (solver->work->primal_residual_state < solver->settings->abs_pri_tol &&
                 solver->work->primal_residual_input < solver->settings->abs_pri_tol &&
                 solver->work->dual_residual_state < solver->settings->abs_dua_tol &&
                 solver->work->dual_residual_input < solver->settings->abs_dua_tol)
             {
-                solver->work->status = 1; // TINY_SOLVED
-                return 0;                 // 0 means solved with no error
+                // Solved without error (return 0)
+                solver->work->status = 1;
+                return 0;
             }
         }
 

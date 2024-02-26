@@ -1,8 +1,9 @@
 #include <cstdio>
 #include <cmath>
 #include <cstdint>
-#include "common.h"
-#include "rvv_matlib.h"
+
+#include "matlib/common.h"
+#include "matlib/matlib_rvv.h"
 
 extern "C" {
 

@@ -88,7 +88,7 @@ int main()
 
         // 1. Update measurement
         // an alternative method is to use work.x.setCol(x0.data[0], 0);
-        work.x.col(0).set(x0.data[0]);
+        matsetv(work.x.col(0), x0.data[0], 1, NSTATES);
 
         // 2. Update reference (if needed)
 
@@ -102,14 +102,14 @@ int main()
         // 5. Simulate forward
         // calculate x1 = work.Adyn * x0 + work.Bdyn * work.u.col(0);
         matmul(x0.data, work.Adyn.data, v1.data, 1, NSTATES, NSTATES);
-        matmul(work.u.col(0).data, work.Bdyn.data, v2.data, 1, NSTATES, NINPUTS);
+        matmul(work.u.col(0), work.Bdyn.data, v2.data, 1, NSTATES, NINPUTS);
         matadd(v1.data, v2.data, x0.data, 1, NSTATES);
 
         printf("%d,", k);
 
         // Print states data to CSV file
         // calculate the value of (x0 - work.Xref.col(1)).norm()
-        matsub(x0.data, work.Xref.col(1).data, v1.data, 1, NSTATES);
+        matsub(x0.data, work.Xref.col(1), v1.data, 1, NSTATES);
         float norm = matnorm(v1.data, 1, NSTATES);
         printf("%f,", norm);
         for (int i = 0; i < NSTATES; ++i) {

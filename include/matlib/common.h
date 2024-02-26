@@ -25,5 +25,6 @@ void init_array_zero_1d(float *ar, int n);
 void init_array_one_1d(float *ar, int n);
 void init_array_one_2d(float **ar, int n, int m);
 
+void printx(float **a, int n, int m, const char *name);
 };
 #endif

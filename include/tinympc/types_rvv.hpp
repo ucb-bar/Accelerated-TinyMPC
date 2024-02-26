@@ -3,10 +3,12 @@
 #define TINYMPC_TYPES_RVV_H
 
 #include <cstdlib>
-#include <stdio.h>
-#include "common.h"
-#include "rvv_matlib.h"
+#include <cstdio>
+#include <assert.h>
+
 #include "glob_opts.hpp"
+#include "matlib/common.h"
+#include "matlib/matlib_rvv.h"
 
 #ifdef RVV_DEFAULT_TO_ROW_MAJOR
 #define RVV_DEFAULT_MATRIX_STORAGE_ORDER_OPTION RowMajor
@@ -21,7 +23,7 @@ enum StorageOptions {
     RowMajor = 0x1,  // it is only a coincidence that this is equal to RowMajorBit -- don't rely on that
     /** Align the matrix itself if it is vectorizable fixed-size */
     AutoAlign = 0,
-    // DontAlign = 0x2
+    DontAlign = 0x2
 };
 
 // Forward declarations
@@ -32,69 +34,59 @@ template<typename Scalar_, int Rows_, int Cols_,
                        : RVV_DEFAULT_MATRIX_STORAGE_ORDER_OPTION ),
         int MaxRows_ = Rows_,
         int MaxCols_ = Cols_
-> class Matrix;
-
-template<typename Scalar_, int Rows_> class MatrixCol;
-
-// Actual definitions
-template<typename Scalar_, int Rows_, int Cols_, int Options_, int MaxRows_, int MaxCols_> class Matrix {
+> class Matrix {
 
 public:
+    Scalar_ _data[MaxRows_ * MaxCols_];
+    Scalar_ *_pdata[Options_ & RowMajor ? Rows_ : Cols_];
     Scalar_ **data;
     int rows, cols, outer, inner;
-    int reference = 1;
-    bool column = false;
 
-    void init() {
+    void _Matrix(int rows_, int cols_) {
+        rows = rows_;
+        cols = cols_;
         if (Options_ & RowMajor) {
-            outer = Rows_;
-            inner = Cols_;
+            outer = rows_;
+            inner = cols_;
         } else {
-            inner = Rows_;
-            outer = Cols_;
+            outer = cols_;
+            inner = rows_;
         }
+        data = &_pdata[0];
+        for (int i = 0; i < outer; ++i)
+            data[i] = (Scalar_ *)(&_data[i * inner]);
     }
 
     // Constructor
     Matrix() {
-        rows = Rows_;
-        cols = Cols_;
-        init();
-        if (MaxCols_ > 0 && MaxRows_ > 0) {
-            data = alloc_array_2d(outer, inner);
-        }
-        // toString();
+        _Matrix(Rows_, Cols_);
+        for (int i = 0; i < outer * inner; ++i)
+            _data[i] = 0;
     }
 
     // Copy Constructor
     Matrix(const Matrix& other) {
+        assert(other.rows <= MaxRows_ && other.cols <= MaxCols_);
+        _Matrix(Rows_, Cols_);
         matcopy(data, other.data, outer, inner);
-        rows = other.rows;
-        cols = other.cols;
-        init();
     }
 
     // Copy Constructor
     Matrix(Scalar_ *data) {
+        _Matrix(Rows_, Cols_);
         matsetv(this->data, data, outer, inner);
-        rows = Rows_;
-        cols = Cols_;
-        init();
     }
 
-    // Destructor
-    ~Matrix() {
-        if (--reference == 0) free_array_2d(data);
+    // Column if ColMajor
+    Scalar_ **col(int col) {
+        assert(!(Options_ & RowMajor));
+        return &_pdata[col];
     }
 
-    // Column
-    Matrix<Scalar_, Rows_, 1, ColMajor, 0, 0>& col(int col) {
-        Matrix<Scalar_, Rows_, 1, ColMajor, 0, 0> *_col = new Matrix<Scalar_, Rows_, 1, ColMajor, 0, 0>();
-        Scalar_ **target = { &data[col] };
-        _col->data = target;
-        _col->reference = _col->reference + 1;
-        _col->column = true;
-        return *_col;
+    // Row if RowMajor
+    Scalar_ **row(int row) {
+        assert(Options_ & RowMajor);
+        return &_pdata[row];
     }
 
     // Assignment Operator
@@ -113,7 +105,6 @@ public:
     // Assignment Operator
     Matrix& set(Scalar_ *f) {
         matsetv(data, f, outer, inner);
-        // print_array_2d(data, outer, inner, "float", "data");
         return *this;
     }
 
@@ -127,24 +118,16 @@ public:
         }
     }
 
+    Scalar_ checksum() {
+        Scalar_ sum = 0;
+        for (int i = 0; i < inner * outer; i++) {
+            sum += _data[i];
+        }
+        return sum;
+    }
+
     virtual void toString() {
-        printf("const data: %x rows: %d cols: %d inner: %d outer: %d ref: %d (%d, %d)\n", data, rows, cols, inner, outer, reference, Rows_, Cols_);
-    }
-};
-
-template<typename Scalar_, int Rows_>
-class MatrixCol : public Matrix<Scalar_, Rows_, 1, ColMajor, 0, 0> {
-
-public:
-    MatrixCol<Scalar_, Rows_>& operator=(const Matrix<Scalar_, Rows_, 1> other) {
-        matcopy(this->data, other.data, 1, Rows_);
-        return *this;
-    }
-
-    // Assignment Operator
-    MatrixCol<Scalar_, Rows_>& operator=(const Scalar_ f) {
-        matset(this->data, f, 1, Rows_);
-        return *this;
+        printf("const data: %x rows: %d cols: %d inner: %d outer: %d (%d, %d)\n", data, rows, cols, inner, outer, Rows_, Cols_);
     }
 };
 

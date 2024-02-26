@@ -1,9 +1,10 @@
-#include <stdio.h>
-#include <limits.h>
-#include <math.h>
-#include "common.h"
+#include <cstdio>
+#include <climits>
+#include <cmath>
+
 #include "riscv_vector.h"
-#include "rvv_matlib.h"
+#include "matlib/common.h"
+#include "matlib/matlib_rvv.h"
 
 extern "C" {
 
@@ -62,7 +63,7 @@ void matneg(float **a, float **b, int n, int m) {
 void cwiseabs_golden(float **a, float **b, int n, int m) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
-            b[i][j] = abs(a[i][j]);
+            b[i][j] = fabs(a[i][j]);
         }
     }
 }

@@ -34,7 +34,7 @@ void print_string(const char *a, const char *name) {
 void print_array_1d(float *a, int n, const char *type, const char *name) {
     printf("%s %s[%d] = {\n", type, name, n);
     for (int i = 0; i < n; ++i) {
-        printf("%06.2f%s", a[i], i != n - 1 ? "," : "};\n");
+        printf("% 8.4f%s", a[i], i != n - 1 ? "," : "};\n");
         if (i % 10 == 9)
             puts("");
     }
@@ -46,7 +46,7 @@ void print_array_2d(float **a, int n, int m, const char *type,
     printf("%s %s[%d][%d] = {\n", type, name, n, m);
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
-            printf("%06.2f", a[i][j]);
+            printf("% 8.4f", a[i][j]);
             if (j == m - 1)
                 puts(i == n - 1 ? "};" : ",");
             else
@@ -134,6 +134,19 @@ void init_array_one_2d(float **ar, int n, int m) {
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < m; ++j)
             ar[i][j] = 1;
+}
+
+void printx(float **a, int n, int m, const char *name) {
+    printf("%s ", name);
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            printf("% 8.4f", a[i][j]);
+            if (j == m - 1)
+                puts(i == n - 1 ? "" : ",");
+            else
+                putchar(',');
+        }
+    }
 }
 
 }
