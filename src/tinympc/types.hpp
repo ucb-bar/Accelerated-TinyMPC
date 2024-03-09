@@ -59,6 +59,7 @@ extern "C" {
 
         // Linear control cost terms
         tiny_MatrixNxNh q;
+        tiny_VectorNx qf;
         tiny_MatrixNuNhm1 r;
 
         // Linear Riccati backward pass terms
@@ -82,9 +83,10 @@ extern "C" {
         int status;
         int iter;
 
-        tiny_VectorNx Q;
-        tiny_VectorNx Qf;
-        tiny_VectorNu R;
+        tiny_MatrixNxNx Q;
+        tiny_MatrixNxNx Qf;
+        tiny_MatrixNuNu R;
+
         tiny_MatrixNxNx Adyn;
         tinytype * Adyn_data;
         tiny_MatrixNxNu Bdyn;

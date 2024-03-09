@@ -2,6 +2,9 @@
 #include <fstream>
 
 #include "admm.hpp"
+#include "tinympc/glob_opts.hpp"
+#include "tinympc/types.hpp"
+#include <Eigen/Dense>
 
 #define DEBUG_MODULE "TINYALG"
 
@@ -40,15 +43,13 @@ extern "C"
     {
         for (int i = NHORIZON - 2; i >= 0; i--)
         {   
-            solver->cache->Quu_inv = (solver->work->R + solver->work->Bdyn.transpose() * solver->work->P[i+1] * solver->work->Bdyn).inverse();
-            // TODO instead of inverse do more numerically stable solving method
-            solver->work->K[i] = solver->cache->Quu_inv * (solver->work->Bdyn.transpose() * solver->work->P[i+1] * solver->work->Adyn);
+            tiny_MatrixNuNu Quu = (solver->work->R + solver->work->Bdyn.transpose() * solver->work->P[i+1] * solver->work->Bdyn);
+            solver->work->K[i] = Quu.colPivHouseholderQr().solve(solver->work->Bdyn.transpose() * solver->work->P[i+1] * solver->work->Adyn);
             solver->cache->AmBKt = (solver->work->Adyn - solver->work->Bdyn * solver->work->K[i]).transpose();
-            // TODO Q should be NxN, not a vector
-            solver->work->P[i] = solver->work->Q + solver->work->K[i].transpose() * solver->work->R * solver->work->K[i] + solver->cache->AmBKt * solver->work->P[i+1] * solver->cache->AmBKt.tranpose();
-            solver->work->d.col(i) = solver->cache->Quu_inv * (solver->work->Bdyn.transpose() * solver->work.p.col(i+1) + solver->work->r.col(i));
-            solver->work.p.col(i) = solver->work.q.col(i) + solver->cache->AmBKt * (solver->work.p.col(i+1) - solver->work->P[i+1] * solver->work->Bdyn * solver->work->d.col(i))
-                    + solver->work.K[i].transpose() * (solver->work->R * solver->work->d.col(i) - solver->work->r.col(i));
+            solver->work->P[i] = solver->work->Q + solver->work->K[i].transpose() * solver->work->R * solver->work->K[i] + solver->cache->AmBKt * solver->work->P[i+1] * solver->cache->AmBKt.transpose();
+            solver->work->d.col(i) = Quu.colPivHouseholderQr().solve(solver->work->Bdyn.transpose() * solver->work->p.col(i+1) + solver->work->r.col(i));
+            solver->work->p.col(i) = solver->work->q.col(i) + solver->cache->AmBKt * (solver->work->p.col(i+1) - solver->work->P[i+1] * solver->work->Bdyn * solver->work->d.col(i))
+                    + solver->work->K[i].transpose() * (solver->work->R * solver->work->d.col(i) - solver->work->r.col(i));
         }
     }
 
@@ -60,9 +61,6 @@ extern "C"
         for (int i = 0; i < NHORIZON - 1; i++)
         {
             (solver->work->u.col(i)).noalias() = -solver->work->K[i].lazyProduct(solver->work->x.col(i)) - solver->work->d.col(i);
-            // solver->work->u.col(i) << .001, .02, .3, 4;
-            // DEBUG_PRINT("u(0): %f\n", solver->work->u.col(0)(0));
-            // multAdyn(solver->Ax->cache.Adyn, solver->work->x.col(i));
             (solver->work->x.col(i + 1)).noalias() = solver->work->Adyn.lazyProduct(solver->work->x.col(i)) + solver->work->Bdyn.lazyProduct(solver->work->u.col(i));
         }
     }
@@ -109,9 +107,9 @@ extern "C"
     {
         // solver->work->r = -(solver->Uref.array().colwise() * solver->work->r.array()); // Uref = 0 so commented out for speed up. Need to uncomment if using Uref
         solver->work->r = -solver->cache->rho * (solver->work->znew - solver->work->y);
-        solver->work->q = -(solver->work->Xref.array().colwise() * solver->work->Q.array());
+        solver->work->q = -(solver->work->Xref.array().colwise() * solver->work->qf.array());
         (solver->work->q).noalias() -= solver->cache->rho * (solver->work->vnew - solver->work->g);
-        solver->work->p.col(NHORIZON - 1) = -(solver->work->Xref.col(NHORIZON - 1).transpose().lazyProduct(solver->cache->Pinf));
+        solver->work->p.col(NHORIZON - 1) = -(solver->work->Xref.col(NHORIZON - 1).transpose().lazyProduct(solver->work->P[NHORIZON-1]));
         solver->work->p.col(NHORIZON - 1) -= solver->cache->rho * (solver->work->vnew.col(NHORIZON - 1) - solver->work->g.col(NHORIZON - 1));
     }
 
