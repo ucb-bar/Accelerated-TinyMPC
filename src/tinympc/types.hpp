@@ -61,6 +61,7 @@ extern "C" {
         tiny_MatrixNxNh q;
         tiny_VectorNx qf;
         tiny_MatrixNuNhm1 r;
+        tiny_VectorNu rf;
 
         // Linear Riccati backward pass terms
         tiny_MatrixNxNh p;

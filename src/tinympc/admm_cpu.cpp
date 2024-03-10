@@ -33,6 +33,7 @@ extern "C"
     void update_primal(TinySolver *solver)
     {
         CYCLE_CNT_WRAPPER(backward_pass_grad, solver, "update_primal_backward_pass");
+        // print value of d[0]
         CYCLE_CNT_WRAPPER(forward_pass, solver, "update_primal_forward_pass");
     }
 
@@ -41,6 +42,8 @@ extern "C"
      */
     void backward_pass_grad(TinySolver *solver)
     {
+        solver->work->P[NHORIZON - 1] = solver->work->Qf;
+        solver->work->p.col(NHORIZON - 1) = solver->work->qf;
         for (int i = NHORIZON - 2; i >= 0; i--)
         {   
             tiny_MatrixNuNu Quu = (solver->work->R + solver->work->Bdyn.transpose() * solver->work->P[i+1] * solver->work->Bdyn);
@@ -48,6 +51,12 @@ extern "C"
             solver->cache->AmBKt = (solver->work->Adyn - solver->work->Bdyn * solver->work->K[i]).transpose();
             solver->work->P[i] = solver->work->Q + solver->work->K[i].transpose() * solver->work->R * solver->work->K[i] + solver->cache->AmBKt * solver->work->P[i+1] * solver->cache->AmBKt.transpose();
             solver->work->d.col(i) = Quu.colPivHouseholderQr().solve(solver->work->Bdyn.transpose() * solver->work->p.col(i+1) + solver->work->r.col(i));
+
+            // print out components of d
+            // std::cout << "d[" << i << "]: " << solver->work->d.col(i).transpose() << std::endl;
+            // std::cout << "p[" << i+1 << "]: " << solver->work->p.col(i+1).transpose() << std::endl;
+            // std::cout << "r[" << i << "]: " << solver->work->r.col(i).transpose() << std::endl;
+
             solver->work->p.col(i) = solver->work->q.col(i) + solver->cache->AmBKt * (solver->work->p.col(i+1) - solver->work->P[i+1] * solver->work->Bdyn * solver->work->d.col(i))
                     + solver->work->K[i].transpose() * (solver->work->R * solver->work->d.col(i) - solver->work->r.col(i));
         }
@@ -105,10 +114,11 @@ extern "C"
      */
     void update_linear_cost(TinySolver *solver)
     {
-        // solver->work->r = -(solver->Uref.array().colwise() * solver->work->r.array()); // Uref = 0 so commented out for speed up. Need to uncomment if using Uref
+        // solver->work->r = -(solver->Uref.array().colwise() * solver->work->rf.array()); // Uref = 0 so commented out for speed up. Need to uncomment if using Uref
         solver->work->r = -solver->cache->rho * (solver->work->znew - solver->work->y);
         solver->work->q = -(solver->work->Xref.array().colwise() * solver->work->qf.array());
         (solver->work->q).noalias() -= solver->cache->rho * (solver->work->vnew - solver->work->g);
+        // TODO replace this with computed P
         solver->work->p.col(NHORIZON - 1) = -(solver->work->Xref.col(NHORIZON - 1).transpose().lazyProduct(solver->work->P[NHORIZON-1]));
         solver->work->p.col(NHORIZON - 1) -= solver->cache->rho * (solver->work->vnew.col(NHORIZON - 1) - solver->work->g.col(NHORIZON - 1));
     }

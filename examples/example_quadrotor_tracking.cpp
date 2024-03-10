@@ -44,7 +44,11 @@ extern "C"
         work.Qf = Eigen::Map<tiny_MatrixNxNx>(Qf_data);
         work.R = Eigen::Map<tiny_MatrixNuNu>(R_data);
         work.qf = Eigen::Map<tiny_VectorNx>(qf_data);
-        work.P[NHORIZON-1] = work.Qf;
+        work.rf = Eigen::Map<tiny_VectorNu>(rf_data);
+        for (int i = 0; i < NHORIZON; ++i) {
+            work.P[i] = tiny_MatrixNxNx::Zero();
+        }
+        // work.P[NHORIZON-1] = work.Qf;
         work.u_min = tiny_MatrixNuNhm1::Constant(-0.5);
         work.u_max = tiny_MatrixNuNhm1::Constant(0.5);
         work.x_min = tiny_MatrixNxNh::Constant(-5);
@@ -56,6 +60,7 @@ extern "C"
         work.x = tiny_MatrixNxNh::Zero();
         work.q = tiny_MatrixNxNh::Zero();
         work.p = tiny_MatrixNxNh::Zero();
+        // work.p.col(NHORIZON-1) = work.qf;
         work.v = tiny_MatrixNxNh::Zero();
         work.vnew = tiny_MatrixNxNh::Zero();
         work.g = tiny_MatrixNxNh::Zero();
