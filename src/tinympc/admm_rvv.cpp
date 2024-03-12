@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <cstdint>
 
-#include "tinympc/admm.hpp"
+#define USE_RVV 1
+#include "tinympc/admm_rvv.hpp"
 
 #define DEBUG_MODULE "TINYALG"
 
@@ -34,15 +35,6 @@ std::ofstream outputFile("cycle_output.csv");
 #endif
 
 /**
- * Do backward Riccati pass then forward roll out
- */
-void update_primal(TinySolver *solver)
-{
-    CYCLE_CNT_WRAPPER(backward_pass_grad, solver, "update_primal_backward_pass");
-    CYCLE_CNT_WRAPPER(forward_pass, solver, "update_primal_forward_pass");
-}
-
-/**
  * Update linear terms from Riccati backward pass
  */
 void backward_pass_grad(TinySolver *solver)
@@ -56,13 +48,21 @@ void backward_pass_grad(TinySolver *solver)
 /**
  * Use LQR feedback policy to roll out trajectory
  */
-
 void forward_pass(TinySolver *solver)
 {
     for (int i = 0; i < NHORIZON - 1; i++) {
         forward_pass_1(solver, i, u1, u2);
         forward_pass_2(solver, i, x1, x2);
     }
+}
+
+/**
+ * Do backward Riccati pass then forward roll out
+ */
+void update_primal(TinySolver *solver)
+{
+    CYCLE_CNT_WRAPPER(backward_pass_grad, solver, "update_primal_backward_pass");
+    CYCLE_CNT_WRAPPER(forward_pass, solver, "update_primal_forward_pass");
 }
 
 /**

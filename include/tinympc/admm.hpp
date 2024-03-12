@@ -3,7 +3,7 @@
 #ifdef USE_RVV
 #include "admm_rvv.hpp"
 #else
-#include "types.hpp"
+#include "admm_cpu.hpp"
 #endif
 
 #ifdef __cplusplus
@@ -11,9 +11,8 @@ extern "C"
 {
 #endif
 
-int tiny_solve(TinySolver *solver);
 void tiny_init(TinySolver *solver);
-
+int tiny_solve(TinySolver *solver);
 void update_primal(TinySolver *solver);
 void backward_pass_grad(TinySolver *solver);
 void forward_pass(TinySolver *solver);

@@ -11,8 +11,7 @@
 extern "C" {
 
 // u1 = x[:, i] * Kinf; u2 = u1 + d; u[:, i] = -u2
-inline void forward_pass_1(TinySolver *solver, int i,
-                           tiny_VectorNu &u1_, tiny_VectorNu &u2_) {
+inline void forward_pass_1(TinySolver *solver, int i, tiny_VectorNu &u1_, tiny_VectorNu &u2_) {
     matmul(solver->work->x.col(i), solver->cache->Kinf.data, u1_.data, 1, NINPUTS, NSTATES);
     matadd(u1_.data, solver->work->d.col(i), u2_.data, 1, NINPUTS);
     matneg(u2_.data, solver->work->u.col(i), 1, NINPUTS);
@@ -20,8 +19,7 @@ inline void forward_pass_1(TinySolver *solver, int i,
 }
 
 // x[:, i+1] = Adyn * x[:, i] + Bdyn * u[:, i]
-inline void forward_pass_2(TinySolver *solver, int i,
-                           tiny_VectorNx &x1_, tiny_VectorNx &x2_) {
+inline void forward_pass_2(TinySolver *solver, int i, tiny_VectorNx &x1_, tiny_VectorNx &x2_) {
     matmul(solver->work->x.col(i), solver->work->Adyn.data, x1_.data, 1, NSTATES, NSTATES);
     matmul(solver->work->u.col(i), solver->work->Bdyn.data, x2_.data, 1, NSTATES, NSTATES);
     matadd(x1_.data, x2_.data, solver->work->x.col(i + 1), 1, NSTATES);
@@ -29,8 +27,7 @@ inline void forward_pass_2(TinySolver *solver, int i,
 }
 
 // d[:, i] = Quu_inv * (BdynT * p[:, i+1] + r[:, i]);
-inline void backward_pass_1(TinySolver *solver, int i,
-                            tiny_MatrixNuNx &BdynT, tiny_VectorNu &u1_, tiny_VectorNu &u2_) {
+inline void backward_pass_1(TinySolver *solver, int i, tiny_MatrixNuNx &BdynT, tiny_VectorNu &u1_, tiny_VectorNu &u2_) {
     matmul(solver->work->p.col(i + 1), BdynT.data, u1_.data, 1, NINPUTS, NSTATES);
     matadd(solver->work->r.col(i), u1_.data, u2_.data, 1, NINPUTS);
     matmul(u2_.data, solver->cache->Quu_inv.data, solver->work->d.col(i), 1, NINPUTS, NINPUTS);

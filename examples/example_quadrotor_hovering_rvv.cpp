@@ -54,7 +54,7 @@ int main()
     work.iter = 0;
     settings.abs_pri_tol = 0.001;
     settings.abs_dua_tol = 0.001;
-    settings.max_iter = 100;
+    settings.max_iter = 1;
     settings.check_termination = 1;
     settings.en_input_bound = 1;
     settings.en_state_bound = 1;

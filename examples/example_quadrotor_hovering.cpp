@@ -71,7 +71,7 @@ extern "C"
 
         settings.abs_pri_tol = 0.001;
         settings.abs_dua_tol = 0.001;
-        settings.max_iter = 100;
+        settings.max_iter = 1;
         settings.check_termination = 1;
         settings.en_input_bound = 1;
         settings.en_state_bound = 1;
@@ -93,7 +93,7 @@ extern "C"
 
     std::ofstream outputFile("output.csv");
     outputFile << "Step,TrackingError,x,y,z,phi,theta,psi,dx,dy,dz,dphi,dtheta,dpsi,u1,u2,u3,u4" << std::endl;
-    for (int k = 0; k < 70; ++k) {
+    for (int k = 0; k < 1; ++k) {
 
         // Print header to CSV file
   
