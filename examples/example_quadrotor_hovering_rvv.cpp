@@ -30,12 +30,15 @@ int main()
     // Map data from problem_data (array in row-major order)
     cache.rho = rho_value;
     cache.Kinf.set(Kinf_data);
+    transpose(cache.Kinf.data, cache.KinfT.data, NINPUTS, NSTATES);
     cache.Pinf.set(Pinf_data);
+    transpose(cache.Pinf.data, cache.PinfT.data, NSTATES, NSTATES);
     cache.Quu_inv.set(Quu_inv_data);
     cache.AmBKt.set(AmBKt_data);
     cache.coeff_d2p.set(coeff_d2p_data);
     work.Adyn.set(Adyn_data);
     work.Bdyn.set(Bdyn_data);
+    transpose(work.Bdyn.data, work.BdynT.data, NSTATES, NINPUTS);
     work.Q.set(Q_data);
     work.R.set(R_data);
 

@@ -9,15 +9,6 @@
 extern "C"
 {
 
-// Temporary variables
-tiny_VectorNu u1, u2;
-tiny_VectorNx x1, x2, x3;
-tiny_MatrixNuNhm1 m1, m2;
-tiny_MatrixNxNh s1, s2;
-tiny_MatrixNuNx BdynT;
-tiny_MatrixNxNu KinfT;
-tiny_MatrixNxNx PinfT;
-
 static uint64_t startTimestamp;
 #ifdef MEASURE_CYCLES
 std::ofstream outputFile("cycle_output.csv");
@@ -40,8 +31,8 @@ std::ofstream outputFile("cycle_output.csv");
 void backward_pass(TinySolver *solver)
 {
     for (int i = NHORIZON - 2; i >= 0; i--) {
-        backward_pass_1(solver, i, BdynT, u1, u2);
-        backward_pass_2(solver, i, KinfT, x1, x2, x3);
+        backward_pass_1(solver, i);
+        backward_pass_2(solver, i);
     }
 }
 
@@ -51,8 +42,8 @@ void backward_pass(TinySolver *solver)
 void forward_pass(TinySolver *solver)
 {
     for (int i = 0; i < NHORIZON - 1; i++) {
-        forward_pass_1(solver, i, u1, u2);
-        forward_pass_2(solver, i, x1, x2);
+        forward_pass_1(solver, i);
+        forward_pass_2(solver, i);
     }
 }
 
@@ -71,8 +62,8 @@ void update_primal(TinySolver *solver)
  */
 void update_slack(TinySolver *solver)
 {
-    update_slack_1(solver, m1);
-    update_slack_2(solver, s1);
+    update_slack_1(solver);
+    update_slack_2(solver);
 }
 
 /**
@@ -81,21 +72,21 @@ void update_slack(TinySolver *solver)
  */
 void update_dual(TinySolver *solver)
 {
-    update_dual_1(solver, m1, s1);
+    update_dual_1(solver);
 }
 
 /**
- * Update linear control cost terms in the Riccati feedback using the changing
- * slack and dual variables from ADMM
+ * Update linear control cost terms in the Riccati feedback using
+ * the changing slack and dual variables from ADMM
  */
 void update_linear_cost(TinySolver *solver)
 {
-    update_linear_cost_1(solver, m1);
+    update_linear_cost_1(solver);
     for (int i = 0; i < NHORIZON; i++) {
-        update_linear_cost_2(solver, i, x1);
+        update_linear_cost_2(solver, i);
     }
-    update_linear_cost_3(solver, s1, s2);
-    update_linear_cost_4(solver, PinfT, x1, x2, x3);
+    update_linear_cost_3(solver);
+    update_linear_cost_4(solver);
 }
 
 void tiny_init(TinySolver *solver) {
@@ -104,16 +95,6 @@ void tiny_init(TinySolver *solver) {
 
 int tiny_solve(TinySolver *solver)
 {
-    u1 = 0.0;
-    u2 = 0.0;
-
-    // Transpose these matrices once
-    transpose(solver->work->Bdyn.data, BdynT.data, NSTATES, NINPUTS);
-    // print_array_2d(solver->work->Bdyn.data, NSTATES, NINPUTS, "float", "Bdyn" );
-    // print_array_2d(BdynT.data, NINPUTS, NSTATES, "float", "BdynT" );
-    transpose(solver->cache->Kinf.data, KinfT.data, NINPUTS, NSTATES);
-    transpose(solver->cache->Pinf.data, PinfT.data, NSTATES, NSTATES);
-
     // Initialize variables
     solver->work->status = 11; // TINY_UNSOLVED
     solver->work->iter = 1;
@@ -140,10 +121,10 @@ int tiny_solve(TinySolver *solver)
         #endif
         if (solver->work->iter % solver->settings->check_termination == 0)
         {
-            primal_residual_state(solver, s1, s2);
-            dual_residual_state(solver, s1, s2);
-            primal_residual_input(solver, m1, m2);
-            dual_residual_input(solver, m1, m2);
+            primal_residual_state(solver);
+            dual_residual_state(solver);
+            primal_residual_input(solver);
+            dual_residual_input(solver);
             if (solver->work->primal_residual_state < solver->settings->abs_pri_tol &&
                 solver->work->primal_residual_input < solver->settings->abs_pri_tol &&
                 solver->work->dual_residual_state < solver->settings->abs_dua_tol &&

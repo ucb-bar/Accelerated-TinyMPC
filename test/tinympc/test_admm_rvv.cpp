@@ -24,7 +24,9 @@ void init_solver() {
     cache.Quu_inv.set(Quu_inv_data);
     cache.AmBKt.set(AmBKt_data);
     cache.Kinf.set(Kinf_data);
+    transpose(cache.Kinf.data, cache.KinfT.data, NINPUTS, NSTATES);
     cache.Pinf.set(Pinf_data);
+    transpose(cache.Pinf.data, cache.PinfT.data, NSTATES, NSTATES);
     work.r.set(r_data);
     work.q.set(q_data);
     work.p.set(p_data);
@@ -35,20 +37,20 @@ void init_solver() {
     work.y.set(y_data);
     work.Adyn.set(Adyn_data);
     work.Bdyn.set(Bdyn_data);
+    transpose(work.Bdyn.data, work.BdynT.data, NSTATES, NINPUTS);
     work.znew.set(znew_data);
     work.vnew.set(vnew_data);
     work.u_min.set(u_min_data);
     work.u_max.set(u_max_data);
     work.x_min.set(x_min_data);
     work.x_max.set(x_max_data);
+    work.u1 = 0.0;
+    work.u2 = 0.0;
 }
 
 int main() {
 
     tinytype checksum = 0;
-    tiny_MatrixNuNx BdynT;
-    tiny_MatrixNxNu KinfT;
-    tiny_MatrixNxNx PinfT;
 
     // forward pass
     init_solver();
@@ -62,8 +64,6 @@ int main() {
 
     // backward pass
     init_solver();
-    transpose(work.Bdyn.data, BdynT.data, NSTATES, NINPUTS);
-    transpose(cache.Kinf.data, KinfT.data, NINPUTS, NSTATES);
     backward_pass(&solver);
     checksum = work.p.checksum();
     printf("backward_pass p      : %s (%+10f %+10f)\n", float_eq(test__backward_pass__d, checksum, 1e-6) ? "pass" : "fail", test__backward_pass__d, checksum);
@@ -110,7 +110,6 @@ int main() {
 
     // linear cost
     init_solver();
-    transpose(cache.Pinf.data, PinfT.data, NSTATES, NSTATES);
     update_linear_cost(&solver);
     checksum = work.r.checksum();
     printf("update_linear_cost r : %s (%+10f %+10f)\n", float_eq(test__update_linear_cost__r, checksum, 1e-6) ? "pass" : "fail", test__update_linear_cost__r, checksum);

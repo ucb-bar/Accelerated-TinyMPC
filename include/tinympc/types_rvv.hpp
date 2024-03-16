@@ -151,8 +151,10 @@ typedef struct
 {
     tinytype rho;
     tiny_MatrixNuNx Kinf;
+    tiny_MatrixNxNu KinfT;
     tinytype * Kinf_data;
     tiny_MatrixNxNx Pinf;
+    tiny_MatrixNxNx PinfT;
     tinytype * Pinf_data;
     tiny_MatrixNuNu Quu_inv;
     tinytype * Quu_inv_data;
@@ -214,6 +216,7 @@ typedef struct
     tiny_MatrixNxNx Adyn;
     tinytype * Adyn_data;
     tiny_MatrixNxNu Bdyn;
+    tiny_MatrixNuNx BdynT;
     tinytype * Bdyn_data;
 
     tiny_MatrixNuNhm1 u_min;
@@ -225,6 +228,10 @@ typedef struct
 
     // Temporaries
     tiny_VectorNu Qu;
+    tiny_VectorNu u1, u2;
+    tiny_VectorNx x1, x2, x3;
+    tiny_MatrixNuNhm1 m1, m2;
+    tiny_MatrixNxNh s1, s2;
 } TinyWorkspace;
 
 /**
