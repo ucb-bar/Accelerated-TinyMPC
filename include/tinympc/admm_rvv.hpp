@@ -15,7 +15,7 @@ inline void forward_pass_1(TinySolver *solver, int i, tiny_VectorNu &u1_, tiny_V
     matmul(solver->work->x.col(i), solver->cache->Kinf.data, u1_.data, 1, NINPUTS, NSTATES);
     matadd(u1_.data, solver->work->d.col(i), u2_.data, 1, NINPUTS);
     matneg(u2_.data, solver->work->u.col(i), 1, NINPUTS);
-    printx(solver->work->u.col(i), 1, NINPUTS, "fp1 ui");
+    // printx(solver->work->u.col(i), 1, NINPUTS, "fp1 ui");
 }
 
 // x[:, i+1] = Adyn * x[:, i] + Bdyn * u[:, i]
@@ -23,7 +23,7 @@ inline void forward_pass_2(TinySolver *solver, int i, tiny_VectorNx &x1_, tiny_V
     matmul(solver->work->x.col(i), solver->work->Adyn.data, x1_.data, 1, NSTATES, NSTATES);
     matmul(solver->work->u.col(i), solver->work->Bdyn.data, x2_.data, 1, NSTATES, NSTATES);
     matadd(x1_.data, x2_.data, solver->work->x.col(i + 1), 1, NSTATES);
-    printx(solver->work->x.col(i + 1), 1, NSTATES, "fp2 xip1");
+    // printx(solver->work->x.col(i + 1), 1, NSTATES, "fp2 xip1");
 }
 
 // d[:, i] = Quu_inv * (BdynT * p[:, i+1] + r[:, i]);
@@ -32,12 +32,12 @@ inline void backward_pass_1(TinySolver *solver, int i, tiny_MatrixNuNx &BdynT, t
     matadd(solver->work->r.col(i), u1_.data, u2_.data, 1, NINPUTS);
     matmul(u2_.data, solver->cache->Quu_inv.data, solver->work->d.col(i), 1, NINPUTS, NINPUTS);
 
-    print_array_2d(BdynT.data, NINPUTS, NSTATES, "float", "BdynT" );
-    printx(solver->work->p.col(i + 1), 1, NSTATES, "bp1 pip1");
-    printx(solver->work->r.col(i), 1, NINPUTS, "bp1 ri");
-    printx(u1_.data, 1, NINPUTS, "bp1 u1");
-    printx(u2_.data, 1, NINPUTS, "bp1 u2");
-    printx(solver->work->d.col(i), 1, NINPUTS, "bp1 d");
+    // print_array_2d(BdynT.data, NINPUTS, NSTATES, "float", "BdynT" );
+    // printx(solver->work->p.col(i + 1), 1, NSTATES, "bp1 pip1");
+    // printx(solver->work->r.col(i), 1, NINPUTS, "bp1 ri");
+    // printx(u1_.data, 1, NINPUTS, "bp1 u1");
+    // printx(u2_.data, 1, NINPUTS, "bp1 u2");
+    // printx(solver->work->d.col(i), 1, NINPUTS, "bp1 d");
 }
 
 // p[:, i] = q[:, i] + AmBKt * p[:, i + 1] - KinfT * r[:, i]
@@ -47,7 +47,7 @@ inline void backward_pass_2(TinySolver *solver, int i,
     matmul(solver->work->r.col(i), KinfT.data, x2_.data, 1, NSTATES, NINPUTS);
     matsub(x1_.data, x2_.data, x3_.data, 1, NSTATES);
     matadd(x3_.data, solver->work->q.col(i), solver->work->p.col(i), 1, NSTATES);
-    printx(solver->work->p.col(i), 1, NSTATES, "bp2 pi");
+    // printx(solver->work->p.col(i), 1, NSTATES, "bp2 pi");
 }
 
 // y u znew  g x vnew
@@ -120,20 +120,20 @@ inline void update_linear_cost_3(TinySolver *solver, tiny_MatrixNxNh &s1_, tiny_
 inline void update_linear_cost_4(TinySolver *solver,
                                  tiny_MatrixNxNx &PinfT, tiny_VectorNx &x1_, tiny_VectorNx &x2_, tiny_VectorNx &x3_) {
     matsub(solver->work->vnew.col(NHORIZON - 1), solver->work->g.col(NHORIZON - 1), x1_.data, 1, NSTATES);
-    printx(solver->work->vnew.col(NHORIZON - 1), 1, NSTATES, "lc4 vnew");
-    printx(solver->work->g.col(NHORIZON - 1), 1, NSTATES, "lc4 g");
-    printx(x1_.data, 1, NSTATES, "lc4 x1");
+    // printx(solver->work->vnew.col(NHORIZON - 1), 1, NSTATES, "lc4 vnew");
+    // printx(solver->work->g.col(NHORIZON - 1), 1, NSTATES, "lc4 g");
+    // printx(x1_.data, 1, NSTATES, "lc4 x1");
     matmulf(x1_.data, x2_.data, solver->cache->rho, 1, NSTATES);
-    printx(x2_.data, 1, NSTATES, "lc4 x2");
+    // printx(x2_.data, 1, NSTATES, "lc4 x2");
     matmul(solver->work->Xref.col(NHORIZON - 1), PinfT.data, x1_.data, 1, NSTATES, NSTATES);
 
-    printx(solver->work->Xref.col(NHORIZON - 1), 1, NSTATES, "lc4 Xref" );
-    print_array_2d(PinfT.data, NSTATES, NSTATES, "lc4", "PinfT" );
-    printx(x1_.data, 1, NSTATES, "lc4 x1");
+    // printx(solver->work->Xref.col(NHORIZON - 1), 1, NSTATES, "lc4 Xref" );
+    // print_array_2d(PinfT.data, NSTATES, NSTATES, "lc4", "PinfT" );
+    // printx(x1_.data, 1, NSTATES, "lc4 x1");
     matadd(x1_.data, x2_.data, x3_.data, 1, NSTATES);
-    printx(x3_.data, 1, NSTATES, "lc4 x3");
+    // printx(x3_.data, 1, NSTATES, "lc4 x3");
     matneg(x3_.data, solver->work->p.col(NHORIZON - 1), 1, NSTATES);
-    print_array_2d(solver->work->p.data, NHORIZON, NSTATES, "lc4", "p");
+    // print_array_2d(solver->work->p.data, NHORIZON, NSTATES, "lc4", "p");
 }
 
 };

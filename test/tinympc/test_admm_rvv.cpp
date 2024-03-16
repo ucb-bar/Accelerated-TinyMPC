@@ -6,143 +6,123 @@
 #include <cmath>
 #include <cstdint>
 
-#include "admm_rvv.hpp"
+#include "matlib/common.h"
+#include "matlib/matlib_rvv.h"
+#include "admm.hpp"
+#include "test_admm_rvv.hpp"
+
+#define DEBUG 0
 
 TinyCache cache;
 TinyWorkspace work;
 TinySettings settings;
 TinySolver solver{&settings, &cache, &work};
 
-tiny_VectorNu u1, u2;
-tiny_VectorNx x1, x2, x3;
-tiny_MatrixNuNhm1 m1, m2;
-tiny_MatrixNxNh s1, s2;
-tiny_MatrixNuNx BdynT;
-tiny_MatrixNxNu KinfT;
-tiny_MatrixNxNx PinfT;
-
 extern "C" {
+
+void init_solver() {
+    cache.Quu_inv.set(Quu_inv_data);
+    cache.AmBKt.set(AmBKt_data);
+    cache.Kinf.set(Kinf_data);
+    cache.Pinf.set(Pinf_data);
+    work.r.set(r_data);
+    work.q.set(q_data);
+    work.p.set(p_data);
+    work.d.set(d_data);
+    work.x.set(x_data);
+    work.u.set(u_data);
+    work.g.set(g_data);
+    work.y.set(y_data);
+    work.Adyn.set(Adyn_data);
+    work.Bdyn.set(Bdyn_data);
+    work.znew.set(znew_data);
+    work.vnew.set(vnew_data);
+    work.u_min.set(u_min_data);
+    work.u_max.set(u_max_data);
+    work.x_min.set(x_min_data);
+    work.x_max.set(x_max_data);
+}
 
 int main() {
 
+    tinytype checksum = 0;
+    tiny_MatrixNuNx BdynT;
+    tiny_MatrixNxNu KinfT;
+    tiny_MatrixNxNx PinfT;
+
     // forward pass
-    cache.Kinf = 1.0;
-    work.Adyn = 1.0;
-    work.Bdyn = 1.0;
-    work.x = 1.0;
-    work.d = 1.0;
-
-    printf("forward_pass_1\n");
-    forward_pass_1(&solver, 2, u1, u2);
-    print_array_2d(work.u.data, NHORIZON - 1, NINPUTS, "float", "work.u");
-
-    printf("forward_pass_2\n");
-    forward_pass_2(&solver, 2, x1, x2);
-    print_array_2d(work.x.data, NHORIZON, NSTATES, "float", "work.x");
+    init_solver();
+    forward_pass(&solver);
+    checksum = work.u.checksum();
+    printf("forward_pass u       : %s (%+10f %+10f)\n", float_eq(test__forward_pass__u, checksum, 1e-6) ? "pass" : "fail", test__forward_pass__u, checksum);
+    if (DEBUG) print_array_2d(work.u.data, NHORIZON - 1, NINPUTS, "float", "work.u");
+    checksum = work.x.checksum();
+    printf("forward_pass x       : %s (%+10f %+10f)\n", float_eq(test__forward_pass__x, checksum, 1e-6) ? "pass" : "fail", test__forward_pass__x, checksum);
+    if (DEBUG) print_array_2d(work.x.data, NHORIZON, NSTATES, "float", "work.x");
 
     // backward pass
-    work.p = 1.0;
-    work.q = 1.0;
-    work.r = 1.0;
-    cache.AmBKt = 1.0;
-    cache.Quu_inv = 1.0;
-    BdynT = 1.0;
-    KinfT = 1.0;
-    PinfT = 1.0;
+    init_solver();
+    transpose(work.Bdyn.data, BdynT.data, NSTATES, NINPUTS);
+    transpose(cache.Kinf.data, KinfT.data, NINPUTS, NSTATES);
+    backward_pass(&solver);
+    checksum = work.p.checksum();
+    printf("backward_pass p      : %s (%+10f %+10f)\n", float_eq(test__backward_pass__d, checksum, 1e-6) ? "pass" : "fail", test__backward_pass__d, checksum);
+    if (DEBUG) print_array_2d(work.p.data, NHORIZON, NSTATES, "float", "work.p");
+    checksum = work.d.checksum();
+    printf("backward_pass d      : %s (%+10f %+10f)\n", float_eq(test__backward_pass__p, checksum, 1e-6) ? "pass" : "fail", test__backward_pass__p, checksum);
+    if (DEBUG) print_array_2d(work.d.data, NHORIZON - 1, NINPUTS, "float", "work.d");
 
-    printf("backward_pass_1\n");
-    backward_pass_1(&solver, 2, BdynT, u1, u2);
-    print_array_2d(u1.data, 1, NINPUTS, "float", "work.u");
-
-    printf("backward_pass_2\n");
-    backward_pass_2(&solver, 2, KinfT, x1, x2, x3);
-    print_array_2d(solver.work->p.data, NHORIZON, NSTATES, "float", "work.p");
-
-    // update dual
-    work.x = 1.0;
-    work.y = 1.0;
-    work.u = 1.0;
-    work.znew = 4.0;
-
-    printf("update_dual_1\n");
-    update_dual_1(&solver, m1, s1);
-    print_array_2d(solver.work->y.data, NHORIZON - 1, NINPUTS, "float", "work.y");
-    print_array_2d(solver.work->g.data, NHORIZON, NSTATES, "float", "work.g");
+    // update primal
+    init_solver();
+    update_primal(&solver);
+    checksum = work.u.checksum();
+    printf("update_primal u      : %s (%+10f %+10f)\n", float_eq(test__update_primal__u, checksum, 1e-6) ? "pass" : "fail", test__update_primal__u, checksum);
+    if (DEBUG) print_array_2d(work.u.data, NHORIZON - 1, NINPUTS, "float", "work.u");
+    checksum = work.x.checksum();
+    printf("update_primal x      : %s (%+10f %+10f)\n", float_eq(test__update_primal__x, checksum, 1e-6) ? "pass" : "fail", test__update_primal__x, checksum);
+    if (DEBUG) print_array_2d(work.x.data, NHORIZON, NSTATES, "float", "work.x");
+    checksum = work.p.checksum();
+    printf("update_primal p      : %s (%+10f %+10f)\n", float_eq(test__update_primal__p, checksum, 1e-6) ? "pass" : "fail", test__update_primal__p, checksum);
+    if (DEBUG) print_array_2d(work.p.data, NHORIZON, NSTATES, "float", "work.p");
+    checksum = work.d.checksum();
+    printf("update_primal d      : %s (%+10f %+10f)\n", float_eq(test__update_primal__d, checksum, 1e-6) ? "pass" : "fail", test__update_primal__d, checksum);
+    if (DEBUG) print_array_2d(work.d.data, NHORIZON - 1, NINPUTS, "float", "work.d");
 
     // update slack
-    settings.en_input_bound = 1;
-    work.y = 0.0;
-    work.u = 100.0;
-    work.u_min = -1.0;
-    work.u_min =  1.0;
+    init_solver();
+    update_slack(&solver);
+    checksum = work.znew.checksum();
+    printf("update_slack znew    : %s (%+10f %+10f)\n", float_eq(test__update_slack__znew, checksum, 1e-6) ? "pass" : "fail", test__update_slack__znew, checksum);
+    if (DEBUG) print_array_2d(work.znew.data, NHORIZON - 1, NINPUTS, "float", "work.znew");
+    checksum = work.vnew.checksum();
+    printf("update_slack vnew    : %s (%+10f %+10f)\n", float_eq(test__update_slack__vnew, checksum, 1e-6) ? "pass" : "fail", test__update_slack__vnew, checksum);
+    if (DEBUG) print_array_2d(work.vnew.data, NHORIZON, NSTATES, "float", "work.vnew");
 
-    printf("update_slack_1\n");
-    update_slack_1(&solver, m1);
-    print_array_2d(solver.work->znew.data, NHORIZON - 1, NINPUTS, "float", "work.znew");
-    work.u = -100.0;
-    update_slack_1(&solver, m1);
-    print_array_2d(solver.work->znew.data, NHORIZON - 1, NINPUTS, "float", "work.znew");
-
-    settings.en_state_bound = 1;
-    work.g = 0.0;
-    work.x = 100.0;
-    work.x_min = -1.0;
-    work.x_min =  1.0;
-
-    printf("update_slack_2\n");
-    update_slack_2(&solver, s1);
-    print_array_2d(solver.work->vnew.data, NHORIZON, NSTATES, "float", "work.vnew");
-    work.x = -100.0;
-    print_array_2d(solver.work->vnew.data, NHORIZON, NSTATES, "float", "work.vnew");
-
-    // residual state
-    printf("residual states\n");
-    cache.rho = 1.0;
-    work.x = 1.0;
-    work.v = 2.0;
-    work.vnew = -3.0;
-
-    primal_residual_state(&solver, s1, s2);
-    printf("float prs: %f\n", work.primal_residual_state);
-
-    dual_residual_state(&solver, s1, s2);
-    printf("float drs: %f\n", work.dual_residual_state);
-
-    // residual input
-    printf("residual inputs\n");
-    work.u = 1.0;
-    work.z = 1.0;
-    work.znew = 3.0;
-
-    primal_residual_input(&solver, m1, m2);
-    printf("float pri: %f\n", work.primal_residual_input);
-    dual_residual_input(&solver, m1, m2);
-    printf("float dri: %f\n", work.dual_residual_input);
+    // update dual
+    init_solver();
+    update_dual(&solver);
+    checksum = work.y.checksum();
+    printf("update_dual y        : %s (%+10f %+10f)\n", float_eq(test__update_dual__y, checksum, 1e-6) ? "pass" : "fail", test__update_dual__y, checksum);
+    if (DEBUG) print_array_2d(work.y.data, NHORIZON - 1, NINPUTS, "float", "work.y");
+    checksum = work.g.checksum();
+    printf("update_dual g        : %s (%+10f %+10f)\n", float_eq(test__update_dual__g, checksum, 1e-6) ? "pass" : "fail", test__update_dual__g, checksum);
+    if (DEBUG) print_array_2d(work.g.data, NHORIZON, NSTATES, "float", "work.g");
 
     // linear cost
-    work.vnew = 1.0;
-    work.znew = 3.0;
-    work.g = 3.0;
-    work.y = 1.0;
-    work.Xref = 1.0;
-    work.Q = 2.0;
-    work.q = 4.0;
-
-    printf("linear_cost_1\n");
-    update_linear_cost_1(&solver, m1);
-    print_array_2d(work.r.data, NHORIZON - 1, NINPUTS, "float", "work.r");
-
-    printf("linear_cost_2\n");
-    update_linear_cost_2(&solver, 2, x1);
-    print_array_2d(work.q.col(2), 1, NSTATES, "float", "work.q[i]");
-
-    printf("linear_cost_3\n");
-    update_linear_cost_3(&solver, s1, s2);
-    print_array_2d(work.q.data, NHORIZON, NSTATES, "float", "work.q");
-
-    printf("linear_cost_4\n");
-    update_linear_cost_4(&solver, PinfT, x1, x2, x3);
-    print_array_2d(work.p.col(NHORIZON - 1), 1, NSTATES, "float", "work.p[H-1]");
+    init_solver();
+    transpose(cache.Pinf.data, PinfT.data, NSTATES, NSTATES);
+    update_linear_cost(&solver);
+    checksum = work.r.checksum();
+    printf("update_linear_cost r : %s (%+10f %+10f)\n", float_eq(test__update_linear_cost__r, checksum, 1e-6) ? "pass" : "fail", test__update_linear_cost__r, checksum);
+    if (DEBUG) print_array_2d(work.r.data, NHORIZON - 1, NINPUTS, "float", "work.r");
+    checksum = work.q.checksum();
+    printf("update_linear_cost q : %s (%+10f %+10f)\n", float_eq(test__update_linear_cost__q, checksum, 1e-6) ? "pass" : "fail", test__update_linear_cost__q, checksum);
+    if (DEBUG) print_array_2d(work.q.col(2), 1, NSTATES, "float", "work.q[i]");
+    checksum = work.p.checksum();
+    printf("update_linear_cost p : %s (%+10f %+10f)\n", float_eq(test__update_linear_cost__p, checksum, 1e-6) ? "pass" : "fail", test__update_linear_cost__p, checksum);
+    if (DEBUG) print_array_2d(work.p.col(NHORIZON - 1), 1, NSTATES, "float", "work.p[H-1]");
 }
 
 }
+
+

@@ -1,4 +1,5 @@
 generated_code/
+test/tinympc/test_admm_rvv.hpp
 
 #IDEs
 .vscode/

@@ -9,7 +9,7 @@ if(USE_RVV)
     target_include_directories (test_matlib_rvv PUBLIC matlib)
     add_executable(test_admm_rvv tinympc/test_admm_rvv.cpp)
     target_link_libraries(test_admm_rvv LINK_PUBLIC tinympc matlib)
-    target_include_directories (test_admm_rvv PUBLIC tinympc)
+    target_include_directories (test_admm_rvv PUBLIC tinympc matlib)
 endif(USE_RVV)
 
 if(USE_CPU)

@@ -1,87 +1,116 @@
+import os
 import numpy as np
 
+FILE = None
+DATA = True
+
+
+def create_binary_matrix(name, row, col, nul='0.01 ', one='0.02 '):
+    global FILE
+    fmt = f"{{0:0{col}b}}"
+    full_binary = ""
+    for i in range(row):
+        binary = fmt.format(i).replace('1', 'x').replace('0', 'y').replace('x',nul).replace('y',one)
+        full_binary += binary
+    num_binary = [float(i) for i in full_binary.split(' ')[:-1]]
+    arr = np.array(num_binary).reshape((row, col))
+    c_arr = f"tinytype " + name + f"_data[{row} * {col}]" + " = { " + str(num_binary)[1:-1] + " };\n\n"
+    if DATA:
+        FILE.write(c_arr)
+    return arr
+
+
 class Solver:
+
     class Params:
-        def __init__(self, NSTATES, NINPUTS, NHORIZON, NTOTAL):
+        def __init__(self, NSTATES, NINPUTS, NHORIZON):
             self.NSTATES = NSTATES
             self.NINPUTS = NINPUTS
             self.NHORIZON = NHORIZON
-            self.NTOTAL = NTOTAL
 
     class Cache:
         def __init__(self, NSTATES, NINPUTS, rho):
-            self.Quu_inv = np.ones((NINPUTS, NINPUTS))
-            self.AmBKt = np.ones((NSTATES, NSTATES))
-            self.C_3 = np.ones((NSTATES, NINPUTS))
-            self.K_inf = np.ones((NINPUTS, NSTATES))
-            self.P_inf = np.ones((NSTATES, NSTATES))
-
             self.rho = rho
+            self.Quu_inv = create_binary_matrix("Quu_inv", NINPUTS, NINPUTS)
+            self.AmBKt = create_binary_matrix("AmBKt", NSTATES, NSTATES)
+            self.Kinf = create_binary_matrix("Kinf", NINPUTS, NSTATES)
+            self.Pinf = create_binary_matrix("Pinf", NSTATES, NSTATES)
 
     class Work:
-        def __init__(self, NSTATES, NINPUTS, NHORIZON, NTOTAL):
-            self.r = np.ones((NINPUTS, NHORIZON - 1))
-            self.q = np.ones((NSTATES, NHORIZON))
-            self.d = np.ones((NINPUTS, NHORIZON - 1))
-            self.p = np.ones((NSTATES, NHORIZON))
-            self.q = np.ones((NSTATES, NHORIZON))
-            self.x = np.ones((NSTATES, NHORIZON))
-            self.u = np.ones((NINPUTS, NHORIZON - 1))
-            self.g = np.ones((NSTATES, NHORIZON))
-            self.y = np.ones((NINPUTS, NHORIZON - 1))
+        def __init__(self, NSTATES, NINPUTS, NHORIZON):
+            self.r = create_binary_matrix("r", NINPUTS, NHORIZON - 1)
+            self.q = create_binary_matrix("q", NSTATES, NHORIZON)
+            self.p = create_binary_matrix("p", NSTATES, NHORIZON)
+            self.d = create_binary_matrix("d", NINPUTS, NHORIZON - 1)
+            self.x = create_binary_matrix("x", NSTATES, NHORIZON)
+            self.u = create_binary_matrix("u", NINPUTS, NHORIZON - 1)
+            self.g = create_binary_matrix("g", NSTATES, NHORIZON)
+            self.y = create_binary_matrix("y", NINPUTS, NHORIZON - 1)
+            self.Adyn = create_binary_matrix("Adyn", NSTATES, NSTATES)
+            self.Bdyn = create_binary_matrix("Bdyn", NSTATES, NINPUTS)
+            self.znew = create_binary_matrix("znew", NINPUTS, NHORIZON - 1)
+            self.vnew = create_binary_matrix("vnew", NSTATES, NHORIZON)
+            self.u_min = create_binary_matrix("u_min", NINPUTS, NHORIZON - 1)
+            self.u_max = create_binary_matrix("u_max", NINPUTS, NHORIZON - 1)
+            self.x_min = create_binary_matrix("x_min", NSTATES, NHORIZON)
+            self.x_max = create_binary_matrix("x_max", NSTATES, NHORIZON)
 
-            self.Adyn = np.ones((NSTATES, NSTATES))
-            self.Bdyn = np.ones((NSTATES, NINPUTS))
-
-            self.znew = np.ones((NINPUTS, NHORIZON - 1))
-            self.vnew = np.ones((NSTATES, NHORIZON))
-
-            self.u_min = np.ones((NINPUTS, NHORIZON - 1))
-            self.u_max = np.ones((NINPUTS, NHORIZON - 1))
-
-            self.x_min = np.ones((NSTATES, NHORIZON))
-            self.x_max = np.ones((NSTATES, NHORIZON))
-
-    def __init__(self, NSTATES, NINPUTS, NHORIZON, NTOTAL):
-        self.params = self.Params(NSTATES, NINPUTS, NHORIZON, NTOTAL)
+    def __init__(self, NSTATES, NINPUTS, NHORIZON):
+        self.params = self.Params(NSTATES, NINPUTS, NHORIZON)
         self.cache = self.Cache(NSTATES, NINPUTS, rho=0)
-        self.work = self.Work(NSTATES, NINPUTS, NHORIZON, NTOTAL)
+        self.work = self.Work(NSTATES, NINPUTS, NHORIZON)
         self.en_input_bound = True
         self.en_state_bound = False
 
-# test type either "UNIT": single idx or "FULL": all idxs
+
+def backward_pass_1(solver, i):
+    solver.work.d[:, i] = solver.cache.Quu_inv @ (solver.work.Bdyn.T @ solver.work.p[:, i+1] + solver.work.r[:, i])
+
+
+def backward_pass_2(solver, i):
+    solver.work.p[:, i] = solver.work.q[:, i] + solver.cache.AmBKt @ solver.work.p[:, i+1] - \
+                          solver.cache.Kinf.T @ solver.work.r[:, i]  # + C_3 @ solver.work.d[i]
+
+
 def backward_pass(solver):
     for i in range(solver.params.NHORIZON - 2, -1, -1):
-        solver.work.d[:, i] = solver.cache.Quu_inv @ (solver.work.Bdyn.T @ solver.work.p[:, i+1] + solver.work.r[:, i])
-        solver.work.p[:, i] = solver.work.q[:, i] + solver.cache.AmBKt @ solver.work.p[:, i+1] - solver.cache.K_inf.T @ solver.work.r[:, i] # + C_3 @ solver.work.d[i]
+        backward_pass_1(solver, i)
+        backward_pass_2(solver, i)
+
 
 def forward_pass_1(solver, i):
-    solver.work.u[:, i] = solver.cache.K_inf @ solver.work.x[:, i] - solver.work.d[:, i]
+    solver.work.u[:, i] = solver.cache.Kinf @ solver.work.x[:, i] - solver.work.d[:, i]
+
 
 def forward_pass_2(solver, i):
     solver.work.x[:, i + 1] = solver.work.Adyn @ solver.work.x[:, i] + solver.work.Bdyn @ solver.work.u[:, i]
+
 
 def forward_pass(solver):
     for i in range(0, solver.params.NHORIZON - 1):
         forward_pass_1(solver, i)
         forward_pass_2(solver, i)
 
+
 def update_primal(solver):
     backward_pass(solver)
     forward_pass(solver)
+
 
 def update_slack(solver):
     solver.work.znew = solver.work.u + solver.work.y;
     solver.work.vnew = solver.work.x + solver.work.g;
     solver.work.znew = np.minimum(solver.work.u_max, np.maximum(solver.work.u_min, solver.work.znew))
-    
+
     solver.work.znew = solver.work.u + solver.work.y;
     solver.work.vnew = solver.work.x + solver.work.g;
     solver.work.vnew = np.minimum(solver.work.x_max, np.maximum(solver.work.x_min, solver.work.vnew))
 
+
 def update_dual(solver):
     solver.work.y = solver.work.y + solver.work.u - solver.work.znew
     solver.work.g = solver.work.g + solver.work.x - solver.work.vnew
+
 
 def update_linear_cost(solver):
     solver.work.r = -solver.cache.rho * (solver.work.znew - solver.work.y)
@@ -91,67 +120,72 @@ def update_linear_cost(solver):
     solver.work.p[:, solver.params.NHORIZON - 1] -= solver.cache.rho * (solver.work.vnew[:, solver.params.NHORIZON - 1] - solver.work.g[:, solver.params.NHORIZON - 1])
 
 
-def run_tests():
-    ##### TEST 1: FORWARD_PASS #####
-    solver = Solver(12, 4, 10, 301)
-    # forward_pass(solver)
-    forward_pass_1(solver, 2)
-    # Checksums:
-    print("FORWARD_PASS")
-    print(f"Checksum u: \t {np.sum(solver.work.u)}")
-    print(f"Checksum x: \t {np.sum(solver.work.x)}")
-    print(f"Checksum *: \t {np.sum(solver.work.u) + np.sum(solver.work.x)}")
-    # forward_pass(solver)
+def print_checksum(test_name, matrix):
+    global FILE
+    checksum = np.sum(matrix)
+    print(f"{test_name:50}: \t {checksum:20}")
+    FILE.write(f"tinytype {test_name} = {checksum};\n\n")
 
-    
-    ##### TEST 2: BACKWARD_PASS #####
-    solver = Solver(12, 4, 10, 301)
+
+def run_tests():
+
+    global FILE, DATA
+    file_name_with_extension = os.path.basename(__file__)
+    file_name, extension = os.path.splitext(file_name_with_extension)
+    FILE = open(f"{file_name}.hpp", "w")
+
+    # TEST 1: FORWARD_PASS
+    solver = Solver(12, 4, 10)
+    DATA = False
     forward_pass(solver)
     # Checksums:
+    print("FORWARD_PASS")
+    print_checksum("test__forward_pass__u", solver.work.u)
+    print_checksum("test__forward_pass__x", solver.work.x)
+
+    # TEST 2: BACKWARD_PASS
+    solver = Solver(12, 4, 10)
+    backward_pass(solver)
+    # Checksums:
     print("BACKWARD_PASS")
-    print(f"Checksum d: \t {np.sum(solver.work.d)}")
-    print(f"Checksum p: \t {np.sum(solver.work.p)}")
-    print(f"Checksum *: \t {np.sum(solver.work.d) + np.sum(solver.work.p)}")
+    print_checksum("test__backward_pass__d", solver.work.d)
+    print_checksum("test__backward_pass__p", solver.work.p)
 
-
-    ##### TEST 3: UPDATE_PRIMAL #####   # multiply forward u, x by 0.01 before doing backward for overflow reason
-    solver = Solver(12, 4, 10, 301)
+    # TEST 3: UPDATE_PRIMAL
+    solver = Solver(12, 4, 10)
     update_primal(solver)
     # Checksums:
-    print("UPDATE_PRIMAL: (u, x * 0.01)")
-    print(f"Checksum u: \t {np.sum(solver.work.u) * 0.01}")
-    print(f"Checksum x: \t {np.sum(solver.work.x) * 0.01}")
-    print(f"Checksum d: \t {np.sum(solver.work.d)}")
-    print(f"Checksum p: \t {np.sum(solver.work.p)}")
-    print(f"Checksum *: \t {np.sum(solver.work.u) * 0.01 + np.sum(solver.work.x) * 0.01 + np.sum(solver.work.d) + np.sum(solver.work.p)}")
+    print("UPDATE_PRIMAL")
+    print_checksum("test__update_primal__u", solver.work.u)
+    print_checksum("test__update_primal__x", solver.work.x)
+    print_checksum("test__update_primal__d", solver.work.d)
+    print_checksum("test__update_primal__p", solver.work.p)
 
-    ##### TEST 4: UPDATE_SLACK #####
-    solver = Solver(12, 4, 10, 301)
+    # TEST 4: UPDATE_SLACK
+    solver = Solver(12, 4, 10)
     update_slack(solver)
     # Checksums:
     print("UPDATE_SLACK")
-    print(f"Checksum znew: \t {np.sum(solver.work.znew)}")
-    print(f"Checksum vnew: \t {np.sum(solver.work.vnew)}")
-    print(f"Checksum *: \t {np.sum(solver.work.znew) + np.sum(solver.work.vnew)}")
+    print_checksum("test__update_slack__znew", solver.work.znew)
+    print_checksum("test__update_slack__vnew", solver.work.vnew)
 
-    ##### TEST 5: UPDATE_DUAL #####
-    solver = Solver(12, 4, 10, 301)
+    # TEST 5: UPDATE_DUAL
+    solver = Solver(12, 4, 10)
     update_dual(solver)
     # Checksums:
     print("UPDATE_DUAL")
-    print(f"Checksum y: \t {np.sum(solver.work.y)}")
-    print(f"Checksum g: \t {np.sum(solver.work.g)}")
-    print(f"Checksum *: \t {np.sum(solver.work.y) + np.sum(solver.work.g)}")
+    print_checksum("test__update_dual__y", solver.work.y)
+    print_checksum("test__update_dual__g", solver.work.g)
 
-    ##### TEST 6: UPDATE_LINEAR_COST #####
-    solver = Solver(12, 4, 10, 301)
+    # TEST 6: UPDATE_LINEAR_COST
+    solver = Solver(12, 4, 10)
     forward_pass(solver)
     # Checksums:
     print("UPDATE_LINEAR_COST")
-    print(f"Checksum r: \t {np.sum(solver.work.r)}")
-    print(f"Checksum q: \t {np.sum(solver.work.q)}")
-    print(f"Checksum p: \t {np.sum(solver.work.p)}")
-    print(f"Checksum *: \t {np.sum(solver.work.r) + np.sum(solver.work.q) + np.sum(solver.work.p)}")
+    print_checksum("test__update_linear_cost__r", solver.work.r)
+    print_checksum("test__update_linear_cost__q", solver.work.q)
+    print_checksum("test__update_linear_cost__p", solver.work.p)
+
 
 if __name__ == "__main__":
     run_tests()

@@ -107,7 +107,7 @@ void cwisemin(float **a, float **b, float **c, int n, int m) {
         }
     }
 }
-
+    
 // matrix coefficient-wise multiplication
 void cwisemul_golden(float **a, float **b, float **c, int n, int m) {
     for (int i = 0; i < n; ++i) {

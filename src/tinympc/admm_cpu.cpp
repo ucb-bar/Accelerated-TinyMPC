@@ -28,7 +28,7 @@ std::ofstream outputFile("cycle_output.csv");
 /**
  * Update linear terms from Riccati backward pass
  */
-void backward_pass_grad(TinySolver *solver)
+void backward_pass(TinySolver *solver)
 {
     for (int i = NHORIZON - 2; i >= 0; i--)
     {
@@ -54,7 +54,7 @@ void forward_pass(TinySolver *solver)
  */
 void update_primal(TinySolver *solver)
 {
-    CYCLE_CNT_WRAPPER(backward_pass_grad, solver, "update_primal_backward_pass");
+    CYCLE_CNT_WRAPPER(backward_pass, solver, "update_primal_backward_pass");
     CYCLE_CNT_WRAPPER(forward_pass, solver, "update_primal_forward_pass");
 }
 

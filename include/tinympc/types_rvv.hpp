@@ -135,7 +135,7 @@ public:
 extern "C" {
 #endif
 
-    typedef Matrix<tinytype, NSTATES, 1> tiny_VectorNx;
+typedef Matrix<tinytype, NSTATES, 1> tiny_VectorNx;
 typedef Matrix<tinytype, NINPUTS, 1> tiny_VectorNu;
 typedef Matrix<tinytype, NSTATES, NSTATES, RowMajor> tiny_MatrixNxNx;
 typedef Matrix<tinytype, NSTATES, NINPUTS, RowMajor> tiny_MatrixNxNu;

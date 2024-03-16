@@ -198,7 +198,7 @@ extern "C"
     /**
      * Update linear terms from Riccati backward pass
      */
-    void backward_pass_grad(TinySolver *solver)
+    void backward_pass(TinySolver *solver)
     {
         Matrix<float, Dynamic, Dynamic, RowMajor> B_p(NINPUTS, 1);
         Matrix<float, Dynamic, Dynamic, RowMajor> dcol(NINPUTS, 1);
@@ -929,7 +929,7 @@ extern "C"
         #endif
         #endif
         #else
-        CYCLE_CNT_WRAPPER(backward_pass_grad, solver, "update_primal_backward_pass");
+        CYCLE_CNT_WRAPPER(backward_pass, solver, "update_primal_backward_pass");
         CYCLE_CNT_WRAPPER(forward_pass, solver, "update_primal_forward_pass");
         #endif
     }

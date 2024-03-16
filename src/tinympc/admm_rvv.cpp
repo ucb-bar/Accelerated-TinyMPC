@@ -37,7 +37,7 @@ std::ofstream outputFile("cycle_output.csv");
 /**
  * Update linear terms from Riccati backward pass
  */
-void backward_pass_grad(TinySolver *solver)
+void backward_pass(TinySolver *solver)
 {
     for (int i = NHORIZON - 2; i >= 0; i--) {
         backward_pass_1(solver, i, BdynT, u1, u2);
@@ -61,7 +61,7 @@ void forward_pass(TinySolver *solver)
  */
 void update_primal(TinySolver *solver)
 {
-    CYCLE_CNT_WRAPPER(backward_pass_grad, solver, "update_primal_backward_pass");
+    CYCLE_CNT_WRAPPER(backward_pass, solver, "update_primal_backward_pass");
     CYCLE_CNT_WRAPPER(forward_pass, solver, "update_primal_forward_pass");
 }
 
@@ -109,8 +109,8 @@ int tiny_solve(TinySolver *solver)
 
     // Transpose these matrices once
     transpose(solver->work->Bdyn.data, BdynT.data, NSTATES, NINPUTS);
-    print_array_2d(solver->work->Bdyn.data, NSTATES, NINPUTS, "float", "Bdyn" );
-    print_array_2d(BdynT.data, NINPUTS, NSTATES, "float", "BdynT" );
+    // print_array_2d(solver->work->Bdyn.data, NSTATES, NINPUTS, "float", "Bdyn" );
+    // print_array_2d(BdynT.data, NINPUTS, NSTATES, "float", "BdynT" );
     transpose(solver->cache->Kinf.data, KinfT.data, NINPUTS, NSTATES);
     transpose(solver->cache->Pinf.data, PinfT.data, NSTATES, NSTATES);
 
