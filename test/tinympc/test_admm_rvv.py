@@ -97,14 +97,21 @@ def update_primal(solver):
     forward_pass(solver)
 
 
-def update_slack(solver):
+def update_slack_1(solver):
     solver.work.znew = solver.work.u + solver.work.y;
     solver.work.vnew = solver.work.x + solver.work.g;
     solver.work.znew = np.minimum(solver.work.u_max, np.maximum(solver.work.u_min, solver.work.znew))
 
+
+def update_slack_2(solver):
     solver.work.znew = solver.work.u + solver.work.y;
     solver.work.vnew = solver.work.x + solver.work.g;
     solver.work.vnew = np.minimum(solver.work.x_max, np.maximum(solver.work.x_min, solver.work.vnew))
+
+
+def update_slack(solver):
+    update_slack_1(solver)
+    update_slack_2(solver)
 
 
 def update_dual(solver):
@@ -112,12 +119,29 @@ def update_dual(solver):
     solver.work.g = solver.work.g + solver.work.x - solver.work.vnew
 
 
-def update_linear_cost(solver):
+def update_linear_cost_1(solver):
     solver.work.r = -solver.cache.rho * (solver.work.znew - solver.work.y)
+
+
+def update_linear_cost_2(solver):
     solver.work.q = -(solver.work.Xref @ solver.work.Q)
+
+
+def update_linear_cost_3(solver):
     solver.work.q -= solver.cache.rho * (solver.work.vnew - solver.work.g)
+
+
+def update_linear_cost_4(solver):
     solver.work.p[:, solver.params.NHORIZON - 1] = -(solver.work.Xref[solver.params.NHORIZON].T @ solver.cache.Pinf)
-    solver.work.p[:, solver.params.NHORIZON - 1] -= solver.cache.rho * (solver.work.vnew[:, solver.params.NHORIZON - 1] - solver.work.g[:, solver.params.NHORIZON - 1])
+    solver.work.p[:, solver.params.NHORIZON - 1] -= solver.cache.rho * (solver.work.vnew[:, solver.params.NHORIZON - 1]
+                                                                        - solver.work.g[:, solver.params.NHORIZON - 1])
+
+
+def update_linear_cost(solver):
+    update_linear_cost_1(solver)
+    update_linear_cost_2(solver)
+    update_linear_cost_3(solver)
+    update_linear_cost_4(solver)
 
 
 def print_checksum(test_name, matrix):
