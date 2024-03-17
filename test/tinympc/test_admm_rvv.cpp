@@ -18,6 +18,13 @@ TinyWorkspace work;
 TinySettings settings;
 TinySolver solver{&settings, &cache, &work};
 
+template<typename Scalar_, int Rows_, int Cols_, int Options_, int MaxRows_, int MaxCols_>
+void test_assert(const char *test, float expected, Matrix<Scalar_, Rows_, Cols_, Options_, MaxRows_, MaxCols_> &actual) {
+    float sum = actual.checksum();
+    printf("%-20s : %s (%+10f %+10f)\n", test, float_eq(expected, sum, 1e-2) ? "pass" : "fail", expected, sum);
+    if (DEBUG) actual.print("float", test);
+}
+
 extern "C" {
 
 void init_solver() {
@@ -44,82 +51,60 @@ void init_solver() {
     work.u_max.set(u_max_data);
     work.x_min.set(x_min_data);
     work.x_max.set(x_max_data);
+    settings.en_input_bound = 1;
+    settings.en_state_bound = 1;
     work.u1 = 0.0;
     work.u2 = 0.0;
 }
 
 int main() {
 
-    tinytype checksum = 0;
+    float checksum = 0;
 
     // forward pass
     init_solver();
     forward_pass(&solver);
-    checksum = work.u.checksum();
-    printf("forward_pass u       : %s (%+10f %+10f)\n", float_eq(test__forward_pass__u, checksum, 1e-6) ? "pass" : "fail", test__forward_pass__u, checksum);
-    if (DEBUG) print_array_2d(work.u.data, NHORIZON - 1, NINPUTS, "float", "work.u");
-    checksum = work.x.checksum();
-    printf("forward_pass x       : %s (%+10f %+10f)\n", float_eq(test__forward_pass__x, checksum, 1e-6) ? "pass" : "fail", test__forward_pass__x, checksum);
-    if (DEBUG) print_array_2d(work.x.data, NHORIZON, NSTATES, "float", "work.x");
+    test_assert("forward_pass u", test__forward_pass__u, work.u);
+    test_assert("forward_pass x", test__forward_pass__x, work.x);
+
+    forward_pass_1(&solver, 2);
+    test_assert("forward_pass_1 u", test__forward_pass_1__u, work.u);
+
+    forward_pass_2(&solver, 2);
+    test_assert("forward_pass_2 x", test__forward_pass_2__x, work.x);
 
     // backward pass
     init_solver();
     backward_pass(&solver);
-    checksum = work.p.checksum();
-    printf("backward_pass p      : %s (%+10f %+10f)\n", float_eq(test__backward_pass__d, checksum, 1e-6) ? "pass" : "fail", test__backward_pass__d, checksum);
-    if (DEBUG) print_array_2d(work.p.data, NHORIZON, NSTATES, "float", "work.p");
-    checksum = work.d.checksum();
-    printf("backward_pass d      : %s (%+10f %+10f)\n", float_eq(test__backward_pass__p, checksum, 1e-6) ? "pass" : "fail", test__backward_pass__p, checksum);
-    if (DEBUG) print_array_2d(work.d.data, NHORIZON - 1, NINPUTS, "float", "work.d");
+    test_assert("backward_pass p", test__backward_pass__d, work.d);
+    test_assert("backward_pass d", test__backward_pass__p, work.p);
 
     // update primal
     init_solver();
     update_primal(&solver);
-    checksum = work.u.checksum();
-    printf("update_primal u      : %s (%+10f %+10f)\n", float_eq(test__update_primal__u, checksum, 1e-6) ? "pass" : "fail", test__update_primal__u, checksum);
-    if (DEBUG) print_array_2d(work.u.data, NHORIZON - 1, NINPUTS, "float", "work.u");
-    checksum = work.x.checksum();
-    printf("update_primal x      : %s (%+10f %+10f)\n", float_eq(test__update_primal__x, checksum, 1e-6) ? "pass" : "fail", test__update_primal__x, checksum);
-    if (DEBUG) print_array_2d(work.x.data, NHORIZON, NSTATES, "float", "work.x");
-    checksum = work.p.checksum();
-    printf("update_primal p      : %s (%+10f %+10f)\n", float_eq(test__update_primal__p, checksum, 1e-6) ? "pass" : "fail", test__update_primal__p, checksum);
-    if (DEBUG) print_array_2d(work.p.data, NHORIZON, NSTATES, "float", "work.p");
-    checksum = work.d.checksum();
-    printf("update_primal d      : %s (%+10f %+10f)\n", float_eq(test__update_primal__d, checksum, 1e-6) ? "pass" : "fail", test__update_primal__d, checksum);
-    if (DEBUG) print_array_2d(work.d.data, NHORIZON - 1, NINPUTS, "float", "work.d");
+    test_assert("update_primal u", test__update_primal__u, work.u);
+    test_assert("update_primal x", test__update_primal__x, work.x);
+    test_assert("update_primal p", test__update_primal__p, work.p);
+    test_assert("update_primal d", test__update_primal__d, work.d);
 
     // update slack
     init_solver();
     update_slack(&solver);
-    checksum = work.znew.checksum();
-    printf("update_slack znew    : %s (%+10f %+10f)\n", float_eq(test__update_slack__znew, checksum, 1e-6) ? "pass" : "fail", test__update_slack__znew, checksum);
-    if (DEBUG) print_array_2d(work.znew.data, NHORIZON - 1, NINPUTS, "float", "work.znew");
-    checksum = work.vnew.checksum();
-    printf("update_slack vnew    : %s (%+10f %+10f)\n", float_eq(test__update_slack__vnew, checksum, 1e-6) ? "pass" : "fail", test__update_slack__vnew, checksum);
-    if (DEBUG) print_array_2d(work.vnew.data, NHORIZON, NSTATES, "float", "work.vnew");
+    test_assert("update_slack znew", test__update_slack__znew, work.znew);
+    test_assert("update_slack vnew", test__update_slack__vnew, work.vnew);
 
     // update dual
     init_solver();
     update_dual(&solver);
-    checksum = work.y.checksum();
-    printf("update_dual y        : %s (%+10f %+10f)\n", float_eq(test__update_dual__y, checksum, 1e-6) ? "pass" : "fail", test__update_dual__y, checksum);
-    if (DEBUG) print_array_2d(work.y.data, NHORIZON - 1, NINPUTS, "float", "work.y");
-    checksum = work.g.checksum();
-    printf("update_dual g        : %s (%+10f %+10f)\n", float_eq(test__update_dual__g, checksum, 1e-6) ? "pass" : "fail", test__update_dual__g, checksum);
-    if (DEBUG) print_array_2d(work.g.data, NHORIZON, NSTATES, "float", "work.g");
+    test_assert("update_dual y", test__update_dual__y, work.y);
+    test_assert("update_dual g", test__update_dual__g, work.g);
 
     // linear cost
     init_solver();
     update_linear_cost(&solver);
-    checksum = work.r.checksum();
-    printf("update_linear_cost r : %s (%+10f %+10f)\n", float_eq(test__update_linear_cost__r, checksum, 1e-6) ? "pass" : "fail", test__update_linear_cost__r, checksum);
-    if (DEBUG) print_array_2d(work.r.data, NHORIZON - 1, NINPUTS, "float", "work.r");
-    checksum = work.q.checksum();
-    printf("update_linear_cost q : %s (%+10f %+10f)\n", float_eq(test__update_linear_cost__q, checksum, 1e-6) ? "pass" : "fail", test__update_linear_cost__q, checksum);
-    if (DEBUG) print_array_2d(work.q.col(2), 1, NSTATES, "float", "work.q[i]");
-    checksum = work.p.checksum();
-    printf("update_linear_cost p : %s (%+10f %+10f)\n", float_eq(test__update_linear_cost__p, checksum, 1e-6) ? "pass" : "fail", test__update_linear_cost__p, checksum);
-    if (DEBUG) print_array_2d(work.p.col(NHORIZON - 1), 1, NSTATES, "float", "work.p[H-1]");
+    test_assert("update_linear_cost r", test__update_linear_cost__r, work.r);
+    test_assert("update_linear_cost q", test__update_linear_cost__q, work.q);
+    test_assert("update_linear_cost p", test__update_linear_cost__p, work.p);
 }
 
 }

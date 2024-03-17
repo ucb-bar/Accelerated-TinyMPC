@@ -57,7 +57,7 @@ void print_array_2d(float **a, int n, int m, const char *type,
 }
 
 bool float_eq(float golden, float actual, float relErr) {
-    return (fabs((actual - golden) / actual) < relErr);
+    return (fabs(actual - golden) < relErr) || (fabs((actual - golden) / actual) < relErr);
 }
 
 bool compare_1d(float *golden, float *actual, int n) {

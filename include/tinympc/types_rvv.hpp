@@ -126,6 +126,10 @@ public:
         return sum;
     }
 
+    void print(const char *type, const char *name) {
+        print_array_2d(data, outer, inner, type, name);
+    }
+
     virtual void toString() {
         printf("const data: %x rows: %d cols: %d inner: %d outer: %d (%d, %d)\n", data, rows, cols, inner, outer, Rows_, Cols_);
     }
