@@ -1,4 +1,6 @@
 import os
+import sys
+import re
 import numpy as np
 
 FILE = None
@@ -154,61 +156,35 @@ def print_checksum(test_name, matrix):
 def run_tests():
 
     global FILE, DATA
-    file_name_with_extension = os.path.basename(__file__)
-    file_name, extension = os.path.splitext(file_name_with_extension)
-    FILE = open(f"{file_name}.hpp", "w")
+    file_name = re.sub(r"\.py$", ".hpp", os.path.abspath(sys.argv[0]).replace(r'.py', '.hpp'))
+    FILE = open(file_name, "w")
 
     # TEST 1: FORWARD_PASS
     solver = Solver(12, 4, 10)
     DATA = False
     forward_pass(solver)
-    # Checksums:
-    print("FORWARD_PASS")
-    print_checksum("test__forward_pass__u", solver.work.u)
-    print_checksum("test__forward_pass__x", solver.work.x)
+    forward_pass_1(solver, 2)
+    forward_pass_2(solver, 2)
 
     # TEST 2: BACKWARD_PASS
     solver = Solver(12, 4, 10)
     backward_pass(solver)
-    # Checksums:
-    print("BACKWARD_PASS")
-    print_checksum("test__backward_pass__d", solver.work.d)
-    print_checksum("test__backward_pass__p", solver.work.p)
 
     # TEST 3: UPDATE_PRIMAL
     solver = Solver(12, 4, 10)
     update_primal(solver)
-    # Checksums:
-    print("UPDATE_PRIMAL")
-    print_checksum("test__update_primal__u", solver.work.u)
-    print_checksum("test__update_primal__x", solver.work.x)
-    print_checksum("test__update_primal__d", solver.work.d)
-    print_checksum("test__update_primal__p", solver.work.p)
 
     # TEST 4: UPDATE_SLACK
     solver = Solver(12, 4, 10)
     update_slack(solver)
-    # Checksums:
-    print("UPDATE_SLACK")
-    print_checksum("test__update_slack__znew", solver.work.znew)
-    print_checksum("test__update_slack__vnew", solver.work.vnew)
 
     # TEST 5: UPDATE_DUAL
     solver = Solver(12, 4, 10)
     update_dual(solver)
-    # Checksums:
-    print("UPDATE_DUAL")
-    print_checksum("test__update_dual__y", solver.work.y)
-    print_checksum("test__update_dual__g", solver.work.g)
 
     # TEST 6: UPDATE_LINEAR_COST
     solver = Solver(12, 4, 10)
     forward_pass(solver)
-    # Checksums:
-    print("UPDATE_LINEAR_COST")
-    print_checksum("test__update_linear_cost__r", solver.work.r)
-    print_checksum("test__update_linear_cost__q", solver.work.q)
-    print_checksum("test__update_linear_cost__p", solver.work.p)
 
 
 if __name__ == "__main__":
