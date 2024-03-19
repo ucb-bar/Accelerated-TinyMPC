@@ -62,7 +62,7 @@ class Solver:
         self.cache = self.Cache(NSTATES, NINPUTS, rho=0)
         self.work = self.Work(NSTATES, NINPUTS, NHORIZON)
         self.en_input_bound = True
-        self.en_state_bound = False
+        self.en_state_bound = True
 
 
 def backward_pass_1(solver, i):
@@ -81,7 +81,7 @@ def backward_pass(solver):
 
 
 def forward_pass_1(solver, i):
-    solver.work.u[:, i] = solver.cache.Kinf @ solver.work.x[:, i] - solver.work.d[:, i]
+    solver.work.u[:, i] = - solver.cache.Kinf @ solver.work.x[:, i] - solver.work.d[:, i]
 
 
 def forward_pass_2(solver, i):
@@ -101,14 +101,14 @@ def update_primal(solver):
 
 def update_slack_1(solver):
     solver.work.znew = solver.work.u + solver.work.y;
-    solver.work.vnew = solver.work.x + solver.work.g;
-    solver.work.znew = np.minimum(solver.work.u_max, np.maximum(solver.work.u_min, solver.work.znew))
-
-
+    if solver.en_input_bound:
+        solver.work.znew = np.minimum(solver.work.u_max, np.maximum(solver.work.u_min, solver.work.znew))
+ 
+ 
 def update_slack_2(solver):
-    solver.work.znew = solver.work.u + solver.work.y;
     solver.work.vnew = solver.work.x + solver.work.g;
-    solver.work.vnew = np.minimum(solver.work.x_max, np.maximum(solver.work.x_min, solver.work.vnew))
+    if solver.en_state_bound:
+        solver.work.vnew = np.minimum(solver.work.x_max, np.maximum(solver.work.x_min, solver.work.vnew))
 
 
 def update_slack(solver):
@@ -125,8 +125,8 @@ def update_linear_cost_1(solver):
     solver.work.r = -solver.cache.rho * (solver.work.znew - solver.work.y)
 
 
-def update_linear_cost_2(solver):
-    solver.work.q = -(solver.work.Xref @ solver.work.Q)
+def update_linear_cost_2(solver, i):
+    solver.work.q[:, i] = -(solver.work.Xref[:, i] * solver.work.Q.T)
 
 
 def update_linear_cost_3(solver):
@@ -141,7 +141,8 @@ def update_linear_cost_4(solver):
 
 def update_linear_cost(solver):
     update_linear_cost_1(solver)
-    update_linear_cost_2(solver)
+    for i in range(solver.params.NHORIZON):
+        update_linear_cost_2(solver, i)
     update_linear_cost_3(solver)
     update_linear_cost_4(solver)
 
@@ -149,7 +150,7 @@ def update_linear_cost(solver):
 def print_checksum(test_name, matrix):
     global FILE
     checksum = np.sum(matrix)
-    print(f"{test_name:50}: \t {checksum:20}")
+    # print(f"{test_name:50}: \t {checksum:20}")
     FILE.write(f"tinytype {test_name} = {checksum};\n\n")
 
 

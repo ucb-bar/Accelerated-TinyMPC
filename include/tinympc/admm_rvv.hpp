@@ -21,7 +21,7 @@ inline void forward_pass_1(TinySolver *solver, int i) {
 // x[:, i+1] = Adyn * x[:, i] + Bdyn * u[:, i]
 inline void forward_pass_2(TinySolver *solver, int i) {
     matmul(solver->work->x.col(i), solver->work->Adyn.data, solver->work->x1.data, 1, NSTATES, NSTATES);
-    matmul(solver->work->u.col(i), solver->work->Bdyn.data, solver->work->x2.data, 1, NSTATES, NSTATES);
+    matmul(solver->work->u.col(i), solver->work->Bdyn.data, solver->work->x2.data, 1, NSTATES, NINPUTS);
     matadd(solver->work->x1.data, solver->work->x2.data, solver->work->x.col(i + 1), 1, NSTATES);
     // printx(solver->work->x.col(i + 1), 1, NSTATES, "fp2 xip1");
 }
@@ -106,7 +106,11 @@ inline void update_linear_cost_1(TinySolver *solver) {
 
 inline void update_linear_cost_2(TinySolver *solver, int i) {
     cwisemul(solver->work->Xref.col(i), solver->work->Q.data, solver->work->x1.data, 1, NSTATES);
-    matmulf(solver->work->x1.data, solver->work->q.col(i), -1, 1, NSTATES);
+    // solver->work->Xref.print("float", "lc2 Xref");
+    // solver->work->Q.print("float", "lc2 Q");
+    // solver->work->x1.print("float", "lc2 x1");
+    matneg(solver->work->x1.data, solver->work->q.col(i), 1, NSTATES);
+    // solver->work->q.print("float", "lc2 q");
 }
 
 inline void update_linear_cost_3(TinySolver *solver) {

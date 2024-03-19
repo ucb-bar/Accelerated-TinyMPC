@@ -22,7 +22,7 @@ endif(USE_RVV)
 
 if(USE_CPU)
     add_executable(test_admm_cpu tinympc/test_admm_cpu.cpp)
-    target_link_libraries(test_admm_cpu LINK_PUBLIC tinympc matlib)
+    target_link_libraries(test_admm_cpu LINK_PUBLIC tinympc)
     target_include_directories (test_admm_cpu PUBLIC tinympc)
 endif(USE_CPU)
 

@@ -42,6 +42,8 @@ void init_solver() {
     work.u.set(u_data);
     work.g.set(g_data);
     work.y.set(y_data);
+    work.Q.set(Q_data);
+    work.R.set(R_data);
     work.Adyn.set(Adyn_data);
     work.Bdyn.set(Bdyn_data);
     transpose(work.Bdyn.data, work.BdynT.data, NSTATES, NINPUTS);
@@ -51,6 +53,8 @@ void init_solver() {
     work.u_max.set(u_max_data);
     work.x_min.set(x_min_data);
     work.x_max.set(x_max_data);
+    work.Xref.set(Xref_data);
+    work.Uref.set(Uref_data);
     settings.en_input_bound = 1;
     settings.en_state_bound = 1;
     work.u1 = 0.0;
