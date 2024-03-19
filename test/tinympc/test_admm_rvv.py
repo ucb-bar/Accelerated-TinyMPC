@@ -134,9 +134,9 @@ def update_linear_cost_3(solver):
 
 
 def update_linear_cost_4(solver):
-    solver.work.p[:, solver.params.NHORIZON - 1] = -(solver.work.Xref[solver.params.NHORIZON].T @ solver.cache.Pinf)
-    solver.work.p[:, solver.params.NHORIZON - 1] -= solver.cache.rho * (solver.work.vnew[:, solver.params.NHORIZON - 1]
-                                                                        - solver.work.g[:, solver.params.NHORIZON - 1])
+    term1 = solver.cache.rho * (solver.work.vnew[:, solver.params.NHORIZON - 1] - solver.work.g[:, solver.params.NHORIZON - 1])
+    term2 = (solver.work.Xref[:, solver.params.NHORIZON - 1].T @ solver.cache.Pinf)
+    solver.work.p[:, solver.params.NHORIZON - 1] = - (term1 + term2)
 
 
 def update_linear_cost(solver):

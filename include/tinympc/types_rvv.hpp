@@ -121,8 +121,10 @@ public:
 
     Scalar_ checksum() {
         Scalar_ sum = 0;
-        for (int i = 0; i < inner * outer; i++) {
-            sum += _data[i];
+        for (int i = 0; i < outer; i++) {
+            for (int j = 0; j < inner; j++) {
+                sum += data[i][j];
+	    }
         }
         return sum;
     }
