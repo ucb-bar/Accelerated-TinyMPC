@@ -7,16 +7,17 @@ FILE = None
 DATA = True
 
 
-def create_binary_matrix(name, row, col, nul='0.01 ', one='0.02 '):
+def create_binary_matrix(name, major, row, col, nul='0.01 ', one='0.02 '):
     global FILE
     fmt = f"{{0:0{col}b}}"
     full_binary = ""
     for i in range(row):
-        binary = fmt.format(i).replace('1', 'x').replace('0', 'y').replace('x',nul).replace('y',one)
+        binary = fmt.format(i)[0:col].replace('1', 'x').replace('0', 'y').replace('x',nul).replace('y',one)
         full_binary += binary
     num_binary = [float(i) for i in full_binary.split(' ')[:-1]]
     arr = np.array(num_binary).reshape((row, col))
-    c_arr = f"tinytype " + name + f"_data[{row} * {col}]" + " = { " + str(num_binary)[1:-1] + " };\n\n"
+    s_arr = arr.T if major == "col" else arr
+    c_arr = f"tinytype " + name + f"_data[{row} * {col}]" + " = { " + str(list(s_arr.reshape((1, row * col))))[8:-3] + " };\n\n"
     if DATA:
         FILE.write(c_arr)
     return arr
@@ -33,29 +34,33 @@ class Solver:
     class Cache:
         def __init__(self, NSTATES, NINPUTS, rho):
             self.rho = rho
-            self.Quu_inv = create_binary_matrix("Quu_inv", NINPUTS, NINPUTS)
-            self.AmBKt = create_binary_matrix("AmBKt", NSTATES, NSTATES)
-            self.Kinf = create_binary_matrix("Kinf", NINPUTS, NSTATES)
-            self.Pinf = create_binary_matrix("Pinf", NSTATES, NSTATES)
+            self.Quu_inv = create_binary_matrix("Quu_inv", "row", NINPUTS, NINPUTS)
+            self.AmBKt = create_binary_matrix("AmBKt", "row", NSTATES, NSTATES)
+            self.Kinf = create_binary_matrix("Kinf", "row", NINPUTS, NSTATES)
+            self.Pinf = create_binary_matrix("Pinf", "row", NSTATES, NSTATES)
 
     class Work:
         def __init__(self, NSTATES, NINPUTS, NHORIZON):
-            self.r = create_binary_matrix("r", NINPUTS, NHORIZON - 1)
-            self.q = create_binary_matrix("q", NSTATES, NHORIZON)
-            self.p = create_binary_matrix("p", NSTATES, NHORIZON)
-            self.d = create_binary_matrix("d", NINPUTS, NHORIZON - 1)
-            self.x = create_binary_matrix("x", NSTATES, NHORIZON)
-            self.u = create_binary_matrix("u", NINPUTS, NHORIZON - 1)
-            self.g = create_binary_matrix("g", NSTATES, NHORIZON)
-            self.y = create_binary_matrix("y", NINPUTS, NHORIZON - 1)
-            self.Adyn = create_binary_matrix("Adyn", NSTATES, NSTATES)
-            self.Bdyn = create_binary_matrix("Bdyn", NSTATES, NINPUTS)
-            self.znew = create_binary_matrix("znew", NINPUTS, NHORIZON - 1)
-            self.vnew = create_binary_matrix("vnew", NSTATES, NHORIZON)
-            self.u_min = create_binary_matrix("u_min", NINPUTS, NHORIZON - 1)
-            self.u_max = create_binary_matrix("u_max", NINPUTS, NHORIZON - 1)
-            self.x_min = create_binary_matrix("x_min", NSTATES, NHORIZON)
-            self.x_max = create_binary_matrix("x_max", NSTATES, NHORIZON)
+            self.r = create_binary_matrix("r", "col", NINPUTS, NHORIZON - 1)
+            self.q = create_binary_matrix("q", "col", NSTATES, NHORIZON)
+            self.p = create_binary_matrix("p", "col", NSTATES, NHORIZON)
+            self.d = create_binary_matrix("d", "col", NINPUTS, NHORIZON - 1)
+            self.x = create_binary_matrix("x", "col", NSTATES, NHORIZON)
+            self.u = create_binary_matrix("u", "col", NINPUTS, NHORIZON - 1)
+            self.g = create_binary_matrix("g", "col", NSTATES, NHORIZON)
+            self.y = create_binary_matrix("y", "col", NINPUTS, NHORIZON - 1)
+            self.Q = create_binary_matrix("Q", "col", NSTATES, 1)
+            self.R = create_binary_matrix("R", "col", NINPUTS, 1)
+            self.Adyn = create_binary_matrix("Adyn", "row", NSTATES, NSTATES)
+            self.Bdyn = create_binary_matrix("Bdyn", "row", NSTATES, NINPUTS)
+            self.znew = create_binary_matrix("znew", "col", NINPUTS, NHORIZON - 1)
+            self.vnew = create_binary_matrix("vnew", "col", NSTATES, NHORIZON)
+            self.u_min = create_binary_matrix("u_min", "col", NINPUTS, NHORIZON - 1)
+            self.u_max = create_binary_matrix("u_max", "col", NINPUTS, NHORIZON - 1)
+            self.x_min = create_binary_matrix("x_min", "col", NSTATES, NHORIZON)
+            self.x_max = create_binary_matrix("x_max", "col", NSTATES, NHORIZON)
+            self.Xref = create_binary_matrix("Xref", "col", NSTATES, NHORIZON)
+            self.Uref = create_binary_matrix("Uref", "col", NINPUTS, NHORIZON - 1)
 
     def __init__(self, NSTATES, NINPUTS, NHORIZON):
         self.params = self.Params(NSTATES, NINPUTS, NHORIZON)
@@ -160,32 +165,74 @@ def run_tests():
     file_name = re.sub(r"\.py$", ".hpp", os.path.abspath(sys.argv[0]).replace(r'.py', '.hpp'))
     FILE = open(file_name, "w")
 
-    # TEST 1: FORWARD_PASS
     solver = Solver(12, 4, 10)
     DATA = False
+
+    # TEST 1: FORWARD_PASS
+    solver = Solver(12, 4, 10)
     forward_pass(solver)
+    print_checksum("test__forward_pass__u", solver.work.u)
+    print_checksum("test__forward_pass__x", solver.work.x)
+    solver = Solver(12, 4, 10)
     forward_pass_1(solver, 2)
+    print_checksum("test__forward_pass_1__u", solver.work.u)
+    solver = Solver(12, 4, 10)
     forward_pass_2(solver, 2)
+    print_checksum("test__forward_pass_2__x", solver.work.x)
 
     # TEST 2: BACKWARD_PASS
     solver = Solver(12, 4, 10)
     backward_pass(solver)
+    print_checksum("test__backward_pass__d", solver.work.d)
+    print_checksum("test__backward_pass__p", solver.work.p)
 
     # TEST 3: UPDATE_PRIMAL
     solver = Solver(12, 4, 10)
     update_primal(solver)
+    print_checksum("test__update_primal__u", solver.work.u)
+    print_checksum("test__update_primal__x", solver.work.x)
+    print_checksum("test__update_primal__p", solver.work.p)
+    print_checksum("test__update_primal__d", solver.work.d)
 
     # TEST 4: UPDATE_SLACK
     solver = Solver(12, 4, 10)
     update_slack(solver)
+    print_checksum("test__update_slack__znew", solver.work.znew)
+    print_checksum("test__update_slack__vnew", solver.work.vnew)
 
     # TEST 5: UPDATE_DUAL
     solver = Solver(12, 4, 10)
     update_dual(solver)
+    print_checksum("test__update_dual__y", solver.work.y)
+    print_checksum("test__update_dual__g", solver.work.g)
 
     # TEST 6: UPDATE_LINEAR_COST
     solver = Solver(12, 4, 10)
-    forward_pass(solver)
+    update_linear_cost(solver)
+    print_checksum("test__update_linear_cost__r", solver.work.r)
+    print_checksum("test__update_linear_cost__q", solver.work.q)
+    print_checksum("test__update_linear_cost__p", solver.work.p)
+
+    solver = Solver(12, 4, 10)
+    update_linear_cost_1(solver)
+    print_checksum("test__update_linear_cost_1__r", solver.work.r)
+    print_checksum("test__update_linear_cost_1__q", solver.work.q)
+    print_checksum("test__update_linear_cost_1__p", solver.work.p)
+    solver = Solver(12, 4, 10)
+    update_linear_cost_2(solver, 2)
+    print_checksum("test__update_linear_cost_2__r", solver.work.r)
+    print_checksum("test__update_linear_cost_2__q", solver.work.q)
+    print_checksum("test__update_linear_cost_2__p", solver.work.p)
+    solver = Solver(12, 4, 10)
+    update_linear_cost_3(solver)
+    print_checksum("test__update_linear_cost_3__r", solver.work.r)
+    print_checksum("test__update_linear_cost_3__q", solver.work.q)
+    print_checksum("test__update_linear_cost_3__p", solver.work.p)
+    solver = Solver(12, 4, 10)
+    update_linear_cost_4(solver)
+    print_checksum("test__update_linear_cost_4__r", solver.work.r)
+    print_checksum("test__update_linear_cost_4__q", solver.work.q)
+    print_checksum("test__update_linear_cost_4__p", solver.work.p)
 
 
 if __name__ == "__main__":
