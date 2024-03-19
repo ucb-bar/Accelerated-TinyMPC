@@ -57,7 +57,7 @@ int main()
     work.iter = 0;
     settings.abs_pri_tol = 0.001;
     settings.abs_dua_tol = 0.001;
-    settings.max_iter = 1;
+    settings.max_iter = 100;
     settings.check_termination = 1;
     settings.en_input_bound = 1;
     settings.en_state_bound = 1;
@@ -87,7 +87,7 @@ int main()
 
     printf("Step,TrackingError,x,y,z,phi,theta,psi,dx,dy,dz,dphi,dtheta,dpsi,u1,u2,u3,u4\n");
 
-    for (int k = 0; k < 1; ++k) {
+    for (int k = 0; k < 70; ++k) {
 
         // 1. Update measurement
         // an alternative method is to use work.x.setCol(x0.data[0], 0);
