@@ -105,7 +105,6 @@ int tiny_solve(TinySolver *solver)
     CYCLE_CNT_WRAPPER(update_linear_cost, solver, "update_linear_cost");
     for (int i = 0; i < solver->settings->max_iter; i++)
     {
-        printf("%d ------------------------\n", i);
         // Solve linear system with Riccati and roll out to get new trajectory
         CYCLE_CNT_WRAPPER(update_primal, solver, "update_primal");
         // Project slack variables into feasible domain

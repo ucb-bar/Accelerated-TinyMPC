@@ -21,7 +21,7 @@ TinySolver solver{&settings, &cache, &work};
 template<typename Scalar_, int Rows_, int Cols_, int Options_, int MaxRows_, int MaxCols_>
 void test_assert(const char *test, float expected, Matrix<Scalar_, Rows_, Cols_, Options_, MaxRows_, MaxCols_> &actual) {
     float sum = actual.checksum();
-    printf("%-20s : %s (%+10f %+10f)\n", test, float_eq(expected, sum, 1e-2) ? "pass" : "fail", expected, sum);
+    printf("%-24s : %s (%+10f %+10f)\n", test, float_eq(expected, sum, 1e-6) ? "pass" : "fail", expected, sum);
     if (DEBUG) actual.print("float", test);
 }
 
@@ -63,17 +63,17 @@ void init_solver() {
 
 int main() {
 
-    float checksum = 0;
-
     // forward pass
     init_solver();
     forward_pass(&solver);
     test_assert("forward_pass u", test__forward_pass__u, work.u);
     test_assert("forward_pass x", test__forward_pass__x, work.x);
 
+    init_solver();
     forward_pass_1(&solver, 2);
     test_assert("forward_pass_1 u", test__forward_pass_1__u, work.u);
 
+    init_solver();
     forward_pass_2(&solver, 2);
     test_assert("forward_pass_2 x", test__forward_pass_2__x, work.x);
 
@@ -109,6 +109,27 @@ int main() {
     test_assert("update_linear_cost r", test__update_linear_cost__r, work.r);
     test_assert("update_linear_cost q", test__update_linear_cost__q, work.q);
     test_assert("update_linear_cost p", test__update_linear_cost__p, work.p);
+
+    init_solver();
+    update_linear_cost_1(&solver);
+    test_assert("update_linear_cost_1 r", test__update_linear_cost_1__r, work.r);
+    test_assert("update_linear_cost_1 q", test__update_linear_cost_1__q, work.q);
+    test_assert("update_linear_cost_1 p", test__update_linear_cost_1__p, work.p);
+    init_solver();
+    update_linear_cost_2(&solver, 2);
+    test_assert("update_linear_cost_2 r", test__update_linear_cost_2__r, work.r);
+    test_assert("update_linear_cost_2 q", test__update_linear_cost_2__q, work.q);
+    test_assert("update_linear_cost_2 p", test__update_linear_cost_2__p, work.p);
+    init_solver();
+    update_linear_cost_3(&solver);
+    test_assert("update_linear_cost_3 r", test__update_linear_cost_3__r, work.r);
+    test_assert("update_linear_cost_3 q", test__update_linear_cost_3__q, work.q);
+    test_assert("update_linear_cost_3 p", test__update_linear_cost_3__p, work.p);
+    init_solver();
+    update_linear_cost_4(&solver);
+    test_assert("update_linear_cost_4 r", test__update_linear_cost_4__r, work.r);
+    test_assert("update_linear_cost_4 q", test__update_linear_cost_4__q, work.q);
+    test_assert("update_linear_cost_4 p", test__update_linear_cost_4__p, work.p);
 }
 
 }
