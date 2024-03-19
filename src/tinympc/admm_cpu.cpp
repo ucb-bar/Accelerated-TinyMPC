@@ -42,8 +42,8 @@ extern "C"
      */
     void backward_pass_grad(TinySolver *solver)
     {
-        solver->work->P[NHORIZON - 1] = solver->work->Qf;
-        solver->work->p.col(NHORIZON - 1) = solver->work->qf;
+        // solver->work->P[NHORIZON - 1] = solver->work->Qf;
+        // solver->work->p.col(NHORIZON - 1) = solver->work->qf;
         for (int i = NHORIZON - 2; i >= 0; i--)
         {   
             tiny_MatrixNuNu Quu = (solver->work->R + solver->work->Bdyn.transpose() * solver->work->P[i+1] * solver->work->Bdyn);
@@ -121,6 +121,10 @@ extern "C"
         // TODO replace this with computed P
         solver->work->p.col(NHORIZON - 1) = -(solver->work->Xref.col(NHORIZON - 1).transpose().lazyProduct(solver->work->P[NHORIZON-1]));
         solver->work->p.col(NHORIZON - 1) -= solver->cache->rho * (solver->work->vnew.col(NHORIZON - 1) - solver->work->g.col(NHORIZON - 1));
+
+        solver->work->P[NHORIZON-1] += solver->cache->rho * tiny_MatrixNxNx::Identity();
+        solver->work->Q += solver->cache->rho * tiny_MatrixNxNx::Identity();
+        solver->work->R += solver->cache->rho * tiny_MatrixNuNu::Identity();
     }
 
     void tiny_init(TinySolver *solver) {
