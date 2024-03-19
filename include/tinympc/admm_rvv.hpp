@@ -117,7 +117,7 @@ inline void update_linear_cost_3(TinySolver *solver) {
     matsub(solver->work->vnew.data, solver->work->g.data, solver->work->s1.data, NHORIZON, NSTATES);
     matmulf(solver->work->s1.data, solver->work->s2.data, solver->cache->rho, NHORIZON, NSTATES);
     matsub(solver->work->q.data, solver->work->s2.data, solver->work->s1.data, NHORIZON, NSTATES);
-    solver->work->q = solver->work->s1;
+    solver->work->q.set(solver->work->s1._data);
 }
 
 inline void update_linear_cost_4(TinySolver *solver) {

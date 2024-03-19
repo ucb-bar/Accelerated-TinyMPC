@@ -61,7 +61,7 @@ public:
     Matrix() {
         _Matrix(Rows_, Cols_);
         for (int i = 0; i < outer * inner; ++i)
-            _data[i] = 0;
+           _data[i] = 0;
     }
 
     // Copy Constructor
@@ -90,6 +90,7 @@ public:
     }
 
     // Assignment Operator
+    // TODO: it has a bug in the last statement
     virtual Matrix& operator=(const Matrix *other) {
         if (this == other) return *this;
         matcopy(data, other->data, outer, inner);
