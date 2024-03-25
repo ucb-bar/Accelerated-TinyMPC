@@ -34,6 +34,32 @@ int main() {
     puts(compare_2d(golden, actual, N, M) ? "pass" : "fail");
 
     // data gen
+    float **G = alloc_array_2d(N, M);
+    float **H = alloc_array_2d(M, N);
+    float **V = alloc_array_2d(1, M);
+    float **W = alloc_array_2d(M, 1);
+    gen_rand_2d(G, N, M);
+    gen_rand_2d(H, M, N);
+    gen_rand_2d(V, 1, M);
+    gen_rand_2d(W, M, 1);
+
+    printf("matvec:         ");
+    float **golden_vec = alloc_array_2d(N, 1);
+    float **actual_vec = alloc_array_2d(N, 1);
+    matvec_golden(G, V, golden_vec, N, M);
+    matvec(G, V, actual_vec, N, M);
+    puts(compare_2d(golden_vec, actual_vec, N, 1) ? "pass" : "fail");
+
+    printf("matvec_t:       ");
+    // print_array_2d(H, M, N, "float", "H");
+    // print_array_2d(W, M, 1, "float", "W");
+    matvec_transpose_golden(H, W, golden_vec, M, N);
+    matvec_transpose(H, W, actual_vec, M, N);
+    // print_array_2d(golden_vec, N, 1, "float", "golden_vec");
+    // print_array_2d(actual_vec, N, 1, "float", "actual_vec");
+    puts(compare_2d(golden_vec, actual_vec, N, 1) ? "pass" : "fail");
+
+    // data gen
     A = alloc_array_2d(N, M);
     B = alloc_array_2d(N, M);
     float **C = alloc_array_2d(N, M);
@@ -45,6 +71,11 @@ int main() {
     float max_golden = maxcoeff_golden(A, N, M);
     float max_actual = maxcoeff(A, N, M);
     puts(float_eq(max_golden, max_actual, 1e-6) ? "pass" : "fail");
+
+    printf("mincoeff:       ");
+    float min_golden = mincoeff_golden(A, N, M);
+    float min_actual = mincoeff(A, N, M);
+    puts(float_eq(min_golden, min_actual, 1e-6) ? "pass" : "fail");
 
     printf("matmulf:        ");
     matmulf_golden(A, C, 10.0f, N, M);

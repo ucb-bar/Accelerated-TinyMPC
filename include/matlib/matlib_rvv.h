@@ -7,6 +7,8 @@ extern "C"
 
 float maxcoeff_golden(float **a, int n, int m);
 float maxcoeff(float **a, int n, int m);
+float mincoeff_golden(float **a, int n, int m);
+float mincoeff(float **a, int n, int m);
 float matnorm_golden(float **a, int n, int m);
 float matnorm(float **a, int n, int m);
 void matneg_golden(float **a, float **b, int n, int m);
@@ -21,6 +23,10 @@ void cwisemul_golden(float **a, float **b, float **c, int n, int m);
 void cwisemul(float **a, float **b, float **c, int n, int m);
 void matmul_golden(float **a, float **b, float **c, int n, int m, int o);
 void matmul(float **a, float **b, float **c, int n, int m, int o);
+void matvec_golden(float **a, float **b, float **c, int n, int m);
+void matvec(float **a, float **b, float **c, int n, int m);
+void matvec_transpose_golden(float **a, float **b, float **c, int n, int m);
+void matvec_transpose(float **a, float **b, float **c, int n, int m);
 void matmulf_golden(float **a, float **b, float f, int n, int m);
 void matmulf(float **a, float **b, float f, int n, int m);
 void matsub_golden(float **a, float **b, float **c, int n, int m);
