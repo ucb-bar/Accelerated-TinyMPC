@@ -48,7 +48,7 @@ extern "C"
         for (int i = 0; i < NHORIZON; ++i) {
             work.P[i] = tiny_MatrixNxNx::Zero();
         }
-        // work.P[NHORIZON-1] = work.Qf;
+        work.P[NHORIZON-1] = work.Qf;
         work.u_min = tiny_MatrixNuNhm1::Constant(-0.5);
         work.u_max = tiny_MatrixNuNhm1::Constant(0.5);
         work.x_min = tiny_MatrixNxNh::Constant(-5);
