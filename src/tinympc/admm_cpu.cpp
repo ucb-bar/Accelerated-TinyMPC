@@ -114,27 +114,11 @@ extern "C"
      */
     void update_linear_cost(TinySolver *solver)
     {
-        // solver->work->r = -(solver->Uref.array().colwise() * solver->work->rf.array()); // Uref = 0 so commented out for speed up. Need to uncomment if using Uref
-        solver->work->r = -solver->cache->rho * (solver->work->znew - solver->work->y);
-        solver->work->q = -(solver->work->Xref.array().colwise() * solver->work->qf.array());
-        (solver->work->q).noalias() -= solver->cache->rho * (solver->work->vnew - solver->work->g);
-        // TODO replace this with computed P
-        solver->work->p.col(NHORIZON - 1) = -(solver->work->Xref.col(NHORIZON - 1).transpose().lazyProduct(solver->work->P[NHORIZON-1]));
-        solver->work->p.col(NHORIZON - 1) -= solver->cache->rho * (solver->work->vnew.col(NHORIZON - 1) - solver->work->g.col(NHORIZON - 1));
-
+        // TODO for some reason this makes the tracking error super low even though not technically correct?
         solver->work->P[NHORIZON-1] += solver->cache->rho * tiny_MatrixNxNx::Identity();
         solver->work->Q += solver->cache->rho * tiny_MatrixNxNx::Identity();
         solver->work->R += solver->cache->rho * tiny_MatrixNuNu::Identity();
 
-        // Q, R, Qf are actually Q_tilde, R_tilde, Qf_tilde (already added rho * I)
-        // Make sure P[NHORIZON-1] is Qf at the beginning
-
-        // r[k] = -R * Uref[k] - rho * (znew[k] - y[k])
-        // q[k] = -Q * Xref[k] - rho * (vnew[k] - g[k])
-        // q[NHORIZON-1] = -Qf * Xref[NHORIZON-1] - rho * (vnew[NHORIZON-1] - g[NHORIZON-1])
-        // p[NHORIZON-1] = -P[NHORIZON-1] * Xref[NHORIZON-1] - rho * (vnew[NHORIZON-1] - g[NHORIZON-1])
-
-        // solver->work->r = -solver->work->R * solver->Uref.array().colwise() - solver->cache->rho * (solver->work->znew - solver->work->y);
         solver->work->q = -solver->work->Q * solver->work->Xref - solver->cache->rho * (solver->work->vnew - solver->work->g);
         solver->work->q.col(NHORIZON - 1) = -solver->work->Qf * solver->work->Xref.col(NHORIZON - 1) - solver->cache->rho * (solver->work->vnew.col(NHORIZON - 1) - solver->work->g.col(NHORIZON - 1));
         solver->work->p.col(NHORIZON - 1) = -solver->work->P[NHORIZON-1] * solver->work->Xref.col(NHORIZON - 1) - solver->cache->rho * (solver->work->vnew.col(NHORIZON - 1) - solver->work->g.col(NHORIZON - 1));
