@@ -449,21 +449,18 @@ float matnorm_golden(float **a, int n, int m) {
 }
 
 float matnorm(float **a, int n, int m) {
-    float sum = 0;
+    int k = m * n;
+    float *ptr_a = &a[0][0];
     size_t vlmax = __riscv_vsetvlmax_e32m1();
     vfloat32m1_t vec_zero = __riscv_vfmv_v_f_f32m1(0, vlmax);
-    for (int i = 0; i < n; ++i) {
-        float *ptr_a = &a[i][0];
-        int k = m;
-        vfloat32m1_t vec_s = __riscv_vfmv_v_f_f32m1(0, vlmax);
-        for (size_t vl; k > 0; k -= vl, ptr_a += vl) {
-            vl = __riscv_vsetvl_e32m1(k);
-            vfloat32m1_t vec_a = __riscv_vle32_v_f32m1(ptr_a, vl);
-            vec_s = __riscv_vfmacc_vv_f32m1(vec_s, vec_a, vec_a, vl);
-        }
-        vfloat32m1_t vec_sum = __riscv_vfredusum_vs_f32m1_f32m1(vec_s, vec_zero, vlmax);
-        sum += __riscv_vfmv_f_s_f32m1_f32(vec_sum);
+    vfloat32m1_t vec_s = __riscv_vfmv_v_f_f32m1(0, vlmax);
+    for (size_t vl; k > 0; k -= vl, ptr_a += vl) {
+        vl = __riscv_vsetvl_e32m1(k);
+        vfloat32m1_t vec_a = __riscv_vle32_v_f32m1(ptr_a, vl);
+        vec_s = __riscv_vfmacc_vv_f32m1(vec_s, vec_a, vec_a, vl);
     }
+    vfloat32m1_t vec_sum = __riscv_vfredusum_vs_f32m1_f32m1(vec_s, vec_zero, vlmax);
+    float sum = __riscv_vfmv_f_s_f32m1_f32(vec_sum);
     return sqrt(sum);
 }
 
