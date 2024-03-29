@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <cstdint>
 
-#define USE_RVV 1
+// #define USE_RVV 1
 #include "tinympc/admm_rvv.hpp"
 
 #define DEBUG_MODULE "TINYALG"

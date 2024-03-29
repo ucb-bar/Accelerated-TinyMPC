@@ -1,10 +1,10 @@
 #pragma once
 
-#ifdef USE_RVV
+// #ifdef USE_RVV
 #include "admm_rvv.hpp"
-#else
-#include "admm_cpu.hpp"
-#endif
+// #else
+// #include "admm_cpu.hpp"
+// #endif
 
 #ifdef __cplusplus
 extern "C"

@@ -19,7 +19,7 @@ float maxcoeff_golden(float **a, int n, int m) {
     return max;
 }
 
-float maxcoeff(float **a, int n, int m) {
+float maxcoeff_rvv(float **a, int n, int m) {
     float max = std::numeric_limits<float>::min();
     vfloat32m1_t vec_max = __riscv_vfmv_s_f_f32m1(max, 1);
     for (int i = 0; i < n; ++i) {
@@ -44,7 +44,7 @@ void matneg_golden(float **a, float **b, int n, int m) {
     }
 }
 
-void matneg(float **a, float **b, int n, int m) {
+void matneg_rvv(float **a, float **b, int n, int m) {
     for (int i = 0; i < n; ++i) {
         float *ptr_a = &a[i][0];
         float *ptr_b = &b[i][0];
@@ -68,7 +68,7 @@ void cwiseabs_golden(float **a, float **b, int n, int m) {
     }
 }
 
-void cwiseabs(float **a, float **b, int n, int m) {
+void cwiseabs_rvv(float **a, float **b, int n, int m) {
     for (int i = 0; i < n; ++i) {
         float *ptr_a = &a[i][0];
         float *ptr_b = &b[i][0];
@@ -92,7 +92,7 @@ void cwisemin_golden(float **a, float **b, float **c, int n, int m) {
     }
 }
 
-void cwisemin(float **a, float **b, float **c, int n, int m) {
+void cwisemin_rvv(float **a, float **b, float **c, int n, int m) {
     for (int i = 0; i < n; ++i) {
         int k = m;
         float *ptr_a = &a[i][0];
@@ -117,7 +117,7 @@ void cwisemul_golden(float **a, float **b, float **c, int n, int m) {
     }
 }
 
-void cwisemul(float **a, float **b, float **c, int n, int m) {
+void cwisemul_rvv(float **a, float **b, float **c, int n, int m) {
     for (int i = 0; i < n; ++i) {
         int k = m;
         float *ptr_a = &a[i][0];
@@ -143,7 +143,7 @@ void cwisemax_golden(float **a, float **b, float **c, int n, int m) {
     }
 }
 
-void cwisemax(float **a, float **b, float **c, int n, int m) {
+void cwisemax_rvv(float **a, float **b, float **c, int n, int m) {
     for (int i = 0; i < n; ++i) {
         int k = m;
         float *ptr_a = &a[i][0];
@@ -170,7 +170,7 @@ void matmul_golden(float **a, float **b, float **c, int n, int m, int o) {
         }
 }
 
-void matmul(float **a, float **b, float **c, int n, int m, int o) {
+void matmul_rvv(float **a, float **b, float **c, int n, int m, int o) {
     size_t vlmax = __riscv_vsetvlmax_e32m1();
     vfloat32m1_t vec_zero = __riscv_vfmv_v_f_f32m1(0, vlmax);
     for (int i = 0; i < n; ++i) {
@@ -203,7 +203,7 @@ void matmulf_golden(float **a, float **b, float f, int n, int m) {
         }
 }
 
-void matmulf(float **a, float **b, float f, int n, int m) {
+void matmulf_rvv(float **a, float **b, float f, int n, int m) {
     size_t vlmax = __riscv_vsetvlmax_e32m1();
     for (int i = 0; i < n; ++i) {
         float *ptr_a = &a[i][0];
@@ -227,7 +227,7 @@ void matsub_golden(float **a, float **b, float **c, int n, int m) {
     }
 }
 
-void matsub(float **a, float **b, float **c, int n, int m) {
+void matsub_rvv(float **a, float **b, float **c, int n, int m) {
     for (int i = 0; i < n; ++i) {
         int k = m;
         float *ptr_a = &a[i][0];
@@ -252,7 +252,7 @@ void matadd_golden(float **a, float **b, float **c, int n, int m) {
     }
 }
 
-void matadd(float **a, float **b, float **c, int n, int m) {
+void matadd_rvv(float **a, float **b, float **c, int n, int m) {
     for (int i = 0; i < n; ++i) {
         int k = m;
         float *ptr_a = &a[i][0];
@@ -281,7 +281,7 @@ void transpose_golden(float **a, float **b, int n, int m) {
     }
 }
 
-void transpose(float **a, float **b, int n, int m) {
+void transpose_rvv(float **a, float **b, int n, int m) {
     for (int j = 0; j < m; ++j) {
         float *ptr_a = &a[0][j];
         float *ptr_b = &b[j][0];
@@ -309,7 +309,7 @@ void matcopy_golden(float **a, float **b, int n, int m) {
     }
 }
 
-void matcopy(float **a, float **b, int n, int m) {
+void matcopy_rvv(float **a, float **b, int n, int m) {
     float *ptr_a = &a[0][0];
     float *ptr_b = &b[0][0];
     int k = n * m;
@@ -328,7 +328,7 @@ void matset_golden(float **a, float f, int n, int m) {
     }
 }
 
-void matset(float **a, float f, int n, int m) {
+void matset_rvv(float **a, float f, int n, int m) {
     for (int i = 0; i < n; ++i) {
         float *ptr_a = &a[i][0];
         int k = m;
@@ -348,7 +348,7 @@ void matsetv_golden(float **a, float *f, int n, int m) {
     }
 }
 
-void matsetv(float **a, float *f, int n, int m) {
+void matsetv_rvv(float **a, float *f, int n, int m) {
     float *ptr_f = f;
     for (int i = 0; i < n; ++i) {
         float *ptr_a = &a[i][0];
@@ -372,7 +372,7 @@ float matnorm_golden(float **a, int n, int m) {
     return sqrt(sum);
 }
 
-float matnorm(float **a, int n, int m) {
+float matnorm_rvv(float **a, int n, int m) {
     float sum = 0;
     size_t vlmax = __riscv_vsetvlmax_e32m1();
     vfloat32m1_t vec_zero = __riscv_vfmv_v_f_f32m1(0, vlmax);

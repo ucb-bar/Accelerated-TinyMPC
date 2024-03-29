@@ -10,9 +10,15 @@
 // check this paper for more details: https://roboticexplorationlab.org/papers/planning_with_attitude.pdf
 
 #include <stdio.h>
+#include <stdint.h>
 
 #include <tinympc/admm.hpp>
-#include "problem_data/quadrotor_50hz_params_unconstrained.hpp"
+#include "problem_data/quadrotor_20hz_params.hpp"
+#include "trajectory_data/quadrotor_20hz_y_axis_line.hpp"
+
+#define MSTATUS_VS          0x00000600
+#define MSTATUS_FS          0x00006000
+#define MSTATUS_XS          0x00018000
 
 extern "C"
 {
@@ -22,10 +28,35 @@ TinyWorkspace work;
 TinySettings settings;
 TinySolver solver{&settings, &cache, &work};
 
+static inline void enable_vector_operations() {
+    unsigned long mstatus;
+    
+    // Read current mstatus
+    asm volatile("csrr %0, mstatus" : "=r"(mstatus));
+    
+    // Set VS field to Dirty (11)
+    mstatus |= MSTATUS_VS | MSTATUS_FS | MSTATUS_XS;
+    
+    // Write back updated mstatus
+    asm volatile("csrw mstatus, %0" :: "r"(mstatus));
+}
+
+static uint64_t read_cycles() {
+    uint64_t cycles;
+    // asm volatile ("rdcycle %0" : "=r" (cycles));
+    asm volatile ("csrr %0, cycle" : "=r" (cycles));
+    return cycles;
+}
+
+
 int main()
 {
     // General state temporary variables
     printf("Entered main!\n");
+
+    enable_vector_operations();
+    uint64_t start, end;
+
     tiny_VectorNx v1, v2;
 
 
@@ -66,34 +97,47 @@ int main()
 
 
     // Hovering setpoint
+    
     tiny_VectorNx Xref_origin;
-    tinytype Xref_origin_data[NSTATES] = {
-        0, 0, 1.5, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    Xref_origin.set(Xref_origin_data);
-    // Hovers at the same point until the horizon
-    for (int j = 0; j < NHORIZON; j++) {
-        tinytype **target = { &work.Xref.data[j] };
-        matsetv(target, Xref_origin_data, 1, NSTATES);
-        // print_array_1d(work.Xref.data[j], NSTATES, "float", "data");
-    }
+    Matrix<tinytype, NSTATES, NTOTAL> Xref_total;
+    Xref_total.set(Xref_data);
+
+    // tinytype Xref_origin_data[NSTATES] = {
+    //     0, 0, 1.5, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    
+    // Xref_origin.set(Xref_origin_data);
+    // // Hovers at the same point until the horizon
+    // for (int j = 0; j < NHORIZON; j++) {
+    //     tinytype **target = { &work.Xref.data[j] };
+    //     matsetv(target, Xref_origin_data, 1, NSTATES);
+    //     // print_array_1d(work.Xref.data[j], NSTATES, "float", "data");
+    // }
+
+
     // print_array_2d(work.Xref.data, NHORIZON, NSTATES, "float", "data");
 
     // current and next simulation states
     tiny_VectorNx x0, x1;
     // Initial state
-    tinytype x0_data[NSTATES] = {
-        -3.64893626e-02,  3.70428882e-02,  2.25366379e-01, -1.92755080e-01,
-        -1.91678221e-01, -2.21354598e-03,  9.62340916e-01, -4.09749891e-01,
-        -3.78764621e-01,  7.50158432e-02, -6.63581815e-01,  6.71744046e-01 };
-    x0.set(x0_data);
+    // tinytype x0_data[NSTATES] = {
+    //     -3.64893626e-02,  3.70428882e-02,  2.25366379e-01, -1.92755080e-01,
+    //     -1.91678221e-01, -2.21354598e-03,  9.62340916e-01, -4.09749891e-01,
+    //     -3.78764621e-01,  7.50158432e-02, -6.63581815e-01,  6.71744046e-01 };
+    // x0.set(x0_data);
+    x0.set(Xref_data);
 
-    printf("Step,TrackingError,x,y,z,phi,theta,psi,dx,dy,dz,dphi,dtheta,dpsi,u1,u2,u3,u4\n");
+    for (int k = 0; k < 10; ++k) {
 
-    for (int k = 0; k < 70; ++k) {
+        // Print states data to CSV file
+        // calculate the value of (x0 - work.Xref.col(1)).norm()
+        matsub(x0.data, work.Xref.col(1), v1.data, 1, NSTATES);
+        float norm = matnorm(v1.data, 1, NSTATES);
+        printf("Tracking error: %5.7f\n", norm);
 
         // 1. Update measurement
         // an alternative method is to use work.x.setCol(x0.data[0], 0);
         matsetv(work.x.col(0), x0.data[0], 1, NSTATES);
+        work.Xref.set(&(Xref_data[k*NSTATES]));
 
         // 2. Update reference (if needed)
 
@@ -102,7 +146,10 @@ int main()
         work.g = 0.0;
 
         // 4. Solve MPC problem
+        start = read_cycles();
         tiny_solve(&solver);
+        // end = read_cycles();
+        // printf("Time for iter %d: %d\n", k, end-start);
 
         // 5. Simulate forward
         // calculate x1 = work.Adyn * x0 + work.Bdyn * work.u.col(0);
@@ -110,29 +157,6 @@ int main()
         matmul(work.u.col(0), work.Bdyn.data, v2.data, 1, NSTATES, NINPUTS);
         matadd(v1.data, v2.data, x0.data, 1, NSTATES);
 
-        printf("%d,", k);
-
-        // Print states data to CSV file
-        // calculate the value of (x0 - work.Xref.col(1)).norm()
-        matsub(x0.data, work.Xref.col(1), v1.data, 1, NSTATES);
-        float norm = matnorm(v1.data, 1, NSTATES);
-        printf("%0.7f,", norm);
-        for (int i = 0; i < NSTATES; ++i) {
-            printf("%f", work.x(0, i));
-            if (i < NSTATES - 1) {
-                printf(",");
-            }
-        }
-        printf(",");
-
-        // Print forces to CSV file
-        for (int i = 0; i < NINPUTS; ++i) {
-            printf("%0.7f", work.u(i, 0));
-            if (i < NINPUTS - 1) {
-                printf(",");
-            }
-        }
-        printf("\n");
     }
 }
 
