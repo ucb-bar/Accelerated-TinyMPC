@@ -25,6 +25,7 @@ TinySolver solver{&settings, &cache, &work};
 int main()
 {
     // General state temporary variables
+    printf("Entered main!\n");
     tiny_VectorNx v1, v2;
 
     // Map data from problem_data (array in row-major order)
@@ -114,7 +115,7 @@ int main()
         // calculate the value of (x0 - work.Xref.col(1)).norm()
         matsub(x0.data, work.Xref.col(1), v1.data, 1, NSTATES);
         float norm = matnorm(v1.data, 1, NSTATES);
-        printf("%f,", norm);
+        printf("%0.7f,", norm);
         for (int i = 0; i < NSTATES; ++i) {
             printf("%f", work.x(0, i));
             if (i < NSTATES - 1) {
@@ -125,7 +126,7 @@ int main()
 
         // Print forces to CSV file
         for (int i = 0; i < NINPUTS; ++i) {
-            printf("%f", work.u(i, 0));
+            printf("%0.7f", work.u(i, 0));
             if (i < NINPUTS - 1) {
                 printf(",");
             }

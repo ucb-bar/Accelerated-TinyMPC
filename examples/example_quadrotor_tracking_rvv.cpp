@@ -1,9 +1,24 @@
+// Quadrotor hovering example
+// Make sure in glob_opts.hpp:
+// - NSTATES = 12, NINPUTS=4
+// - NHORIZON = anything you want
+// - tinytype = float if you want to run on microcontrollers
+// States: x (m), y, z, phi, theta, psi, dx, dy, dz, dphi, dtheta, dpsi
+// Inputs: u1, u2, u3, u4 (motor thrust 0-1, order from Crazyflie)
+
+// phi, theta, psi are NOT Euler angles, they are Rodiguez parameters
+// check this paper for more details: https://roboticexplorationlab.org/papers/planning_with_attitude.pdf
+
 #include <stdio.h>
-#include <time.h>
+#include <stdint.h>
 
 #include <tinympc/admm.hpp>
 #include "problem_data/quadrotor_20hz_params.hpp"
 #include "trajectory_data/quadrotor_20hz_y_axis_line.hpp"
+
+#define MSTATUS_VS          0x00000600
+#define MSTATUS_FS          0x00006000
+#define MSTATUS_XS          0x00018000
 
 extern "C"
 {
@@ -13,11 +28,37 @@ TinyWorkspace work;
 TinySettings settings;
 TinySolver solver{&settings, &cache, &work};
 
+static inline void enable_vector_operations() {
+    unsigned long mstatus;
+    
+    // Read current mstatus
+    asm volatile("csrr %0, mstatus" : "=r"(mstatus));
+    
+    // Set VS field to Dirty (11)
+    mstatus |= MSTATUS_VS | MSTATUS_FS | MSTATUS_XS;
+    
+    // Write back updated mstatus
+    asm volatile("csrw mstatus, %0" :: "r"(mstatus));
+}
+
+static uint64_t read_cycles() {
+    uint64_t cycles;
+    // asm volatile ("rdcycle %0" : "=r" (cycles));
+    asm volatile ("csrr %0, cycle" : "=r" (cycles));
+    return cycles;
+}
+
 struct timespec start, end;
 double time1;
 
 int main()
 {
+    // General state temporary variables
+    printf("Entered main!\n");
+
+    enable_vector_operations();
+    uint64_t start, end;
+
     // Current and next simulation states
     tiny_VectorNx x0, x1;
     tiny_VectorNx v1, v2;
@@ -67,14 +108,16 @@ int main()
         work.Xref._pdata[i] = Xref_total._pdata[i + 0];
 
     // Initial state
-    matsetv(x0.data, work.Xref.data[0], 1, NSTATES);
+    x0.set(Xref_data);
 
     tiny_init(&solver);
 
     for (int k = 0; k < NTOTAL - NHORIZON - 1; ++k)
     {
+        // Print states data to CSV file
+        // calculate the value of (x0 - work.Xref.col(1)).norm()
         matsub(x0.data, work.Xref.col(1), v1.data, 1, NSTATES);
-        printf("tracking error: %f\n", matnorm(v1.data, 1, NSTATES));
+        printf("tracking error: %5.7f\n", matnorm(v1.data, 1, NSTATES));
 
         // 1. Update measurement
         matsetv(work.x.col(0), x0.data[0], 1, NSTATES);
@@ -88,20 +131,18 @@ int main()
         work.g = 0.0;
 
         // 4. Solve MPC problem
-        clock_gettime(CLOCK_MONOTONIC, &start);
+        start = read_cycles();
         tiny_solve(&solver);
-        clock_gettime(CLOCK_MONOTONIC, &end);
-        time1 = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
-        printf("Time for iter %d: %f\n", k, time1);
+        end = read_cycles();
+        printf("Time for iter %d: %d\n", k, end-start);
 
         // 5. Simulate forward
+        // calculate x1 = work.Adyn * x0 + work.Bdyn * work.u.col(0);
         matmul(x0.data, work.Adyn.data, v1.data, 1, NSTATES, NSTATES);
         matmul(work.u.col(0), work.Bdyn.data, v2.data, 1, NSTATES, NINPUTS);
-        matadd(v1.data, v2.data, x1.data, 1, NSTATES);
-        matsetv(x0.data, x1.data[0], 1, NSTATES);
-    }
+        matadd(v1.data, v2.data, x0.data, 1, NSTATES);
 
-    return 0;
+    }
 }
 
 } /* extern "C" */
