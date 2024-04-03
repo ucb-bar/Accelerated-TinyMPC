@@ -48,8 +48,6 @@ static uint64_t read_cycles() {
     return cycles;
 }
 
-struct timespec start, end;
-double time1;
 
 int main()
 {
@@ -59,11 +57,8 @@ int main()
     enable_vector_operations();
     uint64_t start, end;
 
-    // Current and next simulation states
-    tiny_VectorNx x0, x1;
     tiny_VectorNx v1, v2;
-    Matrix<tinytype, NTOTAL, NSTATES, RowMajor> Xref_total_raw;
-    Matrix<tinytype, NSTATES, NTOTAL, ColMajor> Xref_total;
+
 
     // Map data from problem_data (array in row-major order)
     cache.rho = rho_value;
@@ -78,12 +73,11 @@ int main()
     work.Bdyn.set(Bdyn_data);
     transpose(work.Bdyn.data, work.BdynT.data, NSTATES, NINPUTS);
     work.Q.set(Q_data);
-    work.Qf.set(Qf_data);
     work.R.set(R_data);
 
     // Valid range for inputs and states
-    work.u_min = -0.5;
-    work.u_max = 1 - 0.5;
+    work.u_min = -0.583;
+    work.u_max = 1 - 0.583;
     work.x_min = -5;
     work.x_max = 5;
 
@@ -101,32 +95,53 @@ int main()
     settings.en_input_bound = 1;
     settings.en_state_bound = 1;
 
-    // Map data from trajectory_data
-    Xref_total_raw.set(Xref_data);
-    transpose(Xref_total_raw.data, Xref_total.data, NTOTAL, NSTATES);
-    for (int i = 0; i < NHORIZON; i++)
-        work.Xref._pdata[i] = Xref_total._pdata[i + 0];
 
+    // Hovering setpoint
+    
+    tiny_VectorNx Xref_origin;
+    Matrix<tinytype, NSTATES, NTOTAL> Xref_total;
+    Xref_total.set(Xref_data);
+
+    // tinytype Xref_origin_data[NSTATES] = {
+    //     0, 0, 1.5, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    
+    // Xref_origin.set(Xref_origin_data);
+    // // Hovers at the same point until the horizon
+    // for (int j = 0; j < NHORIZON; j++) {
+    //     tinytype **target = { &work.Xref.data[j] };
+    //     matsetv(target, Xref_origin_data, 1, NSTATES);
+    //     // print_array_1d(work.Xref.data[j], NSTATES, "float", "data");
+    // }
+
+
+    // print_array_2d(work.Xref.data, NHORIZON, NSTATES, "float", "data");
+
+    // current and next simulation states
+    tiny_VectorNx x0, x1;
     // Initial state
+    // tinytype x0_data[NSTATES] = {
+    //     -3.64893626e-02,  3.70428882e-02,  2.25366379e-01, -1.92755080e-01,
+    //     -1.91678221e-01, -2.21354598e-03,  9.62340916e-01, -4.09749891e-01,
+    //     -3.78764621e-01,  7.50158432e-02, -6.63581815e-01,  6.71744046e-01 };
+    // x0.set(x0_data);
     x0.set(Xref_data);
 
-    tiny_init(&solver);
+    for (int k = 0; k < 10; ++k) {
 
-    for (int k = 0; k < NTOTAL - NHORIZON - 1; ++k)
-    {
         // Print states data to CSV file
         // calculate the value of (x0 - work.Xref.col(1)).norm()
         matsub(x0.data, work.Xref.col(1), v1.data, 1, NSTATES);
-        printf("tracking error: %5.7f\n", matnorm(v1.data, 1, NSTATES));
+        float norm = matnorm(v1.data, 1, NSTATES);
+        printf("Tracking error: %5.7f\n", norm);
 
         // 1. Update measurement
+        // an alternative method is to use work.x.setCol(x0.data[0], 0);
         matsetv(work.x.col(0), x0.data[0], 1, NSTATES);
+        work.Xref.set(&(Xref_data[k*NSTATES]));
 
-        // 2. Update reference
-        for (int i = 0; i < NHORIZON; i++)
-            work.Xref._pdata[i] = Xref_total._pdata[i + k];
+        // 2. Update reference (if needed)
 
-        // 3. Reset dual variables if needed
+        // 3. Reset dual variables (if needed)
         work.y = 0.0;
         work.g = 0.0;
 
@@ -134,6 +149,12 @@ int main()
         start = read_cycles();
         tiny_solve(&solver);
         end = read_cycles();
+        /* The line `// printf("Time for iter %d: %d\n", k, end-start);` is a commented-out line of
+        code that would have printed the time taken for each iteration of the MPC (Model Predictive
+        Control) problem to the console. The `printf` function is commonly used in C/C++ to print
+        formatted output to the console. In this case, it would have printed the iteration number
+        `k` and the difference between the end and start cycle counts, which can be used to measure
+        the execution time of each iteration. */
         printf("Time for iter %d: %d\n", k, end-start);
 
         // 5. Simulate forward
