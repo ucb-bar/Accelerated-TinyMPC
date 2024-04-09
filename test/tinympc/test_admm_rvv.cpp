@@ -21,7 +21,7 @@ TinySolver solver{&settings, &cache, &work};
 template<typename Scalar_, int Rows_, int Cols_, int Options_, int MaxRows_, int MaxCols_>
 void test_assert(const char *test, float expected, Matrix<Scalar_, Rows_, Cols_, Options_, MaxRows_, MaxCols_> &actual) {
     float sum = actual.checksum();
-    printf("%-24s : %s (%+10f %+10f)\n", test, float_eq(expected, sum, 1e-6) ? "pass" : "fail", expected, sum);
+    printf("%-24s : %s (%2.10f %2.10f)\n", test, float_eq(expected, sum, 1e-6) ? "pass" : "fail", expected, sum);
     if (DEBUG) actual.print("float", test);
 }
 

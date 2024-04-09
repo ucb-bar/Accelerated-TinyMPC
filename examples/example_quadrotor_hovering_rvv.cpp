@@ -117,7 +117,7 @@ int main()
         float norm = matnorm(v1.data, 1, NSTATES);
         printf("%0.7f,", norm);
         for (int i = 0; i < NSTATES; ++i) {
-            printf("%f", work.x(0, i));
+            printf("%0.7f", work.x(0, i));
             if (i < NSTATES - 1) {
                 printf(",");
             }
