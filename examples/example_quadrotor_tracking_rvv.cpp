@@ -11,14 +11,12 @@
 
 #include <stdio.h>
 #include <stdint.h>
+// #include <RoSE/encoding.h>
 
 #include <tinympc/admm.hpp>
+#include <matlib/common.h>
 #include "problem_data/quadrotor_20hz_params.hpp"
 #include "trajectory_data/quadrotor_20hz_y_axis_line.hpp"
-
-#define MSTATUS_VS          0x00000600
-#define MSTATUS_FS          0x00006000
-#define MSTATUS_XS          0x00018000
 
 extern "C"
 {
@@ -28,25 +26,6 @@ TinyWorkspace work;
 TinySettings settings;
 TinySolver solver{&settings, &cache, &work};
 
-static inline void enable_vector_operations() {
-    unsigned long mstatus;
-    
-    // Read current mstatus
-    asm volatile("csrr %0, mstatus" : "=r"(mstatus));
-    
-    // Set VS field to Dirty (11)
-    mstatus |= MSTATUS_VS | MSTATUS_FS | MSTATUS_XS;
-    
-    // Write back updated mstatus
-    asm volatile("csrw mstatus, %0" :: "r"(mstatus));
-}
-
-static uint64_t read_cycles() {
-    uint64_t cycles;
-    // asm volatile ("rdcycle %0" : "=r" (cycles));
-    asm volatile ("csrr %0, cycle" : "=r" (cycles));
-    return cycles;
-}
 
 struct timespec start, end;
 double time1;

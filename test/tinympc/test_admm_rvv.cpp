@@ -63,6 +63,8 @@ void init_solver() {
 
 int main() {
 
+    enable_vector_operations();
+
     // forward pass
     init_solver();
     forward_pass(&solver);

@@ -8,6 +8,9 @@
 extern "C" {
 
 int main() {
+
+    enable_vector_operations();
+
     const int N = 11;
     const int M = 13;
     const int O = 7;

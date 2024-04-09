@@ -12,6 +12,7 @@
 #include <stdio.h>
 
 #include <tinympc/admm.hpp>
+#include <matlib/common.h>
 #include "problem_data/quadrotor_50hz_params_unconstrained.hpp"
 
 extern "C"
@@ -24,6 +25,8 @@ TinySolver solver{&settings, &cache, &work};
 
 int main()
 {
+    enable_vector_operations();
+
     // General state temporary variables
     printf("Entered main!\n");
     tiny_VectorNx v1, v2;
