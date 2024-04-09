@@ -47,6 +47,7 @@ void matsetv_golden(float **a, float *f, int n, int m);
 
 #ifdef USE_RVV
 #define maxcoeff maxcoeff_rvv
+#define mincoeff mincoeff_rvv
 #define matnorm matnorm_rvv
 #define matneg matneg_rvv
 #define cwiseabs cwiseabs_rvv
@@ -54,6 +55,8 @@ void matsetv_golden(float **a, float *f, int n, int m);
 #define cwisemax cwisemax_rvv
 #define cwisemul cwisemul_rvv
 #define matmul matmul_rvv
+#define matvec matvec_rvv
+#define matvec_transpose matvec_transpose_rvv
 #define matmulf matmulf_rvv
 #define matsub matsub_rvv
 #define matadd matadd_rvv
@@ -63,6 +66,7 @@ void matsetv_golden(float **a, float *f, int n, int m);
 #define matsetv matsetv_rvv
 #else
 #define maxcoeff maxcoeff_golden
+#define mincoeff mincoeff_golden
 #define matnorm matnorm_golden
 #define matneg matneg_golden
 #define cwiseabs cwiseabs_golden
@@ -70,6 +74,8 @@ void matsetv_golden(float **a, float *f, int n, int m);
 #define cwisemax cwisemax_golden
 #define cwisemul cwisemul_golden
 #define matmul matmul_golden
+#define matvec matvec_golden
+#define matvec_transpose matvec_transpose_golden
 #define matmulf matmulf_golden
 #define matsub matsub_golden
 #define matadd matadd_golden
