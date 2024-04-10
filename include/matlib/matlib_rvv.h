@@ -2,6 +2,100 @@
 #ifndef TINYMPC_RVV_MATLIB_H
 #define TINYMPC_RVV_MATLIB_H
 
+#ifndef USE_LMUL
+#define USE_LMUL 1
+#endif
+
+#if USE_LMUL == 1
+#define __riscv_vfabs_v_f32 __riscv_vfabs_v_f32m1
+#define __riscv_vfadd_vv_f32 __riscv_vfadd_vv_f32m1
+#define __riscv_vfmacc_vv_f32 __riscv_vfmacc_vv_f32m1
+#define __riscv_vfmax_vv_f32 __riscv_vfmax_vv_f32m1
+#define __riscv_vfmin_vv_f32 __riscv_vfmin_vv_f32m1
+#define __riscv_vfmul_vf_f32 __riscv_vfmul_vf_f32m1
+#define __riscv_vfmul_vv_f32 __riscv_vfmul_vv_f32m1
+#define __riscv_vfmv_f_s_f32_f32 __riscv_vfmv_f_s_f32m1_f32
+#define __riscv_vfmv_s_f_f32 __riscv_vfmv_s_f_f32m1
+#define __riscv_vfmv_v_f_f32 __riscv_vfmv_v_f_f32m1
+#define __riscv_vfneg_v_f32 __riscv_vfneg_v_f32m1
+#define __riscv_vfredmax_vs_f32_f32 __riscv_vfredmax_vs_f32m1_f32m1
+#define __riscv_vfredmin_vs_f32_f32 __riscv_vfredmin_vs_f32m1_f32m1
+#define __riscv_vfredusum_vs_f32_f32 __riscv_vfredusum_vs_f32m1_f32m1
+#define __riscv_vfsub_vv_f32 __riscv_vfsub_vv_f32m1
+#define __riscv_vle32_v_f32 __riscv_vle32_v_f32m1
+#define __riscv_vlse32_v_f32 __riscv_vlse32_v_f32m1
+#define __riscv_vse32_v_f32 __riscv_vse32_v_f32m1
+#define __riscv_vsetvl_e32 __riscv_vsetvl_e32m1
+#define __riscv_vsetvlmax_e32 __riscv_vsetvlmax_e32m1
+#define vfloat32_t vfloat32m1_t
+#elif USE_LMUL == 2
+#define __riscv_vfabs_v_f32 __riscv_vfabs_v_f32m2
+#define __riscv_vfadd_vv_f32 __riscv_vfadd_vv_f32m2
+#define __riscv_vfmacc_vv_f32 __riscv_vfmacc_vv_f32m2
+#define __riscv_vfmax_vv_f32 __riscv_vfmax_vv_f32m2
+#define __riscv_vfmin_vv_f32 __riscv_vfmin_vv_f32m2
+#define __riscv_vfmul_vf_f32 __riscv_vfmul_vf_f32m2
+#define __riscv_vfmul_vv_f32 __riscv_vfmul_vv_f32m2
+#define __riscv_vfmv_f_s_f32_f32 __riscv_vfmv_f_s_f32m2_f32
+#define __riscv_vfmv_s_f_f32 __riscv_vfmv_s_f_f32m2
+#define __riscv_vfmv_v_f_f32 __riscv_vfmv_v_f_f32m2
+#define __riscv_vfneg_v_f32 __riscv_vfneg_v_f32m2
+#define __riscv_vfredmax_vs_f32_f32 __riscv_vfredmax_vs_f32m2_f32m1
+#define __riscv_vfredmin_vs_f32_f32 __riscv_vfredmin_vs_f32m2_f32m1
+#define __riscv_vfredusum_vs_f32_f32 __riscv_vfredusum_vs_f32m2_f32m1
+#define __riscv_vfsub_vv_f32 __riscv_vfsub_vv_f32m2
+#define __riscv_vle32_v_f32 __riscv_vle32_v_f32m2
+#define __riscv_vlse32_v_f32 __riscv_vlse32_v_f32m2
+#define __riscv_vse32_v_f32 __riscv_vse32_v_f32m2
+#define __riscv_vsetvl_e32 __riscv_vsetvl_e32m2
+#define __riscv_vsetvlmax_e32 __riscv_vsetvlmax_e32m2
+#define vfloat32_t vfloat32m2_t
+#elif USE_LMUL == 4
+#define __riscv_vfabs_v_f32 __riscv_vfabs_v_f32m4
+#define __riscv_vfadd_vv_f32 __riscv_vfadd_vv_f32m4
+#define __riscv_vfmacc_vv_f32 __riscv_vfmacc_vv_f32m4
+#define __riscv_vfmax_vv_f32 __riscv_vfmax_vv_f32m4
+#define __riscv_vfmin_vv_f32 __riscv_vfmin_vv_f32m4
+#define __riscv_vfmul_vf_f32 __riscv_vfmul_vf_f32m4
+#define __riscv_vfmul_vv_f32 __riscv_vfmul_vv_f32m4
+#define __riscv_vfmv_f_s_f32_f32 __riscv_vfmv_f_s_f32m4_f32
+#define __riscv_vfmv_s_f_f32 __riscv_vfmv_s_f_f32m4
+#define __riscv_vfmv_v_f_f32 __riscv_vfmv_v_f_f32m4
+#define __riscv_vfneg_v_f32 __riscv_vfneg_v_f32m4
+#define __riscv_vfredmax_vs_f32_f32 __riscv_vfredmax_vs_f32m4_f32m1
+#define __riscv_vfredmin_vs_f32_f32 __riscv_vfredmin_vs_f32m4_f32m1
+#define __riscv_vfredusum_vs_f32_f32 __riscv_vfredusum_vs_f32m4_f32m1
+#define __riscv_vfsub_vv_f32 __riscv_vfsub_vv_f32m4
+#define __riscv_vle32_v_f32 __riscv_vle32_v_f32m4
+#define __riscv_vlse32_v_f32 __riscv_vlse32_v_f32m4
+#define __riscv_vse32_v_f32 __riscv_vse32_v_f32m4
+#define __riscv_vsetvl_e32 __riscv_vsetvl_e32m4
+#define __riscv_vsetvlmax_e32 __riscv_vsetvlmax_e32m4
+#define vfloat32_t vfloat32m4_t
+#elif USE_LMUL == 8
+#define __riscv_vfabs_v_f32 __riscv_vfabs_v_f32m8
+#define __riscv_vfadd_vv_f32 __riscv_vfadd_vv_f32m8
+#define __riscv_vfmacc_vv_f32 __riscv_vfmacc_vv_f32m8
+#define __riscv_vfmax_vv_f32 __riscv_vfmax_vv_f32m8
+#define __riscv_vfmin_vv_f32 __riscv_vfmin_vv_f32m8
+#define __riscv_vfmul_vf_f32 __riscv_vfmul_vf_f32m8
+#define __riscv_vfmul_vv_f32 __riscv_vfmul_vv_f32m8
+#define __riscv_vfmv_f_s_f32_f32 __riscv_vfmv_f_s_f32m8_f32
+#define __riscv_vfmv_s_f_f32 __riscv_vfmv_s_f_f32m8
+#define __riscv_vfmv_v_f_f32 __riscv_vfmv_v_f_f32m8
+#define __riscv_vfneg_v_f32 __riscv_vfneg_v_f32m8
+#define __riscv_vfredmax_vs_f32_f32 __riscv_vfredmax_vs_f32m8_f32m1
+#define __riscv_vfredmin_vs_f32_f32 __riscv_vfredmin_vs_f32m8_f32m1
+#define __riscv_vfredusum_vs_f32_f32 __riscv_vfredusum_vs_f32m8_f32m1
+#define __riscv_vfsub_vv_f32 __riscv_vfsub_vv_f32m8
+#define __riscv_vle32_v_f32 __riscv_vle32_v_f32m8
+#define __riscv_vlse32_v_f32 __riscv_vlse32_v_f32m8
+#define __riscv_vse32_v_f32 __riscv_vse32_v_f32m8
+#define __riscv_vsetvl_e32 __riscv_vsetvl_e32m8
+#define __riscv_vsetvlmax_e32 __riscv_vsetvlmax_e32m8
+#define vfloat32_t vfloat32m8_t
+#endif
+
 extern "C"
 {
 

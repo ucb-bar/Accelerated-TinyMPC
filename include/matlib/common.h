@@ -1,6 +1,4 @@
 #pragma once
-// common.h
-// common utilities for the test code under examples/
 #ifndef RVV_MATLIB_COMMON_H
 #define RVV_MATLIB_COMMON_H
 

@@ -10,8 +10,11 @@ option(UNROLLED "Use Unrolling Optimizations" ON)
 option(OPTIMIZED "Use Extra Optimizations" ON)
 option(MEASURE_CYCLES "Measure Cycles" OFF)
 
+set(USE_LMUL "1" CACHE STRING "LMUL to use in vector instructions")
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+add_compile_definitions(USE_LMUL=${USE_LMUL})
 
 if(USE_PK)
     add_compile_definitions(USE_PK=1)
