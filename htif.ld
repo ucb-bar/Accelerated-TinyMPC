@@ -1,9 +1,18 @@
 OUTPUT_ARCH ("riscv")
 ENTRY (_start)
 
+PROVIDE (__origin = 0x80000000);
+PROVIDE (__length = 16M);
+
+MEMORY
+{
+    rom (rx)  : ORIGIN = __origin, LENGTH = __length
+    ram (!rx) : ORIGIN = __origin + __length, LENGTH = __length
+}
+
 SECTIONS
 {
-    . = 0x80000000;
+    . = __origin;
 
     /* Keep under a power of 2 to reserve space for TCB */
     PROVIDE (__stack_size_min = 24K);
@@ -14,32 +23,15 @@ SECTIONS
         *(.text.startup .text.startup.*)
         *(.text .text.*)
         *(.gnu.linkonce.t.*)
-    }
+    } > rom
     PROVIDE (_etext = .);
-
-    /* Static Thread Local Storage template */
-    .tdata : {
-        PROVIDE_HIDDEN (__tdata_start = .);
-        *(.tdata .tdata.*)
-        *(.gnu.linkonce.td.*)
-        PROVIDE_HIDDEN (__tdata_end = .);
-    }
-    PROVIDE (__tdata_size = SIZEOF (.tdata));
-
-    .tbss (NOLOAD) : {
-        PROVIDE_HIDDEN (__tbss_start = .);
-        PROVIDE_HIDDEN (__tbss_offset = ABSOLUTE (__tbss_start - __tdata_start));
-        *(.tbss .tbss.*)
-        *(.gnu.linkonce.tb.*)
-        *(.tcommon)
-        PROVIDE_HIDDEN (__tbss_end = .);
-    }
-    PROVIDE (__tbss_size = SIZEOF (.tbss));
 
     .rodata : {
         *(.rodata .rodata.*)
         *(.gnu.linkonce.r.*)
-    }
+    } > rom
+
+    . += SIZEOF(.text) + SIZEOF(.rodata);
 
     .preinit_array : {
         PROVIDE_HIDDEN (__preinit_array_start = .);
@@ -75,12 +67,33 @@ SECTIONS
         KEEP (*(EXCLUDE_FILE (*crtend.o *crtend?.o) .dtors))
         KEEP (*(SORT(.dtors.*)))
         KEEP (*(.dtors))
-    }
+    } > rom
 
     /* Host-Target Interface */
     .htif ALIGN(0x40) : {
         *(.htif)
+    } > rom
+
+    . = __origin + __length;
+
+    /* Static Thread Local Storage template */
+    .tdata : {
+        PROVIDE_HIDDEN (__tdata_start = .);
+        *(.tdata .tdata.*)
+        *(.gnu.linkonce.td.*)
+        PROVIDE_HIDDEN (__tdata_end = .);
     }
+    PROVIDE (__tdata_size = SIZEOF (.tdata));
+
+    .tbss (NOLOAD) : {
+        PROVIDE_HIDDEN (__tbss_start = .);
+        PROVIDE_HIDDEN (__tbss_offset = ABSOLUTE (__tbss_start - __tdata_start));
+        *(.tbss .tbss.*)
+        *(.gnu.linkonce.tb.*)
+        *(.tcommon)
+        PROVIDE_HIDDEN (__tbss_end = .);
+    }
+    PROVIDE (__tbss_size = SIZEOF (.tbss));
 
     .data : ALIGN (8) {
         *(.data)
