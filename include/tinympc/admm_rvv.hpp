@@ -8,35 +8,57 @@
 
 #include "types_rvv.hpp"
 
+#ifndef USE_MATVEC
+#define USE_MATVEC 1
+#endif
+
 extern "C" {
 
 // u1 = x[:, i] * Kinf; u2 = u1 + d; u[:, i] = -u2
 inline void forward_pass_1(TinySolver *solver, int i) {
+#ifdef USE_MATVEC
     matvec(solver->cache->Kinf.data, solver->work->x.col(i), solver->work->u1.data, NINPUTS, NSTATES);
+#else
+    matmul(solver->work->x.col(i), solver->cache->Kinf.data, solver->work->u1.data, 1, NINPUTS, NSTATES);
+#endif
     matadd(solver->work->u1.data, solver->work->d.col(i), solver->work->u2.data, 1, NINPUTS);
     matneg(solver->work->u2.data, solver->work->u.col(i), 1, NINPUTS);
 }
 
 // x[:, i+1] = Adyn * x[:, i] + Bdyn * u[:, i]
 inline void forward_pass_2(TinySolver *solver, int i) {
+#ifdef USE_MATVEC
     matvec(solver->work->Adyn.data, solver->work->x.col(i), solver->work->x1.data, NSTATES, NSTATES);
     matvec(solver->work->Bdyn.data, solver->work->u.col(i), solver->work->x2.data, NSTATES, NINPUTS);
+#else
+    matmul(solver->work->x.col(i), solver->work->Adyn.data, solver->work->x1.data, 1, NSTATES, NSTATES);
+    matmul(solver->work->u.col(i), solver->work->Bdyn.data, solver->work->x2.data, 1, NSTATES, NINPUTS);
+#endif
     matadd(solver->work->x1.data, solver->work->x2.data, solver->work->x.col(i + 1), 1, NSTATES);
 }
 
 // d[:, i] = Quu_inv * (BdynT * p[:, i+1] + r[:, i]);
 inline void backward_pass_1(TinySolver *solver, int i) {
+#ifdef USE_MATVEC
     matvec(solver->work->BdynT.data, solver->work->p.col(i + 1), solver->work->u1.data, NINPUTS, NSTATES);
     matadd(solver->work->r.col(i), solver->work->u1.data, solver->work->u2.data, 1, NINPUTS);
     matvec(solver->cache->Quu_inv.data, solver->work->u2.data, solver->work->d.col(i), NINPUTS, NINPUTS);
+#else
+    matmul(solver->work->p.col(i + 1), solver->work->BdynT.data, solver->work->u1.data, 1, NINPUTS, NSTATES);
+    matadd(solver->work->r.col(i), solver->work->u1.data, solver->work->u2.data, 1, NINPUTS);
+    matmul(solver->work->u2.data, solver->cache->Quu_inv.data, solver->work->d.col(i), 1, NINPUTS, NINPUTS);
+#endif
 }
 
 // p[:, i] = q[:, i] + AmBKt * p[:, i + 1] - KinfT * r[:, i]
 inline void backward_pass_2(TinySolver *solver, int i) {
-    matmul(solver->work->p.col(i + 1), solver->cache->AmBKt.data, solver->work->x1.data, 1, NSTATES, NSTATES);
+#ifdef USE_MATVEC
     matvec(solver->cache->AmBKt.data, solver->work->p.col(i + 1), solver->work->x1.data, NSTATES, NSTATES);
-    matmul(solver->work->r.col(i), solver->cache->KinfT.data, solver->work->x2.data, 1, NSTATES, NINPUTS);
     matvec(solver->cache->KinfT.data, solver->work->r.col(i), solver->work->x2.data, NSTATES, NINPUTS);
+#else
+    matmul(solver->work->p.col(i + 1), solver->cache->AmBKt.data, solver->work->x1.data, 1, NSTATES, NSTATES);
+    matmul(solver->work->r.col(i), solver->cache->KinfT.data, solver->work->x2.data, 1, NSTATES, NINPUTS);
+#endif
     matsub(solver->work->x1.data, solver->work->x2.data, solver->work->x3.data, 1, NSTATES);
     matadd(solver->work->x3.data, solver->work->q.col(i), solver->work->p.col(i), 1, NSTATES);
 }
@@ -111,8 +133,11 @@ inline void update_linear_cost_3(TinySolver *solver) {
 inline void update_linear_cost_4(TinySolver *solver) {
     matsub(solver->work->vnew.col(NHORIZON - 1), solver->work->g.col(NHORIZON - 1), solver->work->x1.data, 1, NSTATES);
     matmulf(solver->work->x1.data, solver->work->x2.data, solver->cache->rho, 1, NSTATES);
+#ifdef USE_MATVEC
     matvec(solver->cache->PinfT.data, solver->work->Xref.col(NHORIZON - 1), solver->work->x1.data, NSTATES, NSTATES);
-
+#else
+    matmul(solver->work->Xref.col(NHORIZON - 1), solver->cache->PinfT.data, solver->work->x1.data, 1, NSTATES, NSTATES);
+#endif
     matadd(solver->work->x1.data, solver->work->x2.data, solver->work->x3.data, 1, NSTATES);
     matneg(solver->work->x3.data, solver->work->p.col(NHORIZON - 1), 1, NSTATES);
 }

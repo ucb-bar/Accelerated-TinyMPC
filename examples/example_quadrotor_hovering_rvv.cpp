@@ -106,10 +106,13 @@ int main()
 
         // 5. Simulate forward
         // calculate x1 = work.Adyn * x0 + work.Bdyn * work.u.col(0);
-        // matmul(x0.data, work.Adyn.data, v1.data, 1, NSTATES, NSTATES);
-        // matmul(work.u.col(0), work.Bdyn.data, v2.data, 1, NSTATES, NINPUTS);
+#ifdef USE_MATVEC
         matvec(work.Adyn.data, x0.data, v1.data, NSTATES, NSTATES);
         matvec(work.Bdyn.data, work.u.col(0), v2.data, NINPUTS, NSTATES);
+#else
+        matmul(x0.data, work.Adyn.data, v1.data, 1, NSTATES, NSTATES);
+        matmul(work.u.col(0), work.Bdyn.data, v2.data, 1, NSTATES, NINPUTS);
+#endif
         matadd(v1.data, v2.data, x0.data, 1, NSTATES);
 
         printf("%d,", k);
