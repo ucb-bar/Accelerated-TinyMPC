@@ -228,9 +228,9 @@ void matvec_golden(float **a, float **b, float **c, int n, int m) {
 void matvec_rvv(float **a, float **b, float **c, int n, int m) {
     size_t vlmax = __riscv_vsetvlmax_e32();
     vfloat32m1_t vec_zero = __riscv_vfmv_v_f_f32m1(0, vlmax);
-    float *ptr_a = &a[0][0]; // row major
     for (int i = 0; i < n; ++i) {
         int k = m;
+        float *ptr_a = &a[i][0]; // row major
         float *ptr_b = &b[0][0];
         vfloat32_t vec_s = __riscv_vfmv_v_f_f32(0, vlmax);
         for (size_t vl; k > 0; k -= vl, ptr_a += vl, ptr_b += vl) {
@@ -241,7 +241,7 @@ void matvec_rvv(float **a, float **b, float **c, int n, int m) {
         }
         vfloat32m1_t vec_sum = __riscv_vfredusum_vs_f32_f32(vec_s, vec_zero, vlmax);
         float sum = __riscv_vfmv_f_s_f32m1_f32(vec_sum);
-        c[i][0] = sum;
+        c[0][i] = sum;
     }
 }
 

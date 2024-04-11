@@ -134,7 +134,7 @@ public:
     }
 
     virtual void toString() {
-        printf("const data: %x rows: %d cols: %d inner: %d outer: %d (%d, %d)\n", data, rows, cols, inner, outer, Rows_, Cols_);
+        printf("const data: %x rows: %d cols: %d outer: %d inner: %d (%d, %d)\n", data, rows, cols, outer, inner, Rows_, Cols_);
     }
 };
 
@@ -221,6 +221,7 @@ typedef struct
     tiny_VectorNx Qf;
     tiny_VectorNu R;
     tiny_MatrixNxNx Adyn;
+    tiny_MatrixNxNx AdynT;
     tinytype * Adyn_data;
     tiny_MatrixNxNu Bdyn;
     tiny_MatrixNuNx BdynT;
