@@ -14,6 +14,22 @@
 
 extern "C" {
 
+static uint64_t startTimestamp;
+#ifdef MEASURE_CYCLES
+std::ofstream outputFile("cycle_output.csv");
+#define CYCLE_CNT_WRAPPER(func, arg, name) \
+    do { \
+        struct timespec start, end; \
+        clock_gettime(CLOCK_MONOTONIC, &start); \
+        func(arg); \
+        clock_gettime(CLOCK_MONOTONIC, &end); \
+        uint64_t timediff = (end.tv_sec - start.tv_sec)* 1e9 + (end.tv_nsec - start.tv_nsec); \
+        outputFile << name << ", " << timediff << std::endl; \
+    } while(0)
+#else
+#define CYCLE_CNT_WRAPPER(func, arg, name) func(arg)
+#endif
+
 // u1 = x[:, i] * Kinf; u2 = u1 + d; u[:, i] = -u2
 inline void forward_pass_1(TinySolver *solver, int i) {
 #ifdef USE_MATVEC
@@ -140,6 +156,72 @@ inline void update_linear_cost_4(TinySolver *solver) {
 #endif
     matadd(solver->work->x1.data, solver->work->x2.data, solver->work->x3.data, 1, NSTATES);
     matneg(solver->work->x3.data, solver->work->p.col(NHORIZON - 1), 1, NSTATES);
+/**
+ * Update linear terms from Riccati backward pass
+ */
+inline void backward_pass(TinySolver *solver)
+{
+    for (int i = NHORIZON - 2; i >= 0; i--) {
+        backward_pass_1(solver, i);
+        backward_pass_2(solver, i);
+    }
+}
+
+/**
+ * Use LQR feedback policy to roll out trajectory
+ */
+inline void forward_pass(TinySolver *solver)
+{
+    for (int i = 0; i < NHORIZON - 1; i++) {
+        forward_pass_1(solver, i);
+        forward_pass_2(solver, i);
+    }
+}
+
+/**
+ * Do backward Riccati pass then forward roll out
+ */
+inline void update_primal(TinySolver *solver)
+{
+    CYCLE_CNT_WRAPPER(backward_pass, solver, "update_primal_backward_pass");
+    CYCLE_CNT_WRAPPER(forward_pass, solver, "update_primal_forward_pass");
+}
+
+/**
+ * Project slack (auxiliary) variables into their feasible domain, defined by
+ * projection functions related to each constraint projection function
+ */
+inline void update_slack(TinySolver *solver)
+{
+    update_slack_1(solver);
+    update_slack_2(solver);
+}
+
+/**
+ * Update next iteration of dual variables by performing the augmented
+ * lagrangian multiplier update
+ */
+inline void update_dual(TinySolver *solver)
+{
+    update_dual_1(solver);
+}
+
+/**
+ * Update linear control cost terms in the Riccati feedback using
+ * the changing slack and dual variables from ADMM
+ */
+inline void update_linear_cost(TinySolver *solver)
+{
+    update_linear_cost_1(solver);
+    for (int i = 0; i < NHORIZON; i++) {
+        update_linear_cost_2(solver, i);
+    }
+    update_linear_cost_3(solver);
+    update_linear_cost_4(solver);
+}
+
+inline void tiny_init(TinySolver *solver) {
+
 }
 
 };
