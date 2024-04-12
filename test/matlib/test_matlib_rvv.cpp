@@ -17,7 +17,7 @@ int main() {
     uint32_t seed = 0xdeadbeef;
     srand(seed);
 
-    // data gen
+    // array gen
     float **A = alloc_array_2d(N, O);
     float **B = alloc_array_2d(M, O);
     float *f = alloc_array_1d(N * M);
@@ -36,7 +36,7 @@ int main() {
     // print_array_2d(actual, N, M, "float", "actual");
     puts(compare_2d(golden, actual, N, M) ? "pass" : "fail");
 
-    // data gen
+    // array gen
     float **G = alloc_array_2d(N, M);
     float **H = alloc_array_2d(M, N);
     float **V = alloc_array_2d(1, M);
@@ -62,7 +62,7 @@ int main() {
     // print_array_2d(actual_vec, N, 1, "float", "actual_vec");
     puts(compare_2d(golden_vec, actual_vec, N, 1) ? "pass" : "fail");
 
-    // data gen
+    // array gen
     A = alloc_array_2d(N, M);
     B = alloc_array_2d(N, M);
     float **C = alloc_array_2d(N, M);

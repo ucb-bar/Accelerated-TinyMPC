@@ -39,7 +39,7 @@ template<typename Scalar_, int Rows_, int Cols_,
 public:
     Scalar_ _data[MaxRows_ * MaxCols_];
     Scalar_ *_pdata[Options_ & RowMajor ? Rows_ : Cols_];
-    Scalar_ **data;
+    Scalar_ **array;
     int rows, cols, outer, inner;
 
     void _Matrix(int rows_, int cols_) {
@@ -52,9 +52,9 @@ public:
             outer = cols_;
             inner = rows_;
         }
-        data = &_pdata[0];
+        array = &_pdata[0];
         for (int i = 0; i < outer; ++i)
-            data[i] = (Scalar_ *)(&_data[i * inner]);
+            array[i] = (Scalar_ *)(&_data[i * inner]);
     }
 
     // Constructor
@@ -68,13 +68,13 @@ public:
     Matrix(const Matrix& other) {
         assert(other.rows <= MaxRows_ && other.cols <= MaxCols_);
         _Matrix(Rows_, Cols_);
-        matcopy(data, other.data, outer, inner);
+        matcopy(array, other.array, outer, inner);
     }
 
     // Copy Constructor
     Matrix(Scalar_ *data) {
         _Matrix(Rows_, Cols_);
-        matsetv(this->data, data, outer, inner);
+        matsetv(this->array, data, outer, inner);
     }
 
     // Column if ColMajor
@@ -93,19 +93,19 @@ public:
     // TODO: it has a bug in the last statement
     virtual Matrix& operator=(const Matrix *other) {
         if (this == other) return *this;
-        matcopy(data, other->data, outer, inner);
+        matcopy(array, other->array, outer, inner);
         return *this;
     }
 
     // Assignment Operator
     virtual Matrix& operator=(const Scalar_ f) {
-        matset(data, f, outer, inner);
+        matset(array, f, outer, inner);
         return *this;
     }
 
     // Assignment Operator
     Matrix& set(Scalar_ *f) {
-        matsetv(data, f, outer, inner);
+        matsetv(array, f, outer, inner);
         return *this;
     }
 
@@ -113,9 +113,9 @@ public:
     Scalar_& operator()(int row, int col) {
         // Access elements based on storage order
         if (Options_ & RowMajor) {
-            return data[col][row];
+            return array[col][row];
         } else {
-            return data[row][col];
+            return array[row][col];
         }
     }
 
@@ -123,18 +123,18 @@ public:
         Scalar_ sum = 0;
         for (int i = 0; i < outer; i++) {
             for (int j = 0; j < inner; j++) {
-                sum += data[i][j];
+                sum += array[i][j];
 	    }
         }
         return sum;
     }
 
     void print(const char *type, const char *name) {
-        print_array_2d(data, outer, inner, type, name);
+        print_array_2d(array, outer, inner, type, name);
     }
 
     virtual void toString() {
-        printf("const data: %x rows: %d cols: %d outer: %d inner: %d (%d, %d)\n", data, rows, cols, outer, inner, Rows_, Cols_);
+        printf("const array: %x rows: %d cols: %d outer: %d inner: %d (%d, %d)\n", array, rows, cols, outer, inner, Rows_, Cols_);
     }
 };
 

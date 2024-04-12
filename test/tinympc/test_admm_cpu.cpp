@@ -26,11 +26,11 @@ int main() {
 
     printf("forward_pass_1\n");
     forward_pass_1(&solver, 2);
-    // print_array_2d(work.u.data, NHORIZON - 1, NINPUTS, "float", "work.u");
+    // print_array_2d(work.u.array, NHORIZON - 1, NINPUTS, "float", "work.u");
 
     printf("forward_pass_2\n");
     forward_pass_2(&solver, 2);
-    // print_array_2d(work.x.data, NHORIZON, NSTATES, "float", "work.x");
+    // print_array_2d(work.x.array, NHORIZON, NSTATES, "float", "work.x");
 
     // backward pass
     work.p.setConstant(1.0);
@@ -44,11 +44,11 @@ int main() {
 
     printf("backward_pass_1\n");
     backward_pass_1(&solver, 2);
-    // print_array_2d(u1.data, 1, NINPUTS, "float", "work.u");
+    // print_array_2d(u1.array, 1, NINPUTS, "float", "work.u");
 
     printf("backward_pass_2\n");
     backward_pass_2(&solver, 2);
-    // print_array_2d(solver.work->p.data, NHORIZON, NSTATES, "float", "work.p");
+    // print_array_2d(solver.work->p.array, NHORIZON, NSTATES, "float", "work.p");
 
     // update dual
     work.x.setConstant(1.0);
@@ -58,8 +58,8 @@ int main() {
 
     printf("update_dual_1\n");
     update_dual_1(&solver);
-    // print_array_2d(solver.work->y.data, NHORIZON - 1, NINPUTS, "float", "work.y");
-    // print_array_2d(solver.work->g.data, NHORIZON, NSTATES, "float", "work.g");
+    // print_array_2d(solver.work->y.array, NHORIZON - 1, NINPUTS, "float", "work.y");
+    // print_array_2d(solver.work->g.array, NHORIZON, NSTATES, "float", "work.g");
 
     // update slack
     settings.en_input_bound = 1;
@@ -70,10 +70,10 @@ int main() {
 
     printf("update_slack_1\n");
     update_slack_1(&solver);
-    // print_array_2d(solver.work->znew.data, NHORIZON - 1, NINPUTS, "float", "work.znew");
+    // print_array_2d(solver.work->znew.array, NHORIZON - 1, NINPUTS, "float", "work.znew");
     work.u.setConstant(-100.0);
     update_slack_1(&solver);
-    // print_array_2d(solver.work->znew.data, NHORIZON - 1, NINPUTS, "float", "work.znew");
+    // print_array_2d(solver.work->znew.array, NHORIZON - 1, NINPUTS, "float", "work.znew");
 
     settings.en_state_bound = 1;
     work.g.setConstant(0.0);
@@ -83,9 +83,9 @@ int main() {
 
     printf("update_slack_2\n");
     update_slack_2(&solver);
-    // print_array_2d(solver.work->vnew.data, NHORIZON, NSTATES, "float", "work.vnew");
+    // print_array_2d(solver.work->vnew.array, NHORIZON, NSTATES, "float", "work.vnew");
     work.x.setConstant(-100.0);
-    // print_array_2d(solver.work->vnew.data, NHORIZON, NSTATES, "float", "work.vnew");
+    // print_array_2d(solver.work->vnew.array, NHORIZON, NSTATES, "float", "work.vnew");
 
     // residual state
     printf("residual states\n");
@@ -122,7 +122,7 @@ int main() {
 
     printf("linear_cost_1\n");
     update_linear_cost_1(&solver);
-    // print_array_2d(work.r.data, NHORIZON - 1, NINPUTS, "float", "work.r");
+    // print_array_2d(work.r.array, NHORIZON - 1, NINPUTS, "float", "work.r");
 
     printf("linear_cost_2\n");
     update_linear_cost_2(&solver);
@@ -130,7 +130,7 @@ int main() {
 
     printf("linear_cost_3\n");
     update_linear_cost_3(&solver);
-    // print_array_2d(work.q.data, NHORIZON, NSTATES, "float", "work.q");
+    // print_array_2d(work.q.array, NHORIZON, NSTATES, "float", "work.q");
 
     printf("linear_cost_4\n");
     update_linear_cost_4(&solver);
