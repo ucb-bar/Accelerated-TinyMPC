@@ -149,12 +149,6 @@ int main()
         start = read_cycles();
         tiny_solve(&solver);
         end = read_cycles();
-        /* The line `// printf("Time for iter %d: %d\n", k, end-start);` is a commented-out line of
-        code that would have printed the time taken for each iteration of the MPC (Model Predictive
-        Control) problem to the console. The `printf` function is commonly used in C/C++ to print
-        formatted output to the console. In this case, it would have printed the iteration number
-        `k` and the difference between the end and start cycle counts, which can be used to measure
-        the execution time of each iteration. */
         printf("Time for iter %d: %d\n", k, end-start);
 
         // 5. Simulate forward
