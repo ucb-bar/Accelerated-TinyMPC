@@ -7,7 +7,7 @@ FILE = None
 DATA = True
 
 
-def create_binary_matrix(name, major, row, col, nul='0.01 ', one='0.02 '):
+def create_binary_matrix(name, major, row, col, nul='0.01 ', one='0.10 '):
     global FILE
     fmt = f"{{0:0{col}b}}"
     full_binary = ""
@@ -185,6 +185,12 @@ def run_tests():
     backward_pass(solver)
     print_checksum("test__backward_pass__d", solver.work.d)
     print_checksum("test__backward_pass__p", solver.work.p)
+    solver = Solver(12, 4, 10)
+    backward_pass_1(solver, 7)
+    print_checksum("test__backward_pass_1__d", solver.work.d)
+    solver = Solver(12, 4, 10)
+    backward_pass_2(solver, 7)
+    print_checksum("test__backward_pass_2__p", solver.work.p)
 
     # TEST 3: UPDATE_PRIMAL
     solver = Solver(12, 4, 10)

@@ -21,7 +21,7 @@ TinySolver solver{&settings, &cache, &work};
 template<typename Scalar_, int Rows_, int Cols_, int Options_, int MaxRows_, int MaxCols_>
 void test_assert(const char *test, float expected, Matrix<Scalar_, Rows_, Cols_, Options_, MaxRows_, MaxCols_> &actual) {
     float sum = actual.checksum();
-    printf("%-24s : %s (%+10f %+10f)\n", test, float_eq(expected, sum, 1e-6) ? "pass" : "fail", expected, sum);
+    printf("%-24s : %s (%2.10f %2.10f)\n", test, float_eq(expected, sum, 1e-6) ? "pass" : "fail", expected, sum);
     if (DEBUG) actual.print("float", test);
 }
 
@@ -45,6 +45,7 @@ void init_solver() {
     work.Q.set(Q_data);
     work.R.set(R_data);
     work.Adyn.set(Adyn_data);
+    transpose(work.Adyn.data, work.AdynT.data, NSTATES, NSTATES);
     work.Bdyn.set(Bdyn_data);
     transpose(work.Bdyn.data, work.BdynT.data, NSTATES, NINPUTS);
     work.znew.set(znew_data);
@@ -63,6 +64,8 @@ void init_solver() {
 
 int main() {
 
+    enable_vector_operations();
+
     // forward pass
     init_solver();
     forward_pass(&solver);
@@ -80,8 +83,16 @@ int main() {
     // backward pass
     init_solver();
     backward_pass(&solver);
-    test_assert("backward_pass p", test__backward_pass__d, work.d);
-    test_assert("backward_pass d", test__backward_pass__p, work.p);
+    test_assert("backward_pass d", test__backward_pass__d, work.d);
+    test_assert("backward_pass p", test__backward_pass__p, work.p);
+
+    init_solver();
+    backward_pass_1(&solver, 7);
+    test_assert("backward_pass_1 d", test__backward_pass_1__d, work.d);
+
+    init_solver();
+    backward_pass_2(&solver, 7);
+    test_assert("backward_pass_2 p", test__backward_pass_2__p, work.p);
 
     // update primal
     init_solver();

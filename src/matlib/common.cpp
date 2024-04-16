@@ -46,11 +46,11 @@ void print_array_2d(float **a, int n, int m, const char *type,
     printf("%s %s[%d][%d] = {\n", type, name, n, m);
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
-            printf("% 8.4f", a[i][j]);
+            printf("%8.4f", a[i][j]);
             if (j == m - 1)
-                puts(i == n - 1 ? "};" : ",");
+                printf(i == n - 1 ? "};\n" : ",\n");
             else
-                putchar(',');
+                printf(",");
         }
     }
     puts("");

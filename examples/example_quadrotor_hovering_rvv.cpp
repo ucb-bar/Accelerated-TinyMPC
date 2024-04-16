@@ -12,6 +12,7 @@
 #include <stdio.h>
 
 #include <tinympc/admm.hpp>
+#include <matlib/common.h>
 #include "problem_data/quadrotor_50hz_params_unconstrained.hpp"
 
 extern "C"
@@ -24,6 +25,8 @@ TinySolver solver{&settings, &cache, &work};
 
 int main()
 {
+    enable_vector_operations();
+
     // General state temporary variables
     printf("Entered main!\n");
     tiny_VectorNx v1, v2;
@@ -73,9 +76,7 @@ int main()
     for (int j = 0; j < NHORIZON; j++) {
         tinytype **target = { &work.Xref.data[j] };
         matsetv(target, Xref_origin_data, 1, NSTATES);
-        // print_array_1d(work.Xref.data[j], NSTATES, "float", "data");
     }
-    // print_array_2d(work.Xref.data, NHORIZON, NSTATES, "float", "data");
 
     // current and next simulation states
     tiny_VectorNx x0, x1;
@@ -105,8 +106,13 @@ int main()
 
         // 5. Simulate forward
         // calculate x1 = work.Adyn * x0 + work.Bdyn * work.u.col(0);
+#ifdef USE_MATVEC
+        matvec(work.Adyn.data, x0.data, v1.data, NSTATES, NSTATES);
+        matvec(work.Bdyn.data, work.u.col(0), v2.data, NINPUTS, NSTATES);
+#else
         matmul(x0.data, work.Adyn.data, v1.data, 1, NSTATES, NSTATES);
         matmul(work.u.col(0), work.Bdyn.data, v2.data, 1, NSTATES, NINPUTS);
+#endif
         matadd(v1.data, v2.data, x0.data, 1, NSTATES);
 
         printf("%d,", k);
@@ -117,7 +123,7 @@ int main()
         float norm = matnorm(v1.data, 1, NSTATES);
         printf("%0.7f,", norm);
         for (int i = 0; i < NSTATES; ++i) {
-            printf("%f", work.x(0, i));
+            printf("%0.7f", work.x(0, i));
             if (i < NSTATES - 1) {
                 printf(",");
             }
