@@ -12,7 +12,6 @@
 #include <stdio.h>
 
 #include <tinympc/admm.hpp>
-#include <matlib/matlib.h>
 #include "problem_data/quadrotor_50hz_params_unconstrained.hpp"
 
 extern "C"

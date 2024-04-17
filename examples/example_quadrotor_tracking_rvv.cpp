@@ -10,10 +10,8 @@
 // check this paper for more details: https://roboticexplorationlab.org/papers/planning_with_attitude.pdf
 
 #include <stdio.h>
-#include <stdint.h>
 
 #include <tinympc/admm.hpp>
-#include <matlib/matlib.h>
 #include "problem_data/quadrotor_20hz_params.hpp"
 #include "trajectory_data/quadrotor_20hz_y_axis_line.hpp"
 
