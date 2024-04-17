@@ -2,8 +2,7 @@
 #include <cmath>
 #include <cstdint>
 
-#include "matlib/common.h"
-#include "matlib/matlib_rvv.h"
+#include "matlib/matlib.h"
 
 extern "C" {
 
@@ -18,16 +17,16 @@ int main() {
     srand(seed);
 
     // array gen
-    float **A = alloc_array_2d(N, O);
-    float **B = alloc_array_2d(M, O);
+    float *A = alloc_array_2d(N, O);
+    float *B = alloc_array_2d(M, O);
     float *f = alloc_array_1d(N * M);
     gen_rand_2d(A, N, O);
     gen_rand_2d(B, M, O);
     gen_rand_1d(f, N * M);
 
     printf("matmul:         ");
-    float **golden = alloc_array_2d(N, M);
-    float **actual = alloc_array_2d(N, M);
+    float *golden = alloc_array_2d(N, M);
+    float *actual = alloc_array_2d(N, M);
     // print_array_2d(A, N, O, "float", "A");
     // print_array_2d(B, M, O, "float", "B");
     matmul_golden(A, B, golden, N, M, O);
@@ -37,18 +36,18 @@ int main() {
     puts(compare_2d(golden, actual, N, M) ? "pass" : "fail");
 
     // array gen
-    float **G = alloc_array_2d(N, M);
-    float **H = alloc_array_2d(M, N);
-    float **V = alloc_array_2d(1, M);
-    float **W = alloc_array_2d(M, 1);
+    float *G = alloc_array_2d(N, M);
+    float *H = alloc_array_2d(M, N);
+    float *V = alloc_array_2d(1, M);
+    float *W = alloc_array_2d(M, 1);
     gen_rand_2d(G, N, M);
     gen_rand_2d(H, M, N);
     gen_rand_2d(V, 1, M);
     gen_rand_2d(W, M, 1);
 
     printf("matvec:         ");
-    float **golden_vec = alloc_array_2d(N, 1);
-    float **actual_vec = alloc_array_2d(N, 1);
+    float *golden_vec = alloc_array_2d(N, 1);
+    float *actual_vec = alloc_array_2d(N, 1);
     matvec_golden(G, V, golden_vec, N, M);
     matvec(G, V, actual_vec, N, M);
     puts(compare_2d(golden_vec, actual_vec, N, 1) ? "pass" : "fail");
@@ -65,8 +64,8 @@ int main() {
     // array gen
     A = alloc_array_2d(N, M);
     B = alloc_array_2d(N, M);
-    float **C = alloc_array_2d(N, M);
-    float **D = alloc_array_2d(N, M);
+    float *C = alloc_array_2d(N, M);
+    float *D = alloc_array_2d(N, M);
     gen_rand_2d(A, N, M);
     gen_rand_2d(B, N, M);
 

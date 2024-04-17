@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 #include <tinympc/admm.hpp>
-#include <matlib/common.h>
+#include <matlib/matlib.h>
 #include "problem_data/quadrotor_50hz_params_unconstrained.hpp"
 
 extern "C"
@@ -34,15 +34,15 @@ int main()
     // Map array from problem_data (array in row-major order)
     cache.rho = rho_value;
     cache.Kinf.set(Kinf_data);
-    transpose(cache.Kinf.array, cache.KinfT.array, NINPUTS, NSTATES);
+    transpose(cache.Kinf.data, cache.KinfT.data, NINPUTS, NSTATES);
     cache.Pinf.set(Pinf_data);
-    transpose(cache.Pinf.array, cache.PinfT.array, NSTATES, NSTATES);
+    transpose(cache.Pinf.data, cache.PinfT.data, NSTATES, NSTATES);
     cache.Quu_inv.set(Quu_inv_data);
     cache.AmBKt.set(AmBKt_data);
     cache.coeff_d2p.set(coeff_d2p_data);
     work.Adyn.set(Adyn_data);
     work.Bdyn.set(Bdyn_data);
-    transpose(work.Bdyn.array, work.BdynT.array, NSTATES, NINPUTS);
+    transpose(work.Bdyn.data, work.BdynT.data, NSTATES, NINPUTS);
     work.Q.set(Q_data);
     work.R.set(R_data);
 
@@ -74,7 +74,7 @@ int main()
     Xref_origin.set(Xref_origin_data);
     // Hovers at the same point until the horizon
     for (int j = 0; j < NHORIZON; j++) {
-        tinytype **target = { &work.Xref.array[j] };
+        tinytype *target = work.Xref.col(j);
         matsetv(target, Xref_origin_data, 1, NSTATES);
     }
 
@@ -92,8 +92,8 @@ int main()
     for (int k = 0; k < 70; ++k) {
 
         // 1. Update measurement
-        // an alternative method is to use work.x.setCol(x0.array[0], 0);
-        matsetv(work.x.col(0), x0.array[0], 1, NSTATES);
+        // an alternative method is to use work.x.setCol(x0.data[0], 0);
+        matsetv(work.x.col(0), x0.data, 1, NSTATES);
 
         // 2. Update reference (if needed)
 
@@ -107,20 +107,20 @@ int main()
         // 5. Simulate forward
         // calculate x1 = work.Adyn * x0 + work.Bdyn * work.u.col(0);
 #ifdef USE_MATVEC
-        matvec(work.Adyn.array, x0.array, v1.array, NSTATES, NSTATES);
-        matvec(work.Bdyn.array, work.u.col(0), v2.array, NINPUTS, NSTATES);
+        matvec(work.Adyn.data, x0.data, v1.data, NSTATES, NSTATES);
+        matvec(work.Bdyn.data, work.u.col(0), v2.data, NINPUTS, NSTATES);
 #else
-        matmul(x0.array, work.Adyn.array, v1.array, 1, NSTATES, NSTATES);
-        matmul(work.u.col(0), work.Bdyn.array, v2.array, 1, NSTATES, NINPUTS);
+        matmul(x0.data, work.Adyn.data, v1.data, 1, NSTATES, NSTATES);
+        matmul(work.u.col(0), work.Bdyn.data, v2.data, 1, NSTATES, NINPUTS);
 #endif
-        matadd(v1.array, v2.array, x0.array, 1, NSTATES);
+        matadd(v1.data, v2.data, x0.data, 1, NSTATES);
 
         printf("%d,", k);
 
         // Print states array to CSV file
         // calculate the value of (x0 - work.Xref.col(1)).norm()
-        matsub(x0.array, work.Xref.col(1), v1.array, 1, NSTATES);
-        float norm = matnorm(v1.array, 1, NSTATES);
+        matsub(x0.data, work.Xref.col(1), v1.data, 1, NSTATES);
+        float norm = matnorm(v1.data, 1, NSTATES);
         printf("%0.7f,", norm);
         for (int i = 0; i < NSTATES; ++i) {
             printf("%0.7f", work.x(0, i));

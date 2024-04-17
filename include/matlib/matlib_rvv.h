@@ -1,145 +1,37 @@
 #pragma once
-#ifndef TINYMPC_RVV_MATLIB_H
-#define TINYMPC_RVV_MATLIB_H
+#ifndef TINYMPC_MATLIB_RVV_H
+#define TINYMPC_MATLIB_RVV_H
 
-#ifndef USE_LMUL
-#define USE_LMUL 1
-#endif
+#include <cstdio>
+#include <climits>
+#include <cmath>
 
-#if USE_LMUL == 1
-#define __riscv_vfabs_v_f32 __riscv_vfabs_v_f32m1
-#define __riscv_vfadd_vv_f32 __riscv_vfadd_vv_f32m1
-#define __riscv_vfmacc_vv_f32 __riscv_vfmacc_vv_f32m1
-#define __riscv_vfmax_vv_f32 __riscv_vfmax_vv_f32m1
-#define __riscv_vfmin_vv_f32 __riscv_vfmin_vv_f32m1
-#define __riscv_vfmul_vf_f32 __riscv_vfmul_vf_f32m1
-#define __riscv_vfmul_vv_f32 __riscv_vfmul_vv_f32m1
-#define __riscv_vfmv_f_s_f32_f32 __riscv_vfmv_f_s_f32m1_f32
-#define __riscv_vfmv_s_f_f32 __riscv_vfmv_s_f_f32m1
-#define __riscv_vfmv_v_f_f32 __riscv_vfmv_v_f_f32m1
-#define __riscv_vfneg_v_f32 __riscv_vfneg_v_f32m1
-#define __riscv_vfredmax_vs_f32_f32 __riscv_vfredmax_vs_f32m1_f32m1
-#define __riscv_vfredmin_vs_f32_f32 __riscv_vfredmin_vs_f32m1_f32m1
-#define __riscv_vfredusum_vs_f32_f32 __riscv_vfredusum_vs_f32m1_f32m1
-#define __riscv_vfsub_vv_f32 __riscv_vfsub_vv_f32m1
-#define __riscv_vle32_v_f32 __riscv_vle32_v_f32m1
-#define __riscv_vlse32_v_f32 __riscv_vlse32_v_f32m1
-#define __riscv_vse32_v_f32 __riscv_vse32_v_f32m1
-#define __riscv_vsetvl_e32 __riscv_vsetvl_e32m1
-#define __riscv_vsetvlmax_e32 __riscv_vsetvlmax_e32m1
-#define vfloat32_t vfloat32m1_t
-#elif USE_LMUL == 2
-#define __riscv_vfabs_v_f32 __riscv_vfabs_v_f32m2
-#define __riscv_vfadd_vv_f32 __riscv_vfadd_vv_f32m2
-#define __riscv_vfmacc_vv_f32 __riscv_vfmacc_vv_f32m2
-#define __riscv_vfmax_vv_f32 __riscv_vfmax_vv_f32m2
-#define __riscv_vfmin_vv_f32 __riscv_vfmin_vv_f32m2
-#define __riscv_vfmul_vf_f32 __riscv_vfmul_vf_f32m2
-#define __riscv_vfmul_vv_f32 __riscv_vfmul_vv_f32m2
-#define __riscv_vfmv_f_s_f32_f32 __riscv_vfmv_f_s_f32m2_f32
-#define __riscv_vfmv_s_f_f32 __riscv_vfmv_s_f_f32m2
-#define __riscv_vfmv_v_f_f32 __riscv_vfmv_v_f_f32m2
-#define __riscv_vfneg_v_f32 __riscv_vfneg_v_f32m2
-#define __riscv_vfredmax_vs_f32_f32 __riscv_vfredmax_vs_f32m2_f32m1
-#define __riscv_vfredmin_vs_f32_f32 __riscv_vfredmin_vs_f32m2_f32m1
-#define __riscv_vfredusum_vs_f32_f32 __riscv_vfredusum_vs_f32m2_f32m1
-#define __riscv_vfsub_vv_f32 __riscv_vfsub_vv_f32m2
-#define __riscv_vle32_v_f32 __riscv_vle32_v_f32m2
-#define __riscv_vlse32_v_f32 __riscv_vlse32_v_f32m2
-#define __riscv_vse32_v_f32 __riscv_vse32_v_f32m2
-#define __riscv_vsetvl_e32 __riscv_vsetvl_e32m2
-#define __riscv_vsetvlmax_e32 __riscv_vsetvlmax_e32m2
-#define vfloat32_t vfloat32m2_t
-#elif USE_LMUL == 4
-#define __riscv_vfabs_v_f32 __riscv_vfabs_v_f32m4
-#define __riscv_vfadd_vv_f32 __riscv_vfadd_vv_f32m4
-#define __riscv_vfmacc_vv_f32 __riscv_vfmacc_vv_f32m4
-#define __riscv_vfmax_vv_f32 __riscv_vfmax_vv_f32m4
-#define __riscv_vfmin_vv_f32 __riscv_vfmin_vv_f32m4
-#define __riscv_vfmul_vf_f32 __riscv_vfmul_vf_f32m4
-#define __riscv_vfmul_vv_f32 __riscv_vfmul_vv_f32m4
-#define __riscv_vfmv_f_s_f32_f32 __riscv_vfmv_f_s_f32m4_f32
-#define __riscv_vfmv_s_f_f32 __riscv_vfmv_s_f_f32m4
-#define __riscv_vfmv_v_f_f32 __riscv_vfmv_v_f_f32m4
-#define __riscv_vfneg_v_f32 __riscv_vfneg_v_f32m4
-#define __riscv_vfredmax_vs_f32_f32 __riscv_vfredmax_vs_f32m4_f32m1
-#define __riscv_vfredmin_vs_f32_f32 __riscv_vfredmin_vs_f32m4_f32m1
-#define __riscv_vfredusum_vs_f32_f32 __riscv_vfredusum_vs_f32m4_f32m1
-#define __riscv_vfsub_vv_f32 __riscv_vfsub_vv_f32m4
-#define __riscv_vle32_v_f32 __riscv_vle32_v_f32m4
-#define __riscv_vlse32_v_f32 __riscv_vlse32_v_f32m4
-#define __riscv_vse32_v_f32 __riscv_vse32_v_f32m4
-#define __riscv_vsetvl_e32 __riscv_vsetvl_e32m4
-#define __riscv_vsetvlmax_e32 __riscv_vsetvlmax_e32m4
-#define vfloat32_t vfloat32m4_t
-#elif USE_LMUL == 8
-#define __riscv_vfabs_v_f32 __riscv_vfabs_v_f32m8
-#define __riscv_vfadd_vv_f32 __riscv_vfadd_vv_f32m8
-#define __riscv_vfmacc_vv_f32 __riscv_vfmacc_vv_f32m8
-#define __riscv_vfmax_vv_f32 __riscv_vfmax_vv_f32m8
-#define __riscv_vfmin_vv_f32 __riscv_vfmin_vv_f32m8
-#define __riscv_vfmul_vf_f32 __riscv_vfmul_vf_f32m8
-#define __riscv_vfmul_vv_f32 __riscv_vfmul_vv_f32m8
-#define __riscv_vfmv_f_s_f32_f32 __riscv_vfmv_f_s_f32m8_f32
-#define __riscv_vfmv_s_f_f32 __riscv_vfmv_s_f_f32m8
-#define __riscv_vfmv_v_f_f32 __riscv_vfmv_v_f_f32m8
-#define __riscv_vfneg_v_f32 __riscv_vfneg_v_f32m8
-#define __riscv_vfredmax_vs_f32_f32 __riscv_vfredmax_vs_f32m8_f32m1
-#define __riscv_vfredmin_vs_f32_f32 __riscv_vfredmin_vs_f32m8_f32m1
-#define __riscv_vfredusum_vs_f32_f32 __riscv_vfredusum_vs_f32m8_f32m1
-#define __riscv_vfsub_vv_f32 __riscv_vfsub_vv_f32m8
-#define __riscv_vle32_v_f32 __riscv_vle32_v_f32m8
-#define __riscv_vlse32_v_f32 __riscv_vlse32_v_f32m8
-#define __riscv_vse32_v_f32 __riscv_vse32_v_f32m8
-#define __riscv_vsetvl_e32 __riscv_vsetvl_e32m8
-#define __riscv_vsetvlmax_e32 __riscv_vsetvlmax_e32m8
-#define vfloat32_t vfloat32m8_t
-#endif
+#include "riscv_vector.h"
+#include "matlib/matlib.h"
 
 extern "C"
 {
 
 // RVV-specific function declarations
-float maxcoeff_rvv(float **a, int n, int m);
-float mincoeff_rvv(float **a, int n, int m);
-float matnorm_rvv(float **a, int n, int m);
-void matneg_rvv(float **a, float **b, int n, int m);
-void cwiseabs_rvv(float **a, float **b, int n, int m);
-void cwisemin_rvv(float **a, float **b, float **c, int n, int m);
-void cwisemax_rvv(float **a, float **b, float **c, int n, int m);
-void cwisemul_rvv(float **a, float **b, float **c, int n, int m);
-void matmul_rvv(float **a, float **b, float **c, int n, int m, int o);
-void matvec_rvv(float **a, float **b, float **c, int n, int m);
-void matvec_transpose_rvv(float **a, float **b, float **c, int n, int m);
-void matmulf_rvv(float **a, float **b, float f, int n, int m);
-void matsub_rvv(float **a, float **b, float **c, int n, int m);
-void matadd_rvv(float **a, float **b, float **c, int n, int m);
-void transpose_rvv(float **a, float **b, int n, int m);
-void matcopy_rvv(float **a, float **b, int n, int m);
-void matset_rvv(float **a, float f, int n, int m);
-void matsetv_rvv(float **a, float *f, int n, int m);
+float maxcoeff_rvv(float *a, int n, int m);
+float mincoeff_rvv(float *a, int n, int m);
+float matnorm_rvv(float *a, int n, int m);
+void matneg_rvv(float *a, float *b, int n, int m);
+void cwiseabs_rvv(float *a, float *b, int n, int m);
+void cwisemin_rvv(float *a, float *b, float *c, int n, int m);
+void cwisemax_rvv(float *a, float *b, float *c, int n, int m);
+void cwisemul_rvv(float *a, float *b, float *c, int n, int m);
+void matmul_rvv(float *a, float *b, float *c, int n, int m, int o);
+void matvec_rvv(float *a, float *b, float *c, int n, int m);
+void matvec_transpose_rvv(float *a, float *b, float *c, int n, int m);
+void matmulf_rvv(float *a, float *b, float f, int n, int m);
+void matsub_rvv(float *a, float *b, float *c, int n, int m);
+void matadd_rvv(float *a, float *b, float *c, int n, int m);
+void transpose_rvv(float *a, float *b, int n, int m);
+void matcopy_rvv(const float *a, float *b, int n, int m);
+void matset_rvv(float *a, float f, int n, int m);
+void matsetv_rvv(float *a, float *f, int n, int m);
 
-// Golden (reference) function declarations
-float maxcoeff_golden(float **a, int n, int m);
-float mincoeff_golden(float **a, int n, int m);
-float matnorm_golden(float **a, int n, int m);
-void matneg_golden(float **a, float **b, int n, int m);
-void cwiseabs_golden(float **a, float **b, int n, int m);
-void cwisemin_golden(float **a, float **b, float **c, int n, int m);
-void cwisemax_golden(float **a, float **b, float **c, int n, int m);
-void cwisemul_golden(float **a, float **b, float **c, int n, int m);
-void matmul_golden(float **a, float **b, float **c, int n, int m, int o);
-void matvec_golden(float **a, float **b, float **c, int n, int m);
-void matvec_transpose_golden(float **a, float **b, float **c, int n, int m);
-void matmulf_golden(float **a, float **b, float f, int n, int m);
-void matsub_golden(float **a, float **b, float **c, int n, int m);
-void matadd_golden(float **a, float **b, float **c, int n, int m);
-void transpose_golden(float **a, float **b, int n, int m);
-void matcopy_golden(float **a, float **b, int n, int m);
-void matset_golden(float **a, float f, int n, int m);
-void matsetv_golden(float **a, float *f, int n, int m);
-
-#ifdef USE_RVV
 #define maxcoeff maxcoeff_rvv
 #define mincoeff mincoeff_rvv
 #define matnorm matnorm_rvv
@@ -158,26 +50,266 @@ void matsetv_golden(float **a, float *f, int n, int m);
 #define matcopy matcopy_rvv
 #define matset matset_rvv
 #define matsetv matsetv_rvv
-#else
-#define maxcoeff maxcoeff_golden
-#define mincoeff mincoeff_golden
-#define matnorm matnorm_golden
-#define matneg matneg_golden
-#define cwiseabs cwiseabs_golden
-#define cwisemin cwisemin_golden
-#define cwisemax cwisemax_golden
-#define cwisemul cwisemul_golden
-#define matmul matmul_golden
-#define matvec matvec_golden
-#define matvec_transpose matvec_transpose_golden
-#define matmulf matmulf_golden
-#define matsub matsub_golden
-#define matadd matadd_golden
-#define transpose transpose_golden
-#define matcopy matcopy_golden
-#define matset matset_golden
-#define matsetv matsetv_golden
-#endif
+
+
+// matrix maximum coefficient
+inline float maxcoeff_rvv(float *ptr_a, int n, int m) {
+    float max = std::numeric_limits<float>::min();
+    vfloat32m1_t vec_max = __riscv_vfmv_s_f_f32m1(max, 1);
+    int k = m * n;
+    for (size_t vl; k > 0; k -= vl, ptr_a += vl) {
+        vl = __riscv_vsetvl_e32(k);
+        vfloat32_t vec_a = __riscv_vle32_v_f32(ptr_a, vl);
+        vec_max = __riscv_vfredmax_vs_f32_f32(vec_a, vec_max, vl);
+    }
+    max = __riscv_vfmv_f_s_f32m1_f32(vec_max);
+    return max;
+}
+
+// matrix min coefficient
+inline float mincoeff_rvv(float *ptr_a, int n, int m) {
+    float min = std::numeric_limits<float>::max();
+    vfloat32m1_t vec_min = __riscv_vfmv_s_f_f32m1(min, 1);
+    int k = m * n;
+    for (size_t vl; k > 0; k -= vl, ptr_a += vl) {
+        vl = __riscv_vsetvl_e32(k);
+        vfloat32_t vec_a = __riscv_vle32_v_f32(ptr_a, vl);
+        vec_min = __riscv_vfredmin_vs_f32_f32(vec_a, vec_min, vl);
+    }
+    min = __riscv_vfmv_f_s_f32m1_f32(vec_min);
+    return min;
+}
+
+// matrix unary negative
+inline void matneg_rvv(float *ptr_a, float *ptr_b, int n, int m) {
+    int k = m * n;
+    for (size_t vl; k > 0; k -= vl, ptr_a += vl, ptr_b += vl) {
+        vl = __riscv_vsetvl_e32(k);
+        vfloat32_t vec_a = __riscv_vle32_v_f32(ptr_a, vl);
+        vfloat32_t vec_b = __riscv_vfneg_v_f32(vec_a, vl);
+        __riscv_vse32_v_f32(ptr_b, vec_b, vl);
+    }
+}
+
+// matrix l2 norm
+inline float matnorm_rvv(float *ptr_a, int n, int m) {
+    int k = m * n;
+    size_t vlmax = __riscv_vsetvlmax_e32();
+    vfloat32m1_t vec_zero = __riscv_vfmv_v_f_f32m1(0, vlmax);
+    vfloat32_t vec_s = __riscv_vfmv_v_f_f32(0, vlmax);
+    for (size_t vl; k > 0; k -= vl, ptr_a += vl) {
+        vl = __riscv_vsetvl_e32(k);
+        vfloat32_t vec_a = __riscv_vle32_v_f32(ptr_a, vl);
+        vec_s = __riscv_vfmacc_vv_f32(vec_s, vec_a, vec_a, vl);
+    }
+    vfloat32m1_t vec_sum = __riscv_vfredusum_vs_f32_f32(vec_s, vec_zero, vlmax);
+    float sum = __riscv_vfmv_f_s_f32m1_f32(vec_sum);
+    return sqrt(sum);
+}
+
+// matrix coefficient-wise abs
+inline void cwiseabs_rvv(float *ptr_a, float *ptr_b, int n, int m) {
+    int k = m * n;
+    for (size_t vl; k > 0; k -= vl, ptr_a += vl, ptr_b += vl) {
+        vl = __riscv_vsetvl_e32(k);
+        vfloat32_t vec_a = __riscv_vle32_v_f32(ptr_a, vl);
+        vfloat32_t vec_b = __riscv_vfabs_v_f32(vec_a, vl);
+        __riscv_vse32_v_f32(ptr_b, vec_b, vl);
+    }
+}
+
+// matrix coefficient-wise min
+inline void cwisemin_rvv(float *ptr_a, float *ptr_b, float *ptr_c, int n, int m) {
+    int k = m * n;
+    for (size_t vl; k > 0; k -= vl, ptr_a += vl, ptr_b += vl, ptr_c += vl) {
+        vl = __riscv_vsetvl_e32(k);
+        vfloat32_t vec_a = __riscv_vle32_v_f32(ptr_a, vl);
+        vfloat32_t vec_b = __riscv_vle32_v_f32(ptr_b, vl);
+        vfloat32_t vec_c = __riscv_vfmin_vv_f32(vec_a, vec_b, vl);
+        __riscv_vse32_v_f32(ptr_c, vec_c, vl);
+    }
+}
+
+// matrix coefficient-wise multiplication
+inline void cwisemul_rvv(float *ptr_a, float *ptr_b, float *ptr_c, int n, int m) {
+    int k = m * n;
+    for (size_t vl; k > 0; k -= vl, ptr_a += vl, ptr_b += vl, ptr_c += vl) {
+        vl = __riscv_vsetvl_e32(k);
+        vfloat32_t vec_a = __riscv_vle32_v_f32(ptr_a, vl);
+        vfloat32_t vec_b = __riscv_vle32_v_f32(ptr_b, vl);
+        vfloat32_t vec_c = __riscv_vfmul_vv_f32(vec_a, vec_b, vl);
+        __riscv_vse32_v_f32(ptr_c, vec_c, vl);
+    }
+}
+
+// matrix coefficient-wise max
+inline void cwisemax_rvv(float *ptr_a, float *ptr_b, float *ptr_c, int n, int m) {
+    int k = m * n;
+    for (size_t vl; k > 0; k -= vl, ptr_a += vl, ptr_b += vl, ptr_c += vl) {
+        vl = __riscv_vsetvl_e32(k);
+        vfloat32_t vec_a = __riscv_vle32_v_f32(ptr_a, vl);
+        vfloat32_t vec_b = __riscv_vle32_v_f32(ptr_b, vl);
+        vfloat32_t vec_c = __riscv_vfmax_vv_f32(vec_a, vec_b, vl);
+        __riscv_vse32_v_f32(ptr_c, vec_c, vl);
+    }
+}
+
+// matrix multiplication, note B is not [o][m]
+// A[n][o], B[m][o] --> C[n][m];
+inline void matmul_rvv(float *a, float *b, float *c, int n, int m, int o) {
+    size_t vlmax = __riscv_vsetvlmax_e32();
+    vfloat32m1_t vec_zero = __riscv_vfmv_v_f_f32m1(0, vlmax);
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            float *ptr_a = a + i * o; // row major
+            float *ptr_b = b + j * o; // column major
+            int k = o;
+            vfloat32_t vec_s = __riscv_vfmv_v_f_f32(0, vlmax);
+            for (size_t vl; k > 0; k -= vl, ptr_a += vl, ptr_b += vl) {
+                vl = __riscv_vsetvl_e32(k);
+                vfloat32_t vec_a = __riscv_vle32_v_f32(ptr_a, vl);
+                vfloat32_t vec_b = __riscv_vle32_v_f32(ptr_b, vl);
+                vec_s = __riscv_vfmacc_vv_f32(vec_s, vec_a, vec_b, vl);
+            }
+            vfloat32m1_t vec_sum = __riscv_vfredusum_vs_f32_f32(vec_s, vec_zero, vlmax);
+            float sum = __riscv_vfmv_f_s_f32m1_f32(vec_sum);
+            c[i * m + j] = sum;
+        }
+    }
+}
+
+/*  a is row major
+ *        j
+ *    1 2 3 4     9
+ *  i 5 6 7 8  *  6
+ *    9 8 7 6     5 j
+ *                4
+ */
+inline void matvec_rvv(float *a, float *b, float *c, int n, int m) {
+    size_t vlmax = __riscv_vsetvlmax_e32();
+    vfloat32m1_t vec_zero = __riscv_vfmv_v_f_f32m1(0, vlmax);
+    for (int i = 0; i < n; ++i) {
+        int k = m;
+        float *ptr_a = a + i * m; // row major
+        float *ptr_b = b;
+        vfloat32_t vec_s = __riscv_vfmv_v_f_f32(0, vlmax);
+        for (size_t vl; k > 0; k -= vl, ptr_a += vl, ptr_b += vl) {
+            vl = __riscv_vsetvl_e32(k);
+            vfloat32_t vec_a = __riscv_vle32_v_f32(ptr_a, vl);
+            vfloat32_t vec_b = __riscv_vle32_v_f32(ptr_b, vl);
+            vec_s = __riscv_vfmacc_vv_f32(vec_s, vec_a, vec_b, vl);
+        }
+        vfloat32m1_t vec_sum = __riscv_vfredusum_vs_f32_f32(vec_s, vec_zero, vlmax);
+        float sum = __riscv_vfmv_f_s_f32m1_f32(vec_sum);
+        c[i] = sum;
+    }
+}
+
+/*  a is col major
+ *      j         i
+ *  9 6 5 4  *  1 5 9
+ *              2 6 8
+ *              3 7 7 j
+ *              4 8 6
+ */
+inline void matvec_transpose_rvv(float *a, float *b, float *c, int n, int m) {
+    size_t vlmax = __riscv_vsetvlmax_e32();
+    vfloat32m1_t vec_zero = __riscv_vfmv_v_f_f32m1(0, vlmax);
+    for (int i = 0; i < m; ++i) {
+        int k = n;
+        float *ptr_a = a + i; // column major
+        float *ptr_b = b;
+        vfloat32_t vec_s = __riscv_vfmv_v_f_f32(0, vlmax);
+        for (size_t vl; k > 0; k -= vl, ptr_a += m * vl, ptr_b += vl) {
+            vl = __riscv_vsetvl_e32(k);
+            vfloat32_t vec_a = __riscv_vlse32_v_f32(ptr_a, m * sizeof(float), vl);
+            vfloat32_t vec_b = __riscv_vle32_v_f32(ptr_b, vl);
+            vec_s = __riscv_vfmacc_vv_f32(vec_s, vec_a, vec_b, vl);
+        }
+        vfloat32m1_t vec_sum = __riscv_vfredusum_vs_f32_f32(vec_s, vec_zero, vlmax);
+        float sum = __riscv_vfmv_f_s_f32m1_f32(vec_sum);
+        c[i] = sum;
+    }
+}
+
+// matrix scalar multiplication
+inline void matmulf_rvv(float *ptr_a, float *ptr_b, float f, int n, int m) {
+    int k = m * n;
+    for (size_t vl; k > 0; k -= vl, ptr_a += vl, ptr_b += vl) {
+        vl = __riscv_vsetvl_e32(k);
+        vfloat32_t vec_a = __riscv_vle32_v_f32(ptr_a, vl);
+        vfloat32_t vec_b = __riscv_vfmul_vf_f32(vec_a, f, vl);
+        __riscv_vse32_v_f32(ptr_b, vec_b, vl);
+    }
+}
+
+// matrix subtraction
+inline void matsub_rvv(float *ptr_a, float *ptr_b, float *ptr_c, int n, int m) {
+    int k = m * n;
+    for (size_t vl; k > 0; k -= vl, ptr_a += vl, ptr_b += vl, ptr_c += vl) {
+        vl = __riscv_vsetvl_e32(k);
+        vfloat32_t vec_a = __riscv_vle32_v_f32(ptr_a, vl);
+        vfloat32_t vec_b = __riscv_vle32_v_f32(ptr_b, vl);
+        vfloat32_t vec_c = __riscv_vfsub_vv_f32(vec_a, vec_b, vl);
+        __riscv_vse32_v_f32(ptr_c, vec_c, vl);
+    }
+}
+
+// matrix addition
+inline void matadd_rvv(float *ptr_a, float *ptr_b, float *ptr_c, int n, int m) {
+    int k = m * n;
+    for (size_t vl; k > 0; k -= vl, ptr_a += vl, ptr_b += vl, ptr_c += vl) {
+        vl = __riscv_vsetvl_e32(k);
+        vfloat32_t vec_a = __riscv_vle32_v_f32(ptr_a, vl);
+        vfloat32_t vec_b = __riscv_vle32_v_f32(ptr_b, vl);
+        vfloat32_t vec_c = __riscv_vfadd_vv_f32(vec_a, vec_b, vl);
+        __riscv_vse32_v_f32(ptr_c, vec_c, vl);
+    }
+}
+
+// matrix transpose
+inline void transpose_rvv(float *a, float *b, int n, int m) {
+    for (int j = 0; j < m; ++j) {
+        float *ptr_a = a + j;
+        float *ptr_b = b + j * n;
+        int k = n;
+        int l = 0;
+        for (size_t vl; k > 0; k -= vl, l += vl, ptr_a = &a[l * m + j], ptr_b += vl) {
+            vl = __riscv_vsetvl_e32(k);
+            vfloat32_t vec_a = __riscv_vlse32_v_f32(ptr_a, sizeof(float) * m, vl);
+            __riscv_vse32(ptr_b, vec_a, vl);
+        }
+    }
+};
+
+// matrix copy
+inline void matcopy_rvv(const float *ptr_a, float *ptr_b, int n, int m) {
+    int k = n * m;
+    for (size_t vl; k > 0; k -= vl, ptr_a += vl, ptr_b += vl) {
+        vl = __riscv_vsetvl_e32(k);
+        vfloat32_t vec_a = __riscv_vle32_v_f32(ptr_a, vl);
+        __riscv_vse32_v_f32(ptr_b, vec_a, vl);
+    }
+}
+
+inline void matset_rvv(float *ptr_a, float f, int n, int m) {
+    int k = m * n;
+    for (size_t vl; k > 0; k -= vl, ptr_a += vl) {
+        vl = __riscv_vsetvl_e32(k);
+        vfloat32_t vec_a = __riscv_vfmv_v_f_f32(f, vl);
+        __riscv_vse32_v_f32(ptr_a, vec_a, vl);
+    }
+}
+
+inline void matsetv_rvv(float *ptr_a, float *f, int n, int m) {
+    int k = m * n;
+    float *ptr_f = f;
+    for (size_t vl; k > 0; k -= vl, ptr_a += vl, ptr_f += vl) {
+        vl = __riscv_vsetvl_e32(k);
+        vfloat32_t vec_f = __riscv_vle32_v_f32(ptr_f, vl);;
+        __riscv_vse32_v_f32(ptr_a, vec_f, vl);
+    }
+}
 
 }
-#endif //TINYMPC_RVV_MATLIB_H
+#endif //TINYMPC_MATLIB_RVV_H

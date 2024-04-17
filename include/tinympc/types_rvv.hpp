@@ -7,8 +7,7 @@
 #include <assert.h>
 
 #include "glob_opts.hpp"
-#include "matlib/common.h"
-#include "matlib/matlib_rvv.h"
+#include "matlib/matlib.h"
 
 #ifdef RVV_DEFAULT_TO_ROW_MAJOR
 #define RVV_DEFAULT_MATRIX_STORAGE_ORDER_OPTION RowMajor
@@ -68,15 +67,28 @@ public:
     Matrix(const Matrix& other) {
         assert(other.rows <= MaxRows_ && other.cols <= MaxCols_);
         _Matrix(Rows_, Cols_);
-        matcopy(array, other.array, outer, inner);
+        matcopy(data, other.data, outer, inner);
     }
 
     // Copy Constructor
     Matrix(Scalar_ *data) {
         _Matrix(Rows_, Cols_);
-        matsetv(this->array, data, outer, inner);
+        matsetv(this->data, data, outer, inner);
     }
 
+#ifdef USE_RVV
+    // Column if ColMajor
+    Scalar_ *col(int col) {
+        assert(!(Options_ & RowMajor));
+        return vector[col];
+    }
+
+    // Row if RowMajor
+    Scalar_ *row(int row) {
+        assert(Options_ & RowMajor);
+        return vector[row];
+    }
+#elifdef USE_RVA
     // Column if ColMajor
     Scalar_ **col(int col) {
         assert(!(Options_ & RowMajor));
@@ -88,24 +100,25 @@ public:
         assert(Options_ & RowMajor);
         return &vector[row];
     }
+#endif
 
     // Assignment Operator
     // TODO: it has a bug in the last statement
     virtual Matrix& operator=(const Matrix *other) {
         if (this == other) return *this;
-        matcopy(array, other->array, outer, inner);
+        matcopy(other->data, data, outer, inner);
         return *this;
     }
 
     // Assignment Operator
     virtual Matrix& operator=(const Scalar_ f) {
-        matset(array, f, outer, inner);
+        matset(data, f, outer, inner);
         return *this;
     }
 
     // Assignment Operator
     Matrix& set(Scalar_ *f) {
-        matsetv(array, f, outer, inner);
+        matsetv(data, f, outer, inner);
         return *this;
     }
 
@@ -130,7 +143,7 @@ public:
     }
 
     void print(const char *type, const char *name) {
-        print_array_2d(array, outer, inner, type, name);
+        print_array_2d(data, outer, inner, type, name);
     }
 
     virtual void toString() {

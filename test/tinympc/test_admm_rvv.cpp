@@ -6,8 +6,7 @@
 #include <cmath>
 #include <cstdint>
 
-#include "matlib/common.h"
-#include "matlib/matlib_rvv.h"
+#include "matlib/matlib.h"
 #include "admm.hpp"
 #include "test_admm_rvv.hpp"
 
@@ -31,9 +30,9 @@ void init_solver() {
     cache.Quu_inv.set(Quu_inv_data);
     cache.AmBKt.set(AmBKt_data);
     cache.Kinf.set(Kinf_data);
-    transpose(cache.Kinf.array, cache.KinfT.array, NINPUTS, NSTATES);
+    transpose(cache.Kinf.data, cache.KinfT.data, NINPUTS, NSTATES);
     cache.Pinf.set(Pinf_data);
-    transpose(cache.Pinf.array, cache.PinfT.array, NSTATES, NSTATES);
+    transpose(cache.Pinf.data, cache.PinfT.data, NSTATES, NSTATES);
     work.r.set(r_data);
     work.q.set(q_data);
     work.p.set(p_data);
@@ -45,9 +44,9 @@ void init_solver() {
     work.Q.set(Q_data);
     work.R.set(R_data);
     work.Adyn.set(Adyn_data);
-    transpose(work.Adyn.array, work.AdynT.array, NSTATES, NSTATES);
+    transpose(work.Adyn.data, work.AdynT.data, NSTATES, NSTATES);
     work.Bdyn.set(Bdyn_data);
-    transpose(work.Bdyn.array, work.BdynT.array, NSTATES, NINPUTS);
+    transpose(work.Bdyn.data, work.BdynT.data, NSTATES, NINPUTS);
     work.znew.set(znew_data);
     work.vnew.set(vnew_data);
     work.u_min.set(u_min_data);

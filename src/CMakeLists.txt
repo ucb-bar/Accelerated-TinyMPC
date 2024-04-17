@@ -8,7 +8,7 @@ endif(USE_CPU)
 
 if(USE_RVV)
     add_library (tinympc STATIC tinympc/admm_rvv.cpp)
-    add_library (matlib STATIC matlib/matlib_rvv.cpp matlib/common.cpp)
+    add_library (matlib STATIC matlib/matlib.cpp)
     target_include_directories (matlib PUBLIC ../include)
 endif(USE_RVV)
 
