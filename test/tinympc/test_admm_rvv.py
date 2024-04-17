@@ -17,7 +17,7 @@ def create_binary_matrix(name, major, row, col, nul='0.01 ', one='0.10 '):
     num_binary = [float(i) for i in full_binary.split(' ')[:-1]]
     arr = np.array(num_binary).reshape((row, col))
     s_arr = arr.T if major == "col" else arr
-    c_arr = f"tinytype " + name + f"_data[{row} * {col}]" + " = { " + str(list(s_arr.reshape((1, row * col))))[8:-3] + " };\n\n"
+    c_arr = f"tinytype " + name + f"data[{row} * {col}]" + " = { " + str(list(s_arr.reshape((1, row * col))))[8:-3] + " };\n\n"
     if DATA:
         FILE.write(c_arr)
     return arr

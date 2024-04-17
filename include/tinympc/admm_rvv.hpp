@@ -143,7 +143,7 @@ inline void update_linear_cost_3(TinySolver *solver) {
     matsub(solver->work->vnew.array, solver->work->g.array, solver->work->s1.array, NHORIZON, NSTATES);
     matmulf(solver->work->s1.array, solver->work->s2.array, solver->cache->rho, NHORIZON, NSTATES);
     matsub(solver->work->q.array, solver->work->s2.array, solver->work->s1.array, NHORIZON, NSTATES);
-    solver->work->q.set(solver->work->s1._data);
+    solver->work->q.set(solver->work->s1.data);
 }
 
 inline void update_linear_cost_4(TinySolver *solver) {

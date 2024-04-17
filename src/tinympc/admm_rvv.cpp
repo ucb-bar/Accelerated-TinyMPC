@@ -49,8 +49,8 @@ int tiny_solve(TinySolver *solver)
         }
 
         // Save previous slack variables
-        solver->work->v.set(solver->work->vnew._data);
-        solver->work->z.set(solver->work->znew._data);
+        solver->work->v.set(solver->work->vnew.data);
+        solver->work->z.set(solver->work->znew.data);
 
         solver->work->iter += 1;
         #ifdef MEASURE_CYCLES

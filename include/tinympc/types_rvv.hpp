@@ -37,8 +37,8 @@ template<typename Scalar_, int Rows_, int Cols_,
 > class Matrix {
 
 public:
-    Scalar_ _data[MaxRows_ * MaxCols_];
-    Scalar_ *_pdata[Options_ & RowMajor ? Rows_ : Cols_];
+    Scalar_ data[MaxRows_ * MaxCols_];
+    Scalar_ *vector[Options_ & RowMajor ? Rows_ : Cols_];
     Scalar_ **array;
     int rows, cols, outer, inner;
 
@@ -52,16 +52,16 @@ public:
             outer = cols_;
             inner = rows_;
         }
-        array = &_pdata[0];
+        array = &vector[0];
         for (int i = 0; i < outer; ++i)
-            array[i] = (Scalar_ *)(&_data[i * inner]);
+            array[i] = (Scalar_ *)(&data[i * inner]);
     }
 
     // Constructor
     Matrix() {
         _Matrix(Rows_, Cols_);
         for (int i = 0; i < outer * inner; ++i)
-           _data[i] = 0;
+            data[i] = 0;
     }
 
     // Copy Constructor
@@ -80,13 +80,13 @@ public:
     // Column if ColMajor
     Scalar_ **col(int col) {
         assert(!(Options_ & RowMajor));
-        return &_pdata[col];
+        return &vector[col];
     }
 
     // Row if RowMajor
     Scalar_ **row(int row) {
         assert(Options_ & RowMajor);
-        return &_pdata[row];
+        return &vector[row];
     }
 
     // Assignment Operator
