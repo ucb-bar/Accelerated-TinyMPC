@@ -7,7 +7,6 @@
 #include <cmath>
 
 #include "riscv_vector.h"
-#include "matlib/matlib.h"
 
 extern "C"
 {

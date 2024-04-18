@@ -105,10 +105,13 @@
 #define vfloat32_t vfloat32m8_t
 #endif
 
-#include "matlib_golden.h"
+#ifdef USE_CPU
+#include "matlib_cpu.h"
+#endif
 #ifdef USE_RVA
 #include "matlib_rva.h"
-#elifdef USE_RVV
+#endif
+#ifdef USE_RVV
 #include "matlib_rvv.h"
 #endif
 
@@ -120,6 +123,7 @@ inline void print_string(const char *a, const char *name);
 inline void print_array_1d(float *a, int n, const char *type, const char *name);
 inline bool float_eq(float golden, float actual, float relErr);
 inline bool compare_1d(float *golden, float *actual, int n);
+inline bool compare_string(const char *golden, const char *actual, int n);
 inline float *alloc_array_1d(int n);
 inline void free_array_1d(float *ar);
 inline void init_array_zero_1d(float *ar, int n);
@@ -131,6 +135,7 @@ inline void print_array_2d(float **a, int n, int m, const char *type, const char
 inline bool compare_2d(float **golden, float **actual, int n, int m);
 inline float **alloc_array_2d(int n, int m);
 inline float **alloc_array_2d_col(int n, int m);
+inline float checksum(float **ar, int n, int m);
 inline void free_array_2d(float **ar);
 inline void init_array_one_2d(float **ar, int n, int m);
 inline void printx(float **a, int n, int m, const char *name);
@@ -140,12 +145,19 @@ inline void print_array_2d(float *a, int n, int m, const char *type, const char 
 inline bool compare_2d(float *golden, float *actual, int n, int m);
 inline float *alloc_array_2d(int n, int m);
 inline float *alloc_array_2d_col(int n, int m);
+inline float checksum(float *ar, int n, int m);
 inline void free_array_2d(float *ar);
 inline void init_array_one_2d(float *ar, int n, int m);
 inline void printx(float *a, int n, int m, const char *name);
 #endif
 
-inline bool compare_string(const char *golden, const char *actual, int n);
+#ifdef TRACE_CHECKSUMS
+#define TRACE_CHECKSUM(func, matrix) \
+    printf( "%s checksum %f\n", #func, (matrix).checksum() ); \
+    print_array_2d((matrix).data, (matrix).outer, (matrix).inner, "float",  #func);
+#else
+#define TRACE_CHECKSUM(func, matrix)
+#endif
 
 #ifdef USE_PK
 static inline void enable_vector_operations() {
@@ -240,12 +252,11 @@ inline void init_array_one_1d(float *ar, int n) {
         ar[i] = 1;
 }
 
-#ifdef USE_RVV
+#if defined(USE_RVV) || defined(USE_CPU)
 
 inline void gen_rand_2d(float *ar, int n, int m) {
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < m; ++j)
-            ar[i * m + j] = (float)rand() / (float)RAND_MAX + (float)(rand() % 1000);
+    for (int i = 0; i < m * n; ++i)
+        ar[i] = (float)rand() / (float)RAND_MAX + (float)(rand() % 1000);
 }
 
 inline void print_array_2d(float *a, int n, int m, const char *type, const char *name) {
@@ -263,10 +274,9 @@ inline void print_array_2d(float *a, int n, int m, const char *type, const char 
 }
 
 inline bool compare_2d(float *golden, float *actual, int n, int m) {
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < m; ++j)
-            if (!float_eq(golden[i * m + j], actual[i * m + j], 1e-6))
-                return false;
+    for (int i = 0; i < m * n; ++i)
+        if (!float_eq(golden[i], actual[i], 1e-6))
+            return false;
     return true;
 }
 
@@ -288,21 +298,27 @@ inline float *alloc_array_2d_col(int n, int m) {
     return data;
 }
 
+inline float checksum(float *ar, int n, int m) {
+    float sum = 0;
+    for (int i = 0; i < m * n; ++i)
+        sum += ar[i];
+    return sum;
+}
+
 inline void free_array_2d(float *ar) {
     free((float *)ar);
 }
 
 inline void init_array_one_2d(float *ar, int n, int m) {
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < m; ++j)
-            ar[i * m + j] = 1;
+    for (int i = 0; i < m * n; ++i)
+        ar[i] = 1;
 }
 
 inline void printx(float *a, int n, int m, const char *name) {
     printf("%s ", name);
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
-            printf("% 8.4f", a[i * m + j]);
+            printf("%8.4f", a[i * m + j]);
             if (j == m - 1)
                 puts(i == n - 1 ? "" : ",");
             else
@@ -365,6 +381,14 @@ inline float **alloc_array_2d_col(int n, int m) {
     return ret;
 }
 
+inline float checksum(float *ar, int n, int m) {
+    float sum = 0;
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < m; ++j)
+            sum += ar[i][j];
+    return sum;
+}
+
 inline void free_array_2d(float **ar) {
     free(ar[0]);
     free((float *)ar);
@@ -380,7 +404,7 @@ inline void printx(float **a, int n, int m, const char *name) {
     printf("%s ", name);
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
-            printf("% 8.4f", a[i][j]);
+            printf("%8.4f", a[i][j]);
             if (j == m - 1)
                 puts(i == n - 1 ? "" : ",");
             else

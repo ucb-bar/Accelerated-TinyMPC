@@ -76,7 +76,7 @@ public:
         matsetv(this->data, data, outer, inner);
     }
 
-#ifdef USE_RVV
+#if defined(USE_RVV) || defined(USE_CPU)
     // Column if ColMajor
     Scalar_ *col(int col) {
         assert(!(Options_ & RowMajor));
@@ -88,7 +88,8 @@ public:
         assert(Options_ & RowMajor);
         return vector[row];
     }
-#elifdef USE_RVA
+#endif
+#ifdef USE_RVA
     // Column if ColMajor
     Scalar_ **col(int col) {
         assert(!(Options_ & RowMajor));

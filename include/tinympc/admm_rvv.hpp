@@ -30,13 +30,6 @@ std::ofstream outputFile("cycle_output.csv");
 #define CYCLE_CNT_WRAPPER(func, arg, name) func(arg)
 #endif
 
-#ifdef TRACE_CHECKSUMS
-#define TRACE_CHECKSUM(func, matrix) \
-    printf( "%s checksum %f\n", #func, (matrix).checksum() );
-#else
-#define TRACE_CHECKSUM(func, matrix)
-#endif
-
 // u1 = x[:, i] * Kinf; u2 = u1 + d; u[:, i] = -u2
 inline void forward_pass_1(TinySolver *solver, int i) {
 #ifdef USE_MATVEC

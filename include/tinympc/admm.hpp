@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef USE_RVV
+#if defined(USE_RVV) || defined(USE_CPU)
 #include "admm_rvv.hpp"
 #else
 #include "admm_eigen.hpp"
