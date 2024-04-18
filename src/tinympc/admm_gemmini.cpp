@@ -3,7 +3,7 @@
 
 #include "admm.hpp"
 #include "glob_opts.hpp"
-#include "tinympc/types.hpp"
+#include "tinympc/types_eigen.hpp"
 
 #include <Eigen/Dense>
 #include <vector>

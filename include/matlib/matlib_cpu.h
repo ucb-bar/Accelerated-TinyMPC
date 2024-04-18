@@ -4,57 +4,54 @@
 
 #include <cmath>
 
-#include "matlib/matlib.h"
-
-
 extern "C"
 {
 
 // Golden (reference) function declarations
-float maxcoeff_golden(float *a, int n, int m);
-float mincoeff_golden(float *a, int n, int m);
-float matnorm_golden(float *a, int n, int m);
-void matneg_golden(float *a, float *b, int n, int m);
-void cwiseabs_golden(float *a, float *b, int n, int m);
-void cwisemin_golden(float *a, float *b, float *c, int n, int mr);
-void cwisemax_golden(float *a, float *b, float *c, int n, int m);
-void cwisemul_golden(float *a, float *b, float *c, int n, int m);
-void matmul_golden(float *a, float *b, float *c, int n, int m, int o);
-void matvec_golden(float *a, float *b, float *c, int n, int m);
-void matvec_transpose_golden(float *a, float *b, float *c, int n, int m);
-void matmulf_golden(float *a, float *b, float f, int n, int m);
-void matsub_golden(float *a, float *b, float *c, int n, int m);
-void matadd_golden(float *a, float *b, float *c, int n, int m);
-void transpose_golden(float *a, float *b, int n, int m);
-void matcopy_golden(const float *a, float *b, int n, int m);
-void matset_golden(float *a, float f, int n, int m);
-void matsetv_golden(float *a, float *f, int n, int m);
+float maxcoeff_cpu(float *a, int n, int m);
+float mincoeff_cpu(float *a, int n, int m);
+float matnorm_cpu(float *a, int n, int m);
+void matneg_cpu(float *a, float *b, int n, int m);
+void cwiseabs_cpu(float *a, float *b, int n, int m);
+void cwisemin_cpu(float *a, float *b, float *c, int n, int mr);
+void cwisemax_cpu(float *a, float *b, float *c, int n, int m);
+void cwisemul_cpu(float *a, float *b, float *c, int n, int m);
+void matmul_cpu(float *a, float *b, float *c, int n, int m, int o);
+void matvec_cpu(float *a, float *b, float *c, int n, int m);
+void matvec_transpose_cpu(float *a, float *b, float *c, int n, int m);
+void matmulf_cpu(float *a, float *b, float f, int n, int m);
+void matsub_cpu(float *a, float *b, float *c, int n, int m);
+void matadd_cpu(float *a, float *b, float *c, int n, int m);
+void transpose_cpu(float *a, float *b, int n, int m);
+void matcopy_cpu(const float *a, float *b, int n, int m);
+void matset_cpu(float *a, float f, int n, int m);
+void matsetv_cpu(float *a, float *f, int n, int m);
 
 #ifdef USE_CPU
-#define maxcoeff maxcoeff_golden
-#define mincoeff mincoeff_golden
-#define matnorm matnorm_golden
-#define matneg matneg_golden
-#define cwiseabs cwiseabs_golden
-#define cwisemin cwisemin_golden
-#define cwisemax cwisemax_golden
-#define cwisemul cwisemul_golden
-#define matmul matmul_golden
-#define matvec matvec_golden
-#define matvec_transpose matvec_transpose_golden
-#define matmulf matmulf_golden
-#define matsub matsub_golden
-#define matadd matadd_golden
-#define transpose transpose_golden
-#define matcopy matcopy_golden
-#define matset matset_golden
-#define matsetv matsetv_golden
+#define maxcoeff maxcoeff_cpu
+#define mincoeff mincoeff_cpu
+#define matnorm matnorm_cpu
+#define matneg matneg_cpu
+#define cwiseabs cwiseabs_cpu
+#define cwisemin cwisemin_cpu
+#define cwisemax cwisemax_cpu
+#define cwisemul cwisemul_cpu
+#define matmul matmul_cpu
+#define matvec matvec_cpu
+#define matvec_transpose matvec_transpose_cpu
+#define matmulf matmulf_cpu
+#define matsub matsub_cpu
+#define matadd matadd_cpu
+#define transpose transpose_cpu
+#define matcopy matcopy_cpu
+#define matset matset_cpu
+#define matsetv matsetv_cpu
 #endif
 
 }
 
 // matrix maximum coefficient
-inline float maxcoeff_golden(float *a, int n, int m) {
+inline float maxcoeff_cpu(float *a, int n, int m) {
     float max = std::numeric_limits<float>::min();
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
@@ -65,7 +62,7 @@ inline float maxcoeff_golden(float *a, int n, int m) {
 }
 
 // matrix min coefficient
-inline float mincoeff_golden(float *a, int n, int m) {
+inline float mincoeff_cpu(float *a, int n, int m) {
     float min = std::numeric_limits<float>::max();
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
@@ -76,7 +73,7 @@ inline float mincoeff_golden(float *a, int n, int m) {
 }
 
 // matrix unary negative
-inline void matneg_golden(float *a, float *b, int n, int m) {
+inline void matneg_cpu(float *a, float *b, int n, int m) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
             b[i * m + j] = -a[i * m + j];
@@ -85,7 +82,7 @@ inline void matneg_golden(float *a, float *b, int n, int m) {
 }
 
 // matrix coefficient-wise abs
-inline void cwiseabs_golden(float *a, float *b, int n, int m) {
+inline void cwiseabs_cpu(float *a, float *b, int n, int m) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
             b[i * m + j] = fabs(a[i * m + j]);
@@ -94,7 +91,7 @@ inline void cwiseabs_golden(float *a, float *b, int n, int m) {
 }
 
 // matrix coefficient-wise min
-inline void cwisemin_golden(float *a, float *b, float *c, int n, int m) {
+inline void cwisemin_cpu(float *a, float *b, float *c, int n, int m) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
             c[i * m + j] = a[i * m + j] < b[i * m + j] ? a[i * m + j] : b[i * m + j];
@@ -103,7 +100,7 @@ inline void cwisemin_golden(float *a, float *b, float *c, int n, int m) {
 }
 
 // matrix coefficient-wise multiplication
-inline void cwisemul_golden(float *a, float *b, float *c, int n, int m) {
+inline void cwisemul_cpu(float *a, float *b, float *c, int n, int m) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
             c[i * m + j] = a[i * m + j] * b[i * m + j];
@@ -112,7 +109,7 @@ inline void cwisemul_golden(float *a, float *b, float *c, int n, int m) {
 }
 
 // matrix coefficient-wise max
-inline void cwisemax_golden(float *a, float *b, float *c, int n, int m) {
+inline void cwisemax_cpu(float *a, float *b, float *c, int n, int m) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
             c[i * m + j] = a[i * m + j] > b[i * m + j] ? a[i * m + j] : b[i * m + j];
@@ -122,7 +119,7 @@ inline void cwisemax_golden(float *a, float *b, float *c, int n, int m) {
 
 // matrix multiplication, note B is not [o][m]
 // A[n][o], B[m][o] --> C[n][m];
-inline void matmul_golden(float *a, float *b, float *c, int n, int m, int o) {
+inline void matmul_cpu(float *a, float *b, float *c, int n, int m, int o) {
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < m; ++j) {
             c[i * m + j] = 0;
@@ -138,7 +135,7 @@ inline void matmul_golden(float *a, float *b, float *c, int n, int m, int o) {
  *    9 8 7 6     5 j
  *                4
  */
-inline void matvec_golden(float *a, float *b, float *c, int n, int m) {
+inline void matvec_cpu(float *a, float *b, float *c, int n, int m) {
     for (int i = 0; i < n; ++i) {
         c[i] = 0;
         for (int j = 0; j < m; ++j) {
@@ -154,7 +151,7 @@ inline void matvec_golden(float *a, float *b, float *c, int n, int m) {
  *              3 7 7 j
  *              4 8 6
  */
-inline void matvec_transpose_golden(float *a, float *b, float *c, int n, int m) {
+inline void matvec_transpose_cpu(float *a, float *b, float *c, int n, int m) {
     for (int i = 0; i < m; ++i) {
         c[i] = 0;
         for (int j = 0; j < n; ++j) {
@@ -164,7 +161,7 @@ inline void matvec_transpose_golden(float *a, float *b, float *c, int n, int m) 
 }
 
 // matrix scalar multiplication
-inline void matmulf_golden(float *a, float *b, float f, int n, int m) {
+inline void matmulf_cpu(float *a, float *b, float f, int n, int m) {
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < m; ++j) {
             b[i * m + j] = f * a[i * m + j];
@@ -172,7 +169,7 @@ inline void matmulf_golden(float *a, float *b, float f, int n, int m) {
 }
 
 // matrix subtraction
-inline void matsub_golden(float *a, float *b, float *c, int n, int m) {
+inline void matsub_cpu(float *a, float *b, float *c, int n, int m) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
             c[i * m + j] = a[i * m + j] - b[i * m + j];
@@ -181,7 +178,7 @@ inline void matsub_golden(float *a, float *b, float *c, int n, int m) {
 }
 
 // matrix addition
-inline void matadd_golden(float *a, float *b, float *c, int n, int m) {
+inline void matadd_cpu(float *a, float *b, float *c, int n, int m) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
             c[i * m + j] = a[i * m + j] + b[i * m + j];
@@ -190,7 +187,7 @@ inline void matadd_golden(float *a, float *b, float *c, int n, int m) {
 }
 
 // matrix transpose
-inline void transpose_golden(float *a, float *b, int n, int m) {
+inline void transpose_cpu(float *a, float *b, int n, int m) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
             b[j * n + i] = a[i * m + j];
@@ -199,7 +196,7 @@ inline void transpose_golden(float *a, float *b, int n, int m) {
 }
 
 // matrix copy
-inline void matcopy_golden(const float *a, float *b, int n, int m) {
+inline void matcopy_cpu(const float *a, float *b, int n, int m) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
             b[i * m + j] = a[i * m + j];
@@ -207,7 +204,7 @@ inline void matcopy_golden(const float *a, float *b, int n, int m) {
     }
 }
 
-inline void matset_golden(float *a, float f, int n, int m) {
+inline void matset_cpu(float *a, float f, int n, int m) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
             a[i * m + j] = f;
@@ -215,7 +212,7 @@ inline void matset_golden(float *a, float f, int n, int m) {
     }
 }
 
-inline void matsetv_golden(float *a, float *f, int n, int m) {
+inline void matsetv_cpu(float *a, float *f, int n, int m) {
     for (int i = 0, k = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j, ++k) {
             a[i * m + j] = f[k];
@@ -224,7 +221,7 @@ inline void matsetv_golden(float *a, float *f, int n, int m) {
 }
 
 // matrix l2 norm
-inline float matnorm_golden(float *a, int n, int m) {
+inline float matnorm_cpu(float *a, int n, int m) {
     float sum = 0;
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {

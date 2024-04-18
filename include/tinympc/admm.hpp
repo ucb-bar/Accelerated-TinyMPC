@@ -3,7 +3,7 @@
 #ifdef USE_RVV
 #include "admm_rvv.hpp"
 #else
-#include "admm_cpu.hpp"
+#include "admm_eigen.hpp"
 #endif
 
 #ifdef __cplusplus

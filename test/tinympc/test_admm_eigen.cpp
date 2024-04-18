@@ -6,7 +6,7 @@
 #include <cmath>
 #include <cstdint>
 
-#include "admm_cpu.hpp"
+#include "admm_eigen.hpp"
 
 TinyCache cache;
 TinyWorkspace work;

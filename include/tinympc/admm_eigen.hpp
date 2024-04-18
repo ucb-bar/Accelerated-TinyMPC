@@ -3,31 +3,27 @@
 //
 
 #pragma once
-#ifndef TINYMPC_ADMM_CPU_HPP
-#define TINYMPC_ADMM_CPU_HPP
+#ifndef TINYMPC_ADMM_EIGEN_HPP
+#define TINYMPC_ADMM_EIGEN_HPP
 
-#include "types.hpp"
+#include "types_eigen.hpp"
 
 extern "C" {
 
 inline void forward_pass_1(TinySolver *solver, int i) {
     (solver->work->u.col(i)).noalias() = -solver->cache->Kinf.lazyProduct(solver->work->x.col(i)) - solver->work->d.col(i);
-    // printx(solver->work->u.col(i), 1, NINPUTS, "fp1 ui");
 }
 
 inline void forward_pass_2(TinySolver *solver, int i) {
     (solver->work->x.col(i + 1)).noalias() = solver->work->Adyn.lazyProduct(solver->work->x.col(i)) + solver->work->Bdyn.lazyProduct(solver->work->u.col(i));
-    // printx(solver->work->x.col(i + 1), 1, NSTATES, "fp2 xip1");
 }
 
 inline void backward_pass_1(TinySolver *solver, int i) {
     (solver->work->d.col(i)).noalias() = solver->cache->Quu_inv * (solver->work->Bdyn.transpose() * solver->work->p.col(i + 1) + solver->work->r.col(i));
-    // printx(solver->work->d.col(i), 1, NINPUTS, "bp1 d");
 }
 
 inline void backward_pass_2(TinySolver *solver, int i) {
     (solver->work->p.col(i)).noalias() = solver->work->q.col(i) + solver->cache->AmBKt.lazyProduct(solver->work->p.col(i + 1)) - (solver->cache->Kinf.transpose()).lazyProduct(solver->work->r.col(i)); // + solver->cache->coeff_d2p * solver->work->d.col(i); // coeff_d2p always appears to be zeros (faster to comment out)
-    // printx(solver->work->p.col(i), 1, NSTATES, "bp2 pi");
 }
 
 inline void update_slack_1(TinySolver *solver) {
@@ -84,4 +80,4 @@ inline void update_linear_cost_4(TinySolver *solver) {
 }
 
 };
-#endif //TINYMPC_ADMM_CPU_HPP
+#endif //TINYMPC_ADMM_EIGEN_HPP

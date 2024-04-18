@@ -2,6 +2,7 @@
 #include <cmath>
 
 #include "tinympc/types_rvv.hpp"
+#include "matlib_cpu.h"
 
 extern "C" {
 
@@ -27,7 +28,7 @@ int main() {
     printf("matmul:         ");
     float *golden = alloc_array_2d(N, M);
     float *actual = alloc_array_2d(N, M);
-    matmul_golden(A, B, golden, N, M, O);
+    matmul_cpu(A, B, golden, N, M, O);
     start = read_cycles();
     matmul(A, B, actual, N, M, O);
     total = read_cycles() - start;
@@ -46,14 +47,14 @@ int main() {
     printf("matvec:         ");
     float *golden_vec = alloc_array_2d(N, 1);
     float *actual_vec = alloc_array_2d(N, 1);
-    matvec_golden(G, V, golden_vec, N, M);
+    matvec_cpu(G, V, golden_vec, N, M);
     start = read_cycles();
     matvec(G, V, actual_vec, N, M);
     total = read_cycles() - start;
     printf("%s (%lu)\n", compare_2d(golden_vec, actual_vec, N, 1) ? "pass" : "fail", total);
 
     printf("matvec_t:       ");
-    matvec_transpose_golden(H, W, golden_vec, M, N);
+    matvec_transpose_cpu(H, W, golden_vec, M, N);
     start = read_cycles();
     matvec_transpose(H, W, actual_vec, M, N);
     total = read_cycles() - start;
@@ -68,108 +69,108 @@ int main() {
     gen_rand_2d(B, N, M);
 
     printf("maxcoeff:       ");
-    float max_golden = maxcoeff_golden(A, N, M);
+    float max_cpu = maxcoeff_cpu(A, N, M);
     start = read_cycles();
     float max_actual = maxcoeff(A, N, M);
     total = read_cycles() - start;
-    printf("%s (%lu)\n", float_eq(max_golden, max_actual, 1e-6) ? "pass" : "fail", total);
+    printf("%s (%lu)\n", float_eq(max_cpu, max_actual, 1e-6) ? "pass" : "fail", total);
 
     printf("mincoeff:       ");
-    float min_golden = mincoeff_golden(A, N, M);
+    float min_cpu = mincoeff_cpu(A, N, M);
     start = read_cycles();
     float min_actual = mincoeff(A, N, M);
     total = read_cycles() - start;
-    printf("%s (%lu)\n", float_eq(min_golden, min_actual, 1e-6) ? "pass" : "fail", total);
+    printf("%s (%lu)\n", float_eq(min_cpu, min_actual, 1e-6) ? "pass" : "fail", total);
 
     printf("matmulf:        ");
-    matmulf_golden(A, C, 10.0f, N, M);
+    matmulf_cpu(A, C, 10.0f, N, M);
     start = read_cycles();
     matmulf(A, D, 10.0f, N, M);
     total = read_cycles() - start;
     printf("%s (%lu)\n", compare_2d(C, D, N, M) ? "pass" : "fail", total);
 
     printf("matsub:         ");
-    matsub_golden(A, B, C, N, M);
+    matsub_cpu(A, B, C, N, M);
     start = read_cycles();
     matsub(A, B, D, N, M);
     total = read_cycles() - start;
     printf("%s (%lu)\n", compare_2d(C, D, N, M) ? "pass" : "fail", total);
 
     printf("matadd:         ");
-    matadd_golden(A, B, C, N, M);
+    matadd_cpu(A, B, C, N, M);
     start = read_cycles();
     matadd(A, B, D, N, M);
     total = read_cycles() - start;
     printf("%s (%lu)\n", compare_2d(C, D, N, M) ? "pass" : "fail", total);
 
     printf("matneg:         ");
-    matneg_golden(A, C, N, M);
+    matneg_cpu(A, C, N, M);
     start = read_cycles();
     matneg(A, D, N, M);
     total = read_cycles() - start;
     printf("%s (%lu)\n", compare_2d(C, D, N, M) ? "pass" : "fail", total);
 
     printf("matcopy:        ");
-    matcopy_golden(A, C, N, M);
+    matcopy_cpu(A, C, N, M);
     start = read_cycles();
     matcopy(A, D, N, M);
     total = read_cycles() - start;
     printf("%s (%lu)\n", compare_2d(C, D, N, M) ? "pass" : "fail", total);
 
     printf("cwiseabs:       ");
-    cwiseabs_golden(A, C, N, M);
+    cwiseabs_cpu(A, C, N, M);
     start = read_cycles();
     cwiseabs(A, D, N, M);
     total = read_cycles() - start;
     printf("%s (%lu)\n", compare_2d(C, D, N, M) ? "pass" : "fail", total);
 
     printf("cwisemin:       ");
-    cwisemin_golden(A, B, C, N, M);
+    cwisemin_cpu(A, B, C, N, M);
     start = read_cycles();
     cwisemin(A, B, D, N, M);
     total = read_cycles() - start;
     printf("%s (%lu)\n", compare_2d(C, D, N, M) ? "pass" : "fail", total);
 
     printf("cwisemax:       ");
-    cwisemax_golden(A, B, C, N, M);
+    cwisemax_cpu(A, B, C, N, M);
     start = read_cycles();
     cwisemax(A, B, D, N, M);
     total = read_cycles() - start;
     printf("%s (%lu)\n", compare_2d(C, D, N, M) ? "pass" : "fail", total);
 
     printf("cwisemul:       ");
-    cwisemul_golden(A, B, C, N, M);
+    cwisemul_cpu(A, B, C, N, M);
     start = read_cycles();
     cwisemul(A, B, D, N, M);
     total = read_cycles() - start;
     printf("%s (%lu)\n", compare_2d(C, D, N, M) ? "pass" : "fail", total);
 
     printf("matset:         ");
-    matset_golden(A, 5.0, N, M);
+    matset_cpu(A, 5.0, N, M);
     start = read_cycles();
     matset(A, 5.0, N, M);
     total = read_cycles() - start;
     printf("%s (%lu)\n", compare_2d(C, D, N, M) ? "pass" : "fail", total);
 
     printf("matsetv:        ");
-    matsetv_golden(A, f, N, M);
+    matsetv_cpu(A, f, N, M);
     start = read_cycles();
     matsetv(A, f, N, M);
     total = read_cycles() - start;
     printf("%s (%lu)\n", compare_2d(C, D, N, M) ? "pass" : "fail", total);
 
     printf("matnorm:        ");
-    float norm_golden = matnorm_golden(A, N, M);
+    float norm_cpu = matnorm_cpu(A, N, M);
     start = read_cycles();
     float norm_actual = matnorm(A, N, M);
     total = read_cycles() - start;
-    printf("%s (%lu)\n", float_eq(norm_golden, norm_actual, 1e-6) ? "pass" : "fail", total);
+    printf("%s (%lu)\n", float_eq(norm_cpu, norm_actual, 1e-6) ? "pass" : "fail", total);
 
     C = alloc_array_2d(M, N);
     D = alloc_array_2d(M, N);
 
     printf("transpose:      ");
-    transpose_golden(A, C, N, M);
+    transpose_cpu(A, C, N, M);
     start = read_cycles();
     transpose(A, D, N, M);
     total = read_cycles() - start;
