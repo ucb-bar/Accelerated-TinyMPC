@@ -31,10 +31,6 @@ int main()
     enable_vector_operations();
     uint64_t start, end;
 
-    // start = read_cycles();
-    // end = read_cycles();
-    // printf("Test rdcycle: %d\n", end-start);
-
     tiny_VectorNx v1, v2;
 
     // Map array from problem_data (array in row-major order)
@@ -73,33 +69,12 @@ int main()
     settings.en_state_bound = 1;
 
     // Hovering setpoint
-    
     tiny_VectorNx Xref_origin;
     Matrix<tinytype, NSTATES, NTOTAL> Xref_total;
     Xref_total.set(Xref_data);
 
-    // tinytype Xref_origin_data[NSTATES] = {
-    //     0, 0, 1.5, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    
-    // Xref_origin.set(Xref_origin_data);
-    // // Hovers at the same point until the horizon
-    // for (int j = 0; j < NHORIZON; j++) {
-    //     tinytype **target = { &work.Xref.data[j] };
-    //     matsetv(target, Xref_origin_data, 1, NSTATES);
-    //     // print_array_1d(work.Xref.data[j], NSTATES, "float", "array");
-    // }
-
-
-    // print_array_2d(work.Xref.data, NHORIZON, NSTATES, "float", "array");
-
     // current and next simulation states
     tiny_VectorNx x0, x1;
-    // Initial state
-    // tinytype x0_data[NSTATES] = {
-    //     -3.64893626e-02,  3.70428882e-02,  2.25366379e-01, -1.92755080e-01,
-    //     -1.91678221e-01, -2.21354598e-03,  9.62340916e-01, -4.09749891e-01,
-    //     -3.78764621e-01,  7.50158432e-02, -6.63581815e-01,  6.71744046e-01 };
-    // x0.set(x0_data);
     x0.set(Xref_data);
 
     for (int k = 0; k < 10; ++k) {
@@ -113,9 +88,9 @@ int main()
         // 1. Update measurement
         // an alternative method is to use work.x.setCol(x0.data[0], 0);
         matsetv(work.x.col(0), x0.data, 1, NSTATES);
-        work.Xref.set(&(Xref_data[k*NSTATES]));
 
         // 2. Update reference (if needed)
+        work.Xref.set(&(Xref_data[k*NSTATES]));
 
         // 3. Reset dual variables (if needed)
         work.y = 0.0;
@@ -123,8 +98,6 @@ int main()
 
         // 4. Solve MPC problem
         start = read_cycles();
-        // start = rdcycle();
-
         tiny_solve(&solver);
         end = read_cycles();
         printf("Time for iter %d: %d\n", k, end-start);
