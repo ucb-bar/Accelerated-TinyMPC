@@ -9,10 +9,14 @@
 #include "types_rvv.hpp"
 #include "riscv_vector.h"
 #include <string.h>
+#include <climits>
+#include <cmath>
 
-#ifndef USE_MATVEC
-#define USE_MATVEC 1
-#endif
+#define UNROLLED_RVV 1
+
+// #ifndef USE_MATVEC
+// #define USE_MATVEC 1
+// #endif
 
 extern "C" {
 
@@ -167,11 +171,12 @@ inline void matvec_rvv_12x4(float ** a, float **b, float **c) {
 //     }
 // }
 
-inline void forward_pass_1_new(TinySolver *solver, int i) {
-    vfloat32m1_t vec_a;
+
+inline void forward_pass_redu(TinySolver *solver, int i) {
+    vfloat32m1_t vec_a_0, vec_a_1, vec_a_2, vec_a_3;
     vfloat32m1_t vec_b;
-    vfloat32m1_t vec_s;
-    vfloat32m1_t vec_sum;
+    vfloat32m1_t vec_s_0, vec_s_1, vec_s_2, vec_s_3;
+    vfloat32m1_t vec_sum_0, vec_sum_1, vec_sum_2, vec_sum_3;
     vfloat32m1_t vec_zero = __riscv_vfmv_v_f_f32m1(0, 12);
 
     float *ptr_a = &solver->cache->Kinf.data[0][0];
@@ -182,42 +187,112 @@ inline void forward_pass_1_new(TinySolver *solver, int i) {
     float sum;
     vec_b = __riscv_vle32_v_f32m1(ptr_b, 12);
 
-    vec_a = __riscv_vle32_v_f32m1(ptr_a, 12);
-    vec_s = __riscv_vfmul_vv_f32m1(vec_a, vec_b, 12);
-    vec_sum = __riscv_vfredusum_vs_f32m1_f32m1(vec_s, vec_zero, 12);
-    sum = __riscv_vfmv_f_s_f32m1_f32(vec_sum);
-    ptr_c[0] = sum;
+    vec_a_0 = __riscv_vle32_v_f32m1(ptr_a, 12);
+    vec_a_1 = __riscv_vle32_v_f32m1(ptr_a + 12, 12);
+    vec_a_2 = __riscv_vle32_v_f32m1(ptr_a + 24, 12);
+    vec_a_3 = __riscv_vle32_v_f32m1(ptr_a + 36, 12);
 
-    vec_s = __riscv_vfmul_vv_f32m1(vec_a, vec_b, 12);
-    vec_sum = __riscv_vfredusum_vs_f32m1_f32m1(vec_s, vec_zero, 12);
-    sum = __riscv_vfmv_f_s_f32m1_f32(vec_sum);
-    ptr_c[1] = sum;
+    vec_s_0 = __riscv_vfmul_vv_f32m1(vec_a_0, vec_b, 12);
+    vec_s_1 = __riscv_vfmul_vv_f32m1(vec_a_1, vec_b, 12);
+    vec_s_2 = __riscv_vfmul_vv_f32m1(vec_a_2, vec_b, 12);
+    vec_s_3 = __riscv_vfmul_vv_f32m1(vec_a_3, vec_b, 12);
 
-    vec_a = __riscv_vle32_v_f32m1(ptr_a + 24, 12);
-    vec_s = __riscv_vfmul_vv_f32m1(vec_a, vec_b, 12);
-    vec_sum = __riscv_vfredusum_vs_f32m1_f32m1(vec_s, vec_zero, 12);
-    sum = __riscv_vfmv_f_s_f32m1_f32(vec_sum);
-    ptr_c[2] = sum;
+    vec_sum_0 = __riscv_vfredusum_vs_f32m1_f32m1(vec_s_0, vec_zero, 12);
+    vec_sum_1 = __riscv_vfredusum_vs_f32m1_f32m1(vec_s_1, vec_zero, 12);
+    vec_sum_2 = __riscv_vfredusum_vs_f32m1_f32m1(vec_s_2, vec_zero, 12);
+    vec_sum_3 = __riscv_vfredusum_vs_f32m1_f32m1(vec_s_3, vec_zero, 12);
 
-    vec_a = __riscv_vle32_v_f32m1(ptr_a + 36, 12);
-    vec_s = __riscv_vfmul_vv_f32m1(vec_a, vec_b, 12);
-    vec_sum = __riscv_vfredusum_vs_f32m1_f32m1(vec_s, vec_zero, 12);
-    sum = __riscv_vfmv_f_s_f32m1_f32(vec_sum);
-    ptr_c[3] = sum;
+    ptr_c[0] = __riscv_vfmv_f_s_f32m1_f32(vec_sum_0);
+    ptr_c[1] = __riscv_vfmv_f_s_f32m1_f32(vec_sum_1);
+    ptr_c[2] = __riscv_vfmv_f_s_f32m1_f32(vec_sum_2);
+    ptr_c[3] = __riscv_vfmv_f_s_f32m1_f32(vec_sum_3);
 
     // sum and negation
-    vec_a = __riscv_vle32_v_f32m1(ptr_c, 4);
+    vec_a_0 = __riscv_vle32_v_f32m1(ptr_c, 4);
     vec_b = __riscv_vle32_v_f32m1(ptr_d, 4);
-    vec_s = __riscv_vfadd_vv_f32m1(vec_a, vec_b, 4);
-    vec_s = __riscv_vfsub_vv_f32m1(vec_zero, vec_s, 4);
-    __riscv_vse32_v_f32m1(ptr_u, vec_s, 4);
+    vec_s_0 = __riscv_vfadd_vv_f32m1(vec_a_0, vec_b, 4);
+    vec_s_1 = __riscv_vfneg_v_f32m1(vec_s_0, 4);
+    __riscv_vse32_v_f32m1(ptr_u, vec_s_1, 4);
 }
 
+#ifdef UNROLLED_RVV
+inline void forward_pass_1(TinySolver *solver, int i) {
+    vfloat32m1_t vec_k_0, vec_k_1, vec_k_2, vec_k_3;
+    vfloat32m1_t vec_b;
+    vfloat32m1_t vec_s_0, vec_s_1, vec_s_2, vec_s_3, vec_s_4;
+    vfloat32m1_t vec_sum_0, vec_sum_1, vec_sum_2, vec_sum_3;
+    vfloat32m1_t vec_zero = __riscv_vfsub_vv_f32m1(vec_zero, vec_zero, NSTATES);
+
+    float *ptr_k = &solver->cache->KinfT.data[0][0];
+    float *ptr_b = &solver->work->x.data[i][0];
+    float *ptr_d = &solver->work->d.data[i][0];
+    float ptr_c[4];
+    float *ptr_u = &solver->work->u.data[i][0];
+    float sum;
+
+    vec_s_0 = vec_zero;
+    vec_s_1 = vec_zero;
+    vec_s_2 = vec_zero;
+    vec_s_3 = vec_zero;
+
+    // 0 - 3
+    vec_k_0 = __riscv_vle32_v_f32m1(ptr_k + 0 * NINPUTS, NINPUTS);
+    vec_k_1 = __riscv_vle32_v_f32m1(ptr_k + 1 * NINPUTS, NINPUTS);
+    vec_k_2 = __riscv_vle32_v_f32m1(ptr_k + 2 * NINPUTS, NINPUTS);
+    vec_k_3 = __riscv_vle32_v_f32m1(ptr_k + 3 * NINPUTS, NINPUTS);
+
+    vec_s_0 = __riscv_vfmacc_vf_f32m1(vec_s_0, ptr_b[0], vec_k_0, NINPUTS);
+    vec_s_1 = __riscv_vfmacc_vf_f32m1(vec_s_1, ptr_b[1], vec_k_1, NINPUTS);
+    vec_s_2 = __riscv_vfmacc_vf_f32m1(vec_s_2, ptr_b[2], vec_k_2, NINPUTS);
+    vec_s_3 = __riscv_vfmacc_vf_f32m1(vec_s_3, ptr_b[3], vec_k_3, NINPUTS);
+
+    // 4 - 7
+    vec_k_0 = __riscv_vle32_v_f32m1(ptr_k + 4 * NINPUTS, NINPUTS);
+    vec_k_1 = __riscv_vle32_v_f32m1(ptr_k + 5 * NINPUTS, NINPUTS);
+    vec_k_2 = __riscv_vle32_v_f32m1(ptr_k + 6 * NINPUTS, NINPUTS);
+    vec_k_3 = __riscv_vle32_v_f32m1(ptr_k + 7 * NINPUTS, NINPUTS);
+
+    vec_s_0 = __riscv_vfmacc_vf_f32m1(vec_s_0, ptr_b[4], vec_k_0, NINPUTS);
+    vec_s_1 = __riscv_vfmacc_vf_f32m1(vec_s_1, ptr_b[5], vec_k_1, NINPUTS);
+    vec_s_2 = __riscv_vfmacc_vf_f32m1(vec_s_2, ptr_b[6], vec_k_2, NINPUTS);
+    vec_s_3 = __riscv_vfmacc_vf_f32m1(vec_s_3, ptr_b[7], vec_k_3, NINPUTS);
+
+    // 8 - 11
+    vec_k_0 = __riscv_vle32_v_f32m1(ptr_k +  8 * NINPUTS, NINPUTS);
+    vec_k_1 = __riscv_vle32_v_f32m1(ptr_k +  9 * NINPUTS, NINPUTS);
+    vec_k_2 = __riscv_vle32_v_f32m1(ptr_k + 10 * NINPUTS, NINPUTS);
+    vec_k_3 = __riscv_vle32_v_f32m1(ptr_k + 11 * NINPUTS, NINPUTS);
+
+    vec_s_0 = __riscv_vfmacc_vf_f32m1(vec_s_0, ptr_b[ 8], vec_k_0, NINPUTS);
+    vec_s_1 = __riscv_vfmacc_vf_f32m1(vec_s_1, ptr_b[ 9], vec_k_1, NINPUTS);
+    vec_s_2 = __riscv_vfmacc_vf_f32m1(vec_s_2, ptr_b[10], vec_k_2, NINPUTS);
+    vec_s_3 = __riscv_vfmacc_vf_f32m1(vec_s_3, ptr_b[11], vec_k_3, NINPUTS);
+
+    // 12 - 15
+    vec_k_0 = __riscv_vle32_v_f32m1(ptr_k + 12 * NINPUTS, NINPUTS);
+    vec_k_1 = __riscv_vle32_v_f32m1(ptr_k + 13 * NINPUTS, NINPUTS);
+    vec_k_2 = __riscv_vle32_v_f32m1(ptr_k + 14 * NINPUTS, NINPUTS);
+    vec_k_3 = __riscv_vle32_v_f32m1(ptr_k + 15 * NINPUTS, NINPUTS);
+
+    vec_s_0 = __riscv_vfmacc_vf_f32m1(vec_s_0, ptr_b[12], vec_k_0, NINPUTS);
+    vec_s_1 = __riscv_vfmacc_vf_f32m1(vec_s_1, ptr_b[13], vec_k_1, NINPUTS);
+    vec_s_2 = __riscv_vfmacc_vf_f32m1(vec_s_2, ptr_b[14], vec_k_2, NINPUTS);
+    vec_s_3 = __riscv_vfmacc_vf_f32m1(vec_s_3, ptr_b[15], vec_k_3, NINPUTS);
+
+    vec_s_0 = __riscv_vfadd_vv_f32m1(vec_s_0, vec_s_1, NINPUTS);
+    vec_s_2 = __riscv_vfadd_vv_f32m1(vec_s_2, vec_s_3, NINPUTS);
+    vec_s_4 = __riscv_vfadd_vv_f32m1(vec_s_0, vec_s_2, NINPUTS);
+
+    // sum and negation
+    vec_b = __riscv_vle32_v_f32m1(ptr_d, 4);
+    vec_s_0 = __riscv_vfadd_vv_f32m1(vec_s_4, vec_b, 4);
+    vec_s_1 = __riscv_vfneg_v_f32m1(vec_s_0, 4);
+    __riscv_vse32_v_f32m1(ptr_u, vec_s_1, 4);
+}
+
+#else
 // u1 = x[:, i] * Kinf; u2 = u1 + d; u[:, i] = -u2
 inline void forward_pass_1(TinySolver *solver, int i) {
-    // matvec_golden(solver->cache->Kinf.data, solver->work->x.col(i), solver->work->u1.data, NINPUTS, NSTATES);
-    // matvec_rvv_12x4(solver->cache->Kinf.data, solver->work->x.col(i), solver->work->u1.data);
-    // matvec_rvv_12x4(solver->cache->Kinf.data, solver->work->x.col(i), solver->work->u1.data);
 #ifdef USE_MATVEC
     matvec(solver->cache->Kinf.data, solver->work->x.col(i), solver->work->u1.data, NINPUTS, NSTATES);
 #else
@@ -226,7 +301,43 @@ inline void forward_pass_1(TinySolver *solver, int i) {
     matadd(solver->work->u1.data, solver->work->d.col(i), solver->work->u2.data, 1, NINPUTS);
     matneg(solver->work->u2.data, solver->work->u.col(i), 1, NINPUTS);
 }
+#endif
 
+#ifdef UNROLLED_RVV
+inline void forward_pass_2(TinySolver *solver, int i) {
+    vfloat32m1_t vec_a_0, vec_a_1, vec_a_2, vec_a_3;
+    vfloat32m1_t vec_b_0, vec_b_1, vec_b_2, vec_b_3;
+    vfloat32m1_t vec_s_0, vec_s_1, vec_s_2, vec_s_3, vec_s_4;
+    vfloat32m1_t vec_sum_0, vec_sum_1, vec_sum_2, vec_sum_3;
+    vfloat32m1_t vec_zero = __riscv_vfsub_vv_f32m1(vec_zero, vec_zero, NSTATES);
+
+    float *ptr_a = &solver->work->AdynT.data[0][0];
+    float *ptr_b = &solver->work->BdynT.data[0][0];
+    float *ptr_x = &solver->work->x.data[i][0];
+    float *ptr_u = &solver->work->u.data[i][0];
+    float *ptr_x_new = &solver->work->x.data[i+1][0];
+
+    vec_s_0 = vec_zero;
+    for (int j = 0; j < NSTATES; j++) {
+        vec_a_0 = __riscv_vle32_v_f32m1(ptr_a + j * NSTATES, NSTATES);
+        vec_s_0 = __riscv_vfmacc_vf_f32m1(vec_s_0, ptr_x[j], vec_a_0, NSTATES);
+    }
+    // __riscv_vse32_v_f32(ptr_x1, vec_s_0, NSTATES);
+
+    vec_s_4 = vec_zero;
+    for (int j = 0; j < NINPUTS; j++) {
+        vec_b_0 = __riscv_vle32_v_f32m1(ptr_b + j * NSTATES, NSTATES);
+        vec_s_4 = __riscv_vfmacc_vf_f32m1(vec_s_4, ptr_u[j], vec_b_0, NSTATES);
+    }
+    // __riscv_vse32_v_f32(ptr_x2, vec_s_0, NSTATES);
+    vec_s_0 = __riscv_vfadd_vv_f32m1(vec_s_0, vec_s_4, NSTATES);
+    __riscv_vse32_v_f32(ptr_x_new, vec_s_0, NSTATES);
+
+    // matvec(solver->work->Adyn.data, solver->work->x.col(i), solver->work->x1.data, NSTATES, NSTATES);
+    // matvec(solver->work->Bdyn.data, solver->work->u.col(i), solver->work->x2.data, NSTATES, NINPUTS);
+    // matadd(solver->work->x1.data, solver->work->x2.data, solver->work->x.col(i + 1), 1, NSTATES);
+}
+#else
 // x[:, i+1] = Adyn * x[:, i] + Bdyn * u[:, i]
 inline void forward_pass_2(TinySolver *solver, int i) {
 #ifdef USE_MATVEC
@@ -238,13 +349,55 @@ inline void forward_pass_2(TinySolver *solver, int i) {
 #endif
     matadd(solver->work->x1.data, solver->work->x2.data, solver->work->x.col(i + 1), 1, NSTATES);
 }
+#endif
 
-inline void forward_pass_2_old(TinySolver *solver, int i) {
-    matmul(solver->work->x.col(i), solver->work->Adyn.data, solver->work->x1.data, 1, NSTATES, NSTATES);
-    matmul(solver->work->u.col(i), solver->work->Bdyn.data, solver->work->x2.data, 1, NSTATES, NINPUTS);
-    matadd(solver->work->x1.data, solver->work->x2.data, solver->work->x.col(i + 1), 1, NSTATES);
+#ifdef UNROLLED_RVV
+// d[:, i] = Quu_inv * (BdynT * p[:, i+1] + r[:, i]);
+inline void backward_pass_1(TinySolver *solver, int i) {
+
+    // vfloat32m1_t vec_b_0, vec_b_1, vec_b_2, vec_a_3;
+    vfloat32m1_t vec_a_0, vec_a_1, vec_a_2, vec_a_3;
+    vfloat32m1_t vec_q_0, vec_q_1, vec_q_2, vec_q_3;
+    vfloat32m1_t vec_b_0, vec_b_1, vec_b_2, vec_b_3;
+    vfloat32m1_t vec_r;
+    vfloat32m1_t vec_s_0, vec_s_1, vec_s_2, vec_s_3, vec_s_4;
+    vfloat32m1_t vec_sum_0, vec_sum_1, vec_sum_2, vec_sum_3;
+    vfloat32m1_t vec_zero = __riscv_vfsub_vv_f32m1(vec_zero, vec_zero, NSTATES);
+
+    float *ptr_b = &solver->work->Bdyn.data[0][0];
+    float *ptr_q = &solver->cache->Quu_inv.data[0][0];
+    float *ptr_p = &solver->work->p.data[i+1][0];
+    float *ptr_u = &solver->work->u.data[i][0];
+    float *ptr_u1 = &solver->work->u1.data[0][0];
+
+    float *ptr_r = &solver->work->r.data[i][0];
+    float *ptr_d = &solver->work->d.data[i][0];
+
+
+    vec_s_0 = vec_zero;
+    for(int j = 0; j < NSTATES; j++) {
+        vec_b_0 = __riscv_vle32_v_f32m1(ptr_b + j * NINPUTS, NINPUTS);
+        vec_s_0 = __riscv_vfmacc_vf_f32m1(vec_s_0, ptr_p[j], vec_b_0, NINPUTS);
+    }
+
+    vec_r = __riscv_vle32_v_f32m1(ptr_r, NINPUTS);
+    vec_s_4 = __riscv_vfadd_vv_f32m1(vec_s_0, vec_r, NINPUTS);
+
+    vec_s_0 = vec_zero;
+    for(int j = 0; j < NINPUTS; j++) {
+        vec_q_0 = __riscv_vle32_v_f32m1(ptr_q + j * NINPUTS, NINPUTS);
+        vec_s_0 = __riscv_vfmul_vv_f32m1(vec_q_0, vec_s_4, 12);
+        vec_sum_0 = __riscv_vfredusum_vs_f32m1_f32m1(vec_s_0, vec_zero, NINPUTS);
+        ptr_d[j] = __riscv_vfmv_f_s_f32m1_f32(vec_sum_0);
+    }
+
+    
+    // matvec(solver->work->BdynT.data, solver->work->p.col(i + 1), solver->work->u1.data, NINPUTS, NSTATES);
+    // matadd(solver->work->r.col(i), solver->work->u1.data, solver->work->u2.data, 1, NINPUTS);
+    // matvec(solver->cache->Quu_inv.data, solver->work->u2.data, solver->work->d.col(i), NINPUTS, NINPUTS);
 }
 
+#else
 // d[:, i] = Quu_inv * (BdynT * p[:, i+1] + r[:, i]);
 inline void backward_pass_1(TinySolver *solver, int i) {
 #ifdef USE_MATVEC
@@ -257,6 +410,50 @@ inline void backward_pass_1(TinySolver *solver, int i) {
     matmul(solver->work->u2.data, solver->cache->Quu_inv.data, solver->work->d.col(i), 1, NINPUTS, NINPUTS);
 #endif
 }
+#endif
+
+#ifdef UNROLLED_RVV
+// p[:, i] = q[:, i] + AmBKt * p[:, i + 1] - KinfT * r[:, i]
+inline void backward_pass_2(TinySolver *solver, int i) {
+
+    vfloat32m1_t vec_a_0, vec_a_1, vec_a_2, vec_a_3;
+    vfloat32m1_t vec_k_0, vec_k_1, vec_k_2, vec_k_3;
+    vfloat32m1_t vec_b_0, vec_b_1, vec_b_2, vec_b_3;
+    vfloat32m1_t vec_s_0, vec_s_1, vec_s_2, vec_s_3, vec_s_4;
+    vfloat32m1_t vec_sum_0, vec_sum_1, vec_sum_2, vec_sum_3;
+    vfloat32m1_t vec_zero = __riscv_vfsub_vv_f32m1(vec_zero, vec_zero, NSTATES);
+
+    float *ptr_a = &solver->cache->AmBKtT.data[0][0];
+    float *ptr_k = &solver->cache->Kinf.data[0][0];
+    float *ptr_b = &solver->work->BdynT.data[0][0];
+    float *ptr_p = &solver->work->p.data[i+1][0];
+    float *ptr_p_new = &solver->work->p.data[i][0];
+    float *ptr_r = &solver->work->r.data[i][0];
+    float *ptr_q = &solver->work->q.data[i][0];
+
+    vec_s_0 = vec_zero;
+    for (int j = 0; j < NSTATES; j++) {
+        vec_a_0 = __riscv_vle32_v_f32m1(ptr_a + j * NSTATES, NSTATES);
+        vec_s_0 = __riscv_vfmacc_vf_f32m1(vec_s_0, ptr_p[j], vec_a_0, NSTATES);
+    }
+
+    vec_s_4 = vec_zero;
+    for (int j = 0; j < NINPUTS; j++) {
+        vec_k_0 = __riscv_vle32_v_f32m1(ptr_k + j * NSTATES, NSTATES);
+        vec_s_4 = __riscv_vfmacc_vf_f32m1(vec_s_4, ptr_r[j], vec_k_0, NSTATES);
+    }
+
+    vec_s_0 = __riscv_vfsub_vv_f32m1(vec_s_0, vec_s_4, NSTATES);
+    vec_s_1 = __riscv_vle32_v_f32m1(ptr_q, NSTATES);
+    vec_s_0 = __riscv_vfadd_vv_f32m1(vec_s_0, vec_s_1, NSTATES);
+    __riscv_vse32_v_f32m1(ptr_p_new, vec_s_0, NSTATES);
+
+    // matvec(solver->cache->AmBKt.data, solver->work->p.col(i + 1), solver->work->x1.data, NSTATES, NSTATES);
+    // matvec(solver->cache->KinfT.data, solver->work->r.col(i), solver->work->x2.data, NSTATES, NINPUTS);
+    // matsub(solver->work->x1.data, solver->work->x2.data, solver->work->x3.data, 1, NSTATES);
+    // matadd(solver->work->x3.data, solver->work->q.col(i), solver->work->p.col(i), 1, NSTATES);
+}
+#else
 
 // p[:, i] = q[:, i] + AmBKt * p[:, i + 1] - KinfT * r[:, i]
 inline void backward_pass_2(TinySolver *solver, int i) {
@@ -271,6 +468,53 @@ inline void backward_pass_2(TinySolver *solver, int i) {
     matadd(solver->work->x3.data, solver->work->q.col(i), solver->work->p.col(i), 1, NSTATES);
 }
 
+#endif
+
+#ifdef UNROLLED_RVV
+// y u znew  g x vnew
+inline void update_dual_1(TinySolver *solver) {
+
+    int k = (NHORIZON -1 )* NINPUTS;
+    int j = (NHORIZON)* NSTATES;
+
+    vfloat32m1_t vec_y, vec_u, vec_znew;
+    vfloat32m1_t vec_g, vec_x, vec_vnew;
+    vfloat32m1_t vec_s;
+
+    float *ptr_y = &solver->work->y.data[0][0];
+    float *ptr_u = &solver->work->u.data[0][0];
+    float *ptr_znew = &solver->work->znew.data[0][0];
+
+    float *ptr_g = &solver->work->g.data[0][0];
+    float *ptr_x = &solver->work->x.data[0][0];
+    float *ptr_vnew = &solver->work->vnew.data[0][0];
+
+    for (size_t vl; k > 0; k -= vl, ptr_y += vl, ptr_u += vl, ptr_znew += vl) {
+        vl = __riscv_vsetvl_e32(k);
+        vec_y = __riscv_vle32_v_f32(ptr_y, vl);
+        vec_u = __riscv_vle32_v_f32(ptr_u, vl);
+        vec_znew = __riscv_vle32_v_f32(ptr_znew, vl);
+        vec_s = __riscv_vfadd_vv_f32(vec_y, vec_u, vl);
+        vec_s = __riscv_vfsub_vv_f32(vec_s, vec_znew, vl);
+        __riscv_vse32_v_f32(ptr_y, vec_s, vl);
+    }
+
+    for (size_t vl; j > 0; j -= vl, ptr_y += vl, ptr_u += vl, ptr_znew += vl) {
+        vl = __riscv_vsetvl_e32(j);
+        vec_g = __riscv_vle32_v_f32(ptr_g, vl);
+        vec_x = __riscv_vle32_v_f32(ptr_x, vl);
+        vec_vnew = __riscv_vle32_v_f32(ptr_vnew, vl);
+        vec_s = __riscv_vfadd_vv_f32(vec_g, vec_x, vl);
+        vec_s = __riscv_vfsub_vv_f32(vec_s, vec_vnew, vl);
+        __riscv_vse32_v_f32(ptr_g, vec_s, vl);
+    }
+
+    // matadd(solver->work->y.data, solver->work->u.data, solver->work->m1.data, NHORIZON - 1, NINPUTS);
+    // matsub(solver->work->m1.data, solver->work->znew.data, solver->work->y.data, NHORIZON - 1, NINPUTS);
+    // matadd(solver->work->g.data, solver->work->x.data, solver->work->s1.data, NHORIZON, NSTATES);
+    // matsub(solver->work->s1.data, solver->work->vnew.data, solver->work->g.data, NHORIZON, NSTATES);
+}
+#else
 // y u znew  g x vnew
 inline void update_dual_1(TinySolver *solver) {
     matadd(solver->work->y.data, solver->work->u.data, solver->work->m1.data, NHORIZON - 1, NINPUTS);
@@ -278,7 +522,7 @@ inline void update_dual_1(TinySolver *solver) {
     matadd(solver->work->g.data, solver->work->x.data, solver->work->s1.data, NHORIZON, NSTATES);
     matsub(solver->work->s1.data, solver->work->vnew.data, solver->work->g.data, NHORIZON, NSTATES);
 }
-
+#endif
 // Box constraints on input
 inline void update_slack_1(TinySolver *solver) {
     matadd(solver->work->u.data, solver->work->y.data, solver->work->znew.data, NHORIZON - 1, NINPUTS);
@@ -302,6 +546,38 @@ inline void primal_residual_state(TinySolver *solver) {
     cwiseabs(solver->work->s1.data, solver->work->s2.data, NHORIZON, NSTATES);
     solver->work->primal_residual_state = maxcoeff(solver->work->s2.data, NHORIZON, NSTATES);
 }
+
+// inline void dual_residual_state_new(TinySolver *solver) {
+//     int k = (NHORIZON) * NSTATES;
+
+//     vfloat32m1_t vec_v, vec_vnew;
+//     vfloat32m1_t vec_s;
+
+//     // float max = std::numeric_limits<float>::min();
+//     // vfloat32m1_t vec_max = __riscv_vfmv_s_f_f32m1(max, 16);
+//     vfloat32m1_t vec_max = __riscv_vfsub_vv_f32m1(vec_max, vec_max, NSTATES);
+//     vfloat32m1_t vec_tot_max = __riscv_vfsub_vv_f32m1(vec_tot_max, vec_tot_max, NSTATES);
+
+//     float *ptr_v = &solver->work->y.data[0][0];
+//     float *ptr_vnew = &solver->work->vnew.data[0][0];
+
+
+//     for (size_t vl; k > 0; k -= vl, ptr_v += vl, ptr_vnew += vl) {
+//         vl = __riscv_vsetvl_e32(k);
+//         vec_v = __riscv_vle32_v_f32m1(ptr_v, vl);
+//         vec_vnew = __riscv_vle32_v_f32m1(ptr_vnew, vl);
+//         vec_s = __riscv_vfsub_vv_f32m1(vec_v, vec_vnew, vl);
+//         vec_s = __riscv_vfabs_v_f32m1(vec_s, vl);
+//         vec_max = __riscv_vfmax_vv_f32m1(vec_s, vec_max, vl);
+//     }
+
+//     vec_tot_max = __riscv_vfredmax_vs_f32m1_f32(vec_max, vec_tot_max, 16);
+//     solver->work->dual_residual_state = __riscv_vfmv_f_s_f32m1_f32(vec_tot_max) * solver->cache->rho;
+
+//     // matsub(solver->work->v.data, solver->work->vnew.data, solver->work->s1.data, NHORIZON, NSTATES);
+//     // cwiseabs(solver->work->s1.data, solver->work->s2.data, NHORIZON, NSTATES);
+//     // solver->work->dual_residual_state = maxcoeff(solver->work->s2.data, NHORIZON, NSTATES) * solver->cache->rho;
+// }
 
 inline void dual_residual_state(TinySolver *solver) {
     matsub(solver->work->v.data, solver->work->vnew.data, solver->work->s1.data, NHORIZON, NSTATES);

@@ -31,27 +31,6 @@ TinyWorkspace work;
 TinySettings settings;
 TinySolver solver{&settings, &cache, &work};
 
-static inline void enable_vector_operations() {
-    unsigned long mstatus;
-    
-    // Read current mstatus
-    asm volatile("csrr %0, mstatus" : "=r"(mstatus));
-    
-    // Set VS field to Dirty (11)
-    mstatus |= MSTATUS_VS | MSTATUS_FS | MSTATUS_XS;
-    
-    // Write back updated mstatus
-    asm volatile("csrw mstatus, %0" :: "r"(mstatus));
-}
-
-static uint64_t read_cycles() {
-    uint64_t cycles;
-    // asm volatile ("rdcycle %0" : "=r" (cycles));
-    asm volatile ("csrr %0, cycle" : "=r" (cycles));
-    return cycles;
-}
-
-
 int main()
 {
     // General state temporary variables
@@ -140,7 +119,8 @@ for (i = 0; i < NUM_PERF_TESTS; i++) {
     end = read_cycles();
     total += end - start;
 }
-printf("forward_pass_1: %lu\n", total / NUM_PERF_TESTS);
+// printf("forward_pass_1: %lu\n", total / NUM_PERF_TESTS);
+printf("%lu\n", total / NUM_PERF_TESTS);
 
 // Testing forward_pass_2
 total = 0;
@@ -150,7 +130,8 @@ for (i = 0; i < NUM_PERF_TESTS; i++) {
     end = read_cycles();
     total += end - start;
 }
-printf("forward_pass_2: %lu\n", total / NUM_PERF_TESTS);
+// printf("forward_pass_2: %lu\n", total / NUM_PERF_TESTS);
+printf("%lu\n", total / NUM_PERF_TESTS);
 
 // Testing backward_pass_1
 total = 0;
@@ -160,7 +141,8 @@ for (i = 0; i < NUM_PERF_TESTS; i++) {
     end = read_cycles();
     total += end - start;
 }
-printf("backward_pass_1: %lu\n", total / NUM_PERF_TESTS);
+// printf("backward_pass_1: %lu\n", total / NUM_PERF_TESTS);
+printf("%lu\n", total / NUM_PERF_TESTS);
 
 // Testing backward_pass_2
 total = 0;
@@ -170,7 +152,8 @@ for (i = 0; i < NUM_PERF_TESTS; i++) {
     end = read_cycles();
     total += end - start;
 }
-printf("backward_pass_2: %lu\n", total / NUM_PERF_TESTS);
+// printf("backward_pass_2: %lu\n", total / NUM_PERF_TESTS);
+printf("%lu\n", total / NUM_PERF_TESTS);
 
 // Testing update_dual_1
 total = 0;
@@ -180,7 +163,8 @@ for (i = 0; i < NUM_PERF_TESTS; i++) {
     end = read_cycles();
     total += end - start;
 }
-printf("update_dual_1: %lu\n", total / NUM_PERF_TESTS);
+// printf("update_dual_1: %lu\n", total / NUM_PERF_TESTS);
+printf("%lu\n", total / NUM_PERF_TESTS);
 
 // Testing update_slack_1
 total = 0;
@@ -190,7 +174,8 @@ for (i = 0; i < NUM_PERF_TESTS; i++) {
     end = read_cycles();
     total += end - start;
 }
-printf("update_slack_1: %lu\n", total / NUM_PERF_TESTS);
+// printf("update_slack_1: %lu\n", total / NUM_PERF_TESTS);
+printf("%lu\n", total / NUM_PERF_TESTS);
 
 // Testing update_slack_2
 total = 0;
@@ -200,7 +185,8 @@ for (i = 0; i < NUM_PERF_TESTS; i++) {
     end = read_cycles();
     total += end - start;
 }
-printf("update_slack_2: %lu\n", total / NUM_PERF_TESTS);
+// printf("update_slack_2: %lu\n", total / NUM_PERF_TESTS);
+printf("%lu\n", total / NUM_PERF_TESTS);
 
 // Testing primal_residual_state
 total = 0;
@@ -210,7 +196,8 @@ for (i = 0; i < NUM_PERF_TESTS; i++) {
     end = read_cycles();
     total += end - start;
 }
-printf("primal_residual_state: %lu\n", total / NUM_PERF_TESTS);
+// printf("primal_residual_state: %lu\n", total / NUM_PERF_TESTS);
+printf("%lu\n", total / NUM_PERF_TESTS);
 
 // Testing dual_residual_state
 total = 0;
@@ -220,7 +207,8 @@ for (i = 0; i < NUM_PERF_TESTS; i++) {
     end = read_cycles();
     total += end - start;
 }
-printf("dual_residual_state: %lu\n", total / NUM_PERF_TESTS);
+// printf("dual_residual_state: %lu\n", total / NUM_PERF_TESTS);
+printf("%lu\n", total / NUM_PERF_TESTS);
 
 // Testing primal_residual_input
 total = 0;
@@ -230,7 +218,8 @@ for (i = 0; i < NUM_PERF_TESTS; i++) {
     end = read_cycles();
     total += end - start;
 }
-printf("primal_residual_input: %lu\n", total / NUM_PERF_TESTS);
+// printf("primal_residual_input: %lu\n", total / NUM_PERF_TESTS);
+printf("%lu\n", total / NUM_PERF_TESTS);
 
 // Testing dual_residual_input
 total = 0;
@@ -240,7 +229,8 @@ for (i = 0; i < NUM_PERF_TESTS; i++) {
     end = read_cycles();
     total += end - start;
 }
-printf("dual_residual_input: %lu\n", total / NUM_PERF_TESTS);
+// printf("dual_residual_input: %lu\n", total / NUM_PERF_TESTS);
+printf("%lu\n", total / NUM_PERF_TESTS);
 
 // Testing update_linear_cost_1
 total = 0;
@@ -250,7 +240,8 @@ for (i = 0; i < NUM_PERF_TESTS; i++) {
     end = read_cycles();
     total += end - start;
 }
-printf("update_linear_cost_1: %lu\n", total / NUM_PERF_TESTS);
+// printf("update_linear_cost_1: %lu\n", total / NUM_PERF_TESTS);
+printf("%lu\n", total / NUM_PERF_TESTS);
 
 // Testing update_linear_cost_2
 total = 0;
@@ -260,7 +251,8 @@ for (i = 0; i < NUM_PERF_TESTS; i++) {
     end = read_cycles();
     total += end - start;
 }
-printf("update_linear_cost_2: %lu\n", total / NUM_PERF_TESTS);
+// printf("update_linear_cost_2: %lu\n", total / NUM_PERF_TESTS);
+printf("%lu\n", total / NUM_PERF_TESTS);
 
 // Testing update_linear_cost_3
 total = 0;
@@ -270,7 +262,8 @@ for (i = 0; i < NUM_PERF_TESTS; i++) {
     end = read_cycles();
     total += end - start;
 }
-printf("update_linear_cost_3: %lu\n", total / NUM_PERF_TESTS);
+// printf("update_linear_cost_3: %lu\n", total / NUM_PERF_TESTS);
+printf("%lu\n", total / NUM_PERF_TESTS);
 
 // Testing update_linear_cost_4
 total = 0;
@@ -280,7 +273,8 @@ for (i = 0; i < NUM_PERF_TESTS; i++) {
     end = read_cycles();
     total += end - start;
 }
-printf("update_linear_cost_4: %lu\n", total / NUM_PERF_TESTS);
+// printf("update_linear_cost_4: %lu\n", total / NUM_PERF_TESTS);
+printf("%lu\n", total / NUM_PERF_TESTS);
 
 
     
