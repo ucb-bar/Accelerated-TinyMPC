@@ -302,10 +302,9 @@ inline void matset_rvv(float *ptr_a, float f, int n, int m) {
 
 inline void matsetv_rvv(float *ptr_a, float *f, int n, int m) {
     int k = m * n, l = 0;
-    float *ptr_f = f;
     for (size_t vl; k > 0; k -= vl, l += vl) {
         vl = __riscv_vsetvl_e32(k);
-        vfloat32_t vec_f = __riscv_vle32_v_f32(ptr_f + l, vl);;
+        vfloat32_t vec_f = __riscv_vle32_v_f32(f + l, vl);;
         __riscv_vse32_v_f32(ptr_a + l, vec_f, vl);
     }
 }

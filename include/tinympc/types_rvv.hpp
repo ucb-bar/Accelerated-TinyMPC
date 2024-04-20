@@ -36,7 +36,8 @@ template<typename Scalar_, int Rows_, int Cols_,
 > class Matrix {
 
 public:
-    Scalar_ data[MaxRows_ * MaxCols_];
+    Scalar_ _data[MaxRows_ * MaxCols_];
+    Scalar_ *data;
     Scalar_ *vector[Options_ & RowMajor ? Rows_ : Cols_];
     Scalar_ **array;
     int rows, cols, outer, inner;
@@ -51,9 +52,10 @@ public:
             outer = cols_;
             inner = rows_;
         }
+        data = _data;
         array = &vector[0];
         for (int i = 0; i < outer; ++i)
-            array[i] = (Scalar_ *)(&data[i * inner]);
+            array[i] = (Scalar_ *)(&_data[i * inner]);
     }
 
     // Constructor
@@ -148,7 +150,7 @@ public:
     }
 
     virtual void toString() {
-        printf("const array: %x rows: %d cols: %d outer: %d inner: %d (%d, %d)\n", array, rows, cols, outer, inner, Rows_, Cols_);
+        printf("const array: %x rows: %d cols: %d outer: %d inner: %d (%d, %d)\n", data, rows, cols, outer, inner, Rows_, Cols_);
     }
 };
 

@@ -5,7 +5,6 @@
 // - tinytype = float if you want to run on microcontrollers
 // States: x (m), y, z, phi, theta, psi, dx, dy, dz, dphi, dtheta, dpsi
 // Inputs: u1, u2, u3, u4 (motor thrust 0-1, order from Crazyflie)
-
 // phi, theta, psi are NOT Euler angles, they are Rodiguez parameters
 // check this paper for more details: https://roboticexplorationlab.org/papers/planning_with_attitude.pdf
 
@@ -105,13 +104,13 @@ int main()
 
         // 5. Simulate forward
         // calculate x1 = work.Adyn * x0 + work.Bdyn * work.u.col(0);
-#ifdef USE_MATVEC
+        #ifdef USE_MATVEC
         matvec(work.Adyn.data, x0.data, v1.data, NSTATES, NSTATES);
-        matvec(work.Bdyn.data, work.u.col(0), v2.data, NINPUTS, NSTATES);
-#else
+        matvec(work.Bdyn.data, work.u.col(0), v2.data, NSTATES, NINPUTS);
+        #else
         matmul(x0.data, work.Adyn.data, v1.data, 1, NSTATES, NSTATES);
         matmul(work.u.col(0), work.Bdyn.data, v2.data, 1, NSTATES, NINPUTS);
-#endif
+        #endif
         matadd(v1.data, v2.data, x0.data, 1, NSTATES);
 
         printf("%d,", k);

@@ -5,7 +5,6 @@
 // - tinytype = float if you want to run on microcontrollers
 // States: x (m), y, z, phi, theta, psi, dx, dy, dz, dphi, dtheta, dpsi
 // Inputs: u1, u2, u3, u4 (motor thrust 0-1, order from Crazyflie)
-
 // phi, theta, psi are NOT Euler angles, they are Rodiguez parameters
 // check this paper for more details: https://roboticexplorationlab.org/papers/planning_with_attitude.pdf
 
@@ -72,16 +71,22 @@ int main()
     tiny_VectorNx Xref_origin;
     Matrix<tinytype, NSTATES, NTOTAL> Xref_total;
     Xref_total.set(Xref_data);
+    work.Xref.set(Xref_total.data);
+    TRACE_CHECKSUM(init_xref_total, Xref_total);
 
     // current and next simulation states
     tiny_VectorNx x0, x1;
     x0.set(Xref_data);
+    TRACE_CHECKSUM(init_x0, x0);
 
     for (int k = 0; k < 10; ++k) {
 
         // Print states array to CSV file
         // calculate the value of (x0 - work.Xref.col(1)).norm()
         matsub(x0.data, work.Xref.col(1), v1.data, 1, NSTATES);
+        TRACE_CHECKSUM(main_loop_x0, x0);
+        TRACE_CHECKSUM(main_loop_xref, work.Xref);
+        TRACE_CHECKSUM(main_loop_v1, v1);
         float norm = matnorm(v1.data, 1, NSTATES);
         printf("Tracking error: %0.7f\n", norm);
 
@@ -90,7 +95,7 @@ int main()
         matsetv(work.x.col(0), x0.data, 1, NSTATES);
 
         // 2. Update reference (if needed)
-        work.Xref.set(&(Xref_data[k*NSTATES]));
+        work.Xref.set(Xref_total.data + k * NSTATES);
 
         // 3. Reset dual variables (if needed)
         work.y = 0.0;
@@ -104,15 +109,19 @@ int main()
 
         // 5. Simulate forward
         // calculate x1 = work.Adyn * x0 + work.Bdyn * work.u.col(0);
-#ifdef USE_MATVEC
+        #ifdef USE_MATVEC
         matvec(work.Adyn.data, x0.data, v1.data, NSTATES, NSTATES);
-        matvec(work.Bdyn.data, work.u.col(0), v2.data, NINPUTS, NSTATES);
-#else
+        matvec(work.Bdyn.data, work.u.col(0), v2.data, NSTATES, NINPUTS);
+        #else
         matmul(x0.data, work.Adyn.data, v1.data, 1, NSTATES, NSTATES);
         matmul(work.u.col(0), work.Bdyn.data, v2.data, 1, NSTATES, NINPUTS);
-#endif
-        matadd(v1.data, v2.data, x0.data, 1, NSTATES);
+        #endif
 
+        matadd(v1.data, v2.data, x0.data, 1, NSTATES);
+        TRACE_CHECKSUM(main_loop_u_0, work.u);
+        TRACE_CHECKSUM(main_loop_v1, v1);
+        TRACE_CHECKSUM(main_loop_v2, v2);
+        TRACE_CHECKSUM(main_loop_x0, x0);
     }
 }
 
