@@ -27,7 +27,6 @@ void matcopy_cpu(const float *a, float *b, int n, int m);
 void matset_cpu(float *a, float f, int n, int m);
 void matsetv_cpu(float *a, float *f, int n, int m);
 
-#ifdef USE_CPU
 #define maxcoeff maxcoeff_cpu
 #define mincoeff mincoeff_cpu
 #define matnorm matnorm_cpu
@@ -46,7 +45,6 @@ void matsetv_cpu(float *a, float *f, int n, int m);
 #define matcopy matcopy_cpu
 #define matset matset_cpu
 #define matsetv matsetv_cpu
-#endif
 
 }
 
