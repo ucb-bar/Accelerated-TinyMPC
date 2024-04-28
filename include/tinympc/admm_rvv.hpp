@@ -7,10 +7,11 @@
 #define TINYMPC_ADMM_RVV_HPP
 
 #include "types_rvv.hpp"
+#include "Gemmini/gemmini.h"
 
-#ifndef USE_MATVEC
-#define USE_MATVEC 1
-#endif
+// #ifndef USE_MATVEC
+// #define USE_MATVEC 1
+// #endif
 
 extern "C" {
 
@@ -30,18 +31,57 @@ std::ofstream outputFile("cycle_output.csv");
 #define CYCLE_CNT_WRAPPER(func, arg, name) func(arg)
 #endif
 
+#ifdef USE_GEMMINI
+void mvin_matrix(tinytype * data, spad_ptr_t spad_addr, int rows, int cols);
+void mvin_vector(tinytype * data, spad_ptr_t spad_addr, int size);
+#endif
+
 // u1 = x[:, i] * Kinf; u2 = u1 + d; u[:, i] = -u2
 inline void forward_pass_1(TinySolver *solver, int i) {
 #ifdef USE_MATVEC
     matvec(solver->cache->Kinf.data, solver->work->x.col(i), solver->work->u1.data, NINPUTS, NSTATES);
 #else
-    matmul(solver->work->x.col(i), solver->cache->Kinf.array, solver->work->u1.array, 1, NINPUTS, NSTATES);
+    
+#ifdef USE_GEMMINI
+    gemmini_extended_config_ex(OUTPUT_STATIONARY, 0, 0, 1, false, false);
+    gemmini_config_st(4);
+    // TODO REMOVE MVIN
+    gemmini_extended3_config_ld(4, 1.0, false, 1);
+    gemmini_extended_mvin2(solver->work->x.col(i), x_spad + i*NSTATES, 1, NSTATES);
+    gemmini_extended_preload(GARBAGE_ADDR, u_spad + i*NINPUTS, 1, 4, 1, 4);
+    gemmini_compute_preloaded(Kinf_spad, x_spad + i*NSTATES);
+    gemmini_compute_accumulated(Kinf_spad+DIM, x_spad+i*NSTATES+DIM);
+    gemmini_compute_accumulated(Kinf_spad+2*DIM, x_spad+i*NSTATES+2*DIM);
+    // for(int i = 0; i < NINPUTS; i++) {
+    //     printf("u1[%d]: %0.5f\n", i, solver->work->u1.data[i]);
+    // }
+
+#else
+    matmul(solver->work->x.col(i), solver->cache->Kinf.data, solver->work->u1.data, 1, NINPUTS, NSTATES);
 #endif
+#endif
+#ifdef USE_GEMMINI
+
+    // TODO REMOVE MVIN
+    // gemmini_extended_mvout(solver->work->u1.data, u_spad + i*NINPUTS, 1, 4);
+    // gemmini_fence();
+    gemmini_extended3_config_ld(4, 1.0, false, 1);
+    gemmini_extended_mvin2(solver->work->d.col(i), d_spad + i*NSTATES, 1, NSTATES);
+    gemmini_compute_accumulated(I_spad, d_spad + i*NSTATES);
+    gemmini_compute_preloaded(nI_spad, u_spad + i*NINPUTS);
+    gemmini_extended_mvout(solver->work->u.col(i), u_spad + i*NINPUTS, 1, 4);
+    gemmini_fence();
+
+    // TRACE_CHECKSUM(forward_pass_1, solver->work->u1);
+    // matneg(solver->work->u2.data, solver->work->u.col(i), 1, NINPUTS);
+    // TRACE_CHECKSUM(forward_pass_1, solver->work->u);
+#else
     TRACE_CHECKSUM(forward_pass_1, solver->work->u1);
     matadd(solver->work->u1.data, solver->work->d.col(i), solver->work->u2.data, 1, NINPUTS);
     TRACE_CHECKSUM(forward_pass_1, solver->work->u2);
     matneg(solver->work->u2.data, solver->work->u.col(i), 1, NINPUTS);
     TRACE_CHECKSUM(forward_pass_1, solver->work->u);
+#endif
 }
 
 // x[:, i+1] = Adyn * x[:, i] + Bdyn * u[:, i]
@@ -239,9 +279,12 @@ inline void update_linear_cost(TinySolver *solver)
     update_linear_cost_4(solver);
 }
 
-inline void tiny_init(TinySolver *solver) {
+void tiny_init(TinySolver *solver);
 
-}
+
+// inline void tiny_init(TinySolver *solver) {
+
+// }
 
 };
 #endif //TINYMPC_ADMM_RVV_HPP

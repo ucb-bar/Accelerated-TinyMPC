@@ -114,6 +114,9 @@
 #ifdef USE_RVV
 #include "matlib_rvv.h"
 #endif
+#ifdef USE_GEMMINI
+#include "matlib_gemmini.h"
+#endif
 
 extern "C" {
 
@@ -252,7 +255,7 @@ inline void init_array_one_1d(float *ar, int n) {
         ar[i] = 1;
 }
 
-#if defined(USE_RVV) || defined(USE_CPU)
+#if defined(USE_RVV) || defined(USE_CPU) || defined(USE_GEMMINI)
 
 inline void gen_rand_2d(float *ar, int n, int m) {
     for (int i = 0; i < m * n; ++i)

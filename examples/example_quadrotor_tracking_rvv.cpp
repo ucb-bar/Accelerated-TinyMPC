@@ -79,6 +79,8 @@ int main()
     x0.set(Xref_data);
     TRACE_CHECKSUM(init_x0, x0);
 
+    tiny_init(&solver);
+
     for (int k = 0; k < 10; ++k) {
 
         // Print states array to CSV file
@@ -93,13 +95,23 @@ int main()
         // 1. Update measurement
         // an alternative method is to use work.x.setCol(x0.data[0], 0);
         matsetv(work.x.col(0), x0.data, 1, NSTATES);
+        #ifdef USE_GEMMINI
+        mvin_vector(work.x.data, x_spad, NSTATES);
+        #endif
 
         // 2. Update reference (if needed)
         work.Xref.set(Xref_total.data + k * NSTATES);
+        #ifdef USE_GEMMINI
+        mvin_vector(work.Xref.data, Xref_spad, NSTATES * NHORIZON);
+        #endif
 
         // 3. Reset dual variables (if needed)
         work.y = 0.0;
         work.g = 0.0;
+        #ifdef USE_GEMMINI
+        mvin_vector(work.y.data, y_spad, NINPUTS * (NHORIZON-1));
+        mvin_vector(work.g.data, g_spad, NSTATES * NHORIZON);
+        #endif
 
         // 4. Solve MPC problem
         start = read_cycles();

@@ -78,7 +78,7 @@ public:
         matsetv(this->data, data, outer, inner);
     }
 
-#if defined(USE_RVV) || defined(USE_CPU)
+#if defined(USE_RVV) || defined(USE_CPU) || defined(USE_GEMMINI)
     // Column if ColMajor
     Scalar_ *col(int col) {
         assert(!(Options_ & RowMajor));
@@ -170,6 +170,53 @@ typedef Matrix<tinytype, NINPUTS, NHORIZON - 1> tiny_MatrixNuNhm1; // Nu x Nh-1
 /**
  * Matrices that must be recomputed with changes in time step, rho
  */
+
+#ifdef USE_GEMMINI
+typedef uint32_t spad_ptr_t;
+#define SPAD_ROWS(A) (((A) + (DIM) - 1) / (DIM))
+#define SPAD_VEC_ROWS(A) (A)
+
+const static spad_ptr_t cache_base_ptr = 0;
+const static spad_ptr_t I_spad = cache_base_ptr;
+const static spad_ptr_t nI_spad = I_spad + DIM;
+const static spad_ptr_t Kinf_spad = nI_spad + DIM;
+const static spad_ptr_t KinfT_spad = Kinf_spad + SPAD_ROWS(NINPUTS * NSTATES);
+const static spad_ptr_t Pinf_spad = KinfT_spad + SPAD_ROWS(NINPUTS * NSTATES);
+const static spad_ptr_t PinfT_spad = Pinf_spad + SPAD_ROWS(NSTATES * NSTATES);
+const static spad_ptr_t Quu_inv_spad = PinfT_spad + SPAD_ROWS(NSTATES * NSTATES);
+const static spad_ptr_t AmBKt_spad = Quu_inv_spad + SPAD_ROWS(NINPUTS * NINPUTS);
+const static spad_ptr_t coeff_d2p_spad = AmBKt_spad + SPAD_ROWS(NSTATES * NSTATES);
+const static spad_ptr_t Q_spad = coeff_d2p_spad + SPAD_ROWS(NSTATES * NINPUTS);
+const static spad_ptr_t Qf_spad = Q_spad + SPAD_ROWS(NSTATES);
+const static spad_ptr_t R_spad = Qf_spad + SPAD_ROWS(NSTATES);
+const static spad_ptr_t Adyn_spad = R_spad + SPAD_ROWS(NINPUTS);
+const static spad_ptr_t AdynT_spad = Adyn_spad + SPAD_ROWS(NSTATES * NSTATES);
+const static spad_ptr_t Bdyn_spad = AdynT_spad + SPAD_ROWS(NSTATES * NSTATES);
+const static spad_ptr_t BdynT_spad = Bdyn_spad + SPAD_ROWS(NSTATES * NINPUTS);
+
+const static spad_ptr_t work_base_ptr = BANK_ROWS;
+const static spad_ptr_t x_spad = work_base_ptr;
+const static spad_ptr_t u_spad = x_spad + SPAD_VEC_ROWS(NSTATES * NHORIZON);
+const static spad_ptr_t q_spad = u_spad + SPAD_VEC_ROWS(NINPUTS * (NHORIZON-1));
+const static spad_ptr_t r_spad = q_spad + SPAD_VEC_ROWS(NSTATES * NHORIZON);
+const static spad_ptr_t p_spad = r_spad + SPAD_VEC_ROWS(NINPUTS * (NHORIZON-1));
+const static spad_ptr_t d_spad = p_spad + SPAD_VEC_ROWS(NSTATES * NHORIZON);
+const static spad_ptr_t v_spad = d_spad + SPAD_VEC_ROWS(NINPUTS * (NHORIZON-1));
+const static spad_ptr_t vnew_spad = v_spad + SPAD_VEC_ROWS(NSTATES * NHORIZON);
+const static spad_ptr_t z_spad = vnew_spad + SPAD_VEC_ROWS(NSTATES * NHORIZON);
+const static spad_ptr_t znew_spad = z_spad + SPAD_VEC_ROWS(NINPUTS * (NHORIZON-1));
+const static spad_ptr_t g_spad = znew_spad + SPAD_VEC_ROWS(NINPUTS * (NHORIZON-1));
+const static spad_ptr_t y_spad = g_spad + SPAD_VEC_ROWS(NSTATES * NHORIZON);
+const static spad_ptr_t u_min_spad = y_spad + SPAD_VEC_ROWS(NINPUTS * (NHORIZON-1));
+const static spad_ptr_t u_max_spad = u_min_spad + SPAD_VEC_ROWS(NINPUTS * (NHORIZON-1));
+const static spad_ptr_t x_min_spad = u_max_spad + SPAD_VEC_ROWS(NINPUTS * (NHORIZON-1));
+const static spad_ptr_t x_max_spad = x_min_spad + SPAD_VEC_ROWS(NSTATES * NHORIZON);
+const static spad_ptr_t Xref_spad = x_max_spad + SPAD_VEC_ROWS(NSTATES * NHORIZON);
+const static spad_ptr_t Uref_spad = Xref_spad + SPAD_VEC_ROWS(NSTATES * NHORIZON);
+
+const static spad_ptr_t temp_spad = 2*BANK_ROWS;
+#endif
+
 typedef struct
 {
     tinytype rho;
