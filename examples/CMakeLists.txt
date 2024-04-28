@@ -1,8 +1,8 @@
 if(USE_GEMMINI)
-    add_executable(example_quadrotor_hovering example_quadrotor_hovering.cpp)
-    target_link_libraries(example_quadrotor_hovering LINK_PUBLIC tinympc)
-    add_executable(example_quadrotor_tracking example_quadrotor_tracking.cpp)
-    target_link_libraries(example_quadrotor_tracking LINK_PUBLIC tinympc)
+    add_executable(example_quadrotor_hovering_gemmini example_quadrotor_hovering_rvv.cpp)
+    target_link_libraries(example_quadrotor_hovering_gemmini LINK_PUBLIC tinympc matlib)
+    add_executable(example_quadrotor_tracking_gemmini example_quadrotor_tracking_rvv.cpp)
+    target_link_libraries(example_quadrotor_tracking_gemmini LINK_PUBLIC tinympc matlib)
 endif(USE_GEMMINI)
 
 if(USE_RVV)
