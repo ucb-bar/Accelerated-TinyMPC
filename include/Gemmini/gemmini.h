@@ -68,7 +68,7 @@
 #define SOFTMAX 4
 
 #ifdef ELEM_T_IS_FLOAT
-elem_t elem_t_bits_to_elem_t(elem_t_bits x) {
+static elem_t elem_t_bits_to_elem_t(elem_t_bits x) {
     union {
         elem_t_bits b;
         elem_t f;
@@ -78,7 +78,7 @@ elem_t elem_t_bits_to_elem_t(elem_t_bits x) {
     return un.f;
 }
 
-elem_t_bits elem_t_to_elem_t_bits(elem_t x) {
+static elem_t_bits elem_t_to_elem_t_bits(elem_t x) {
     union {
         elem_t_bits b;
         elem_t f;
@@ -88,7 +88,7 @@ elem_t_bits elem_t_to_elem_t_bits(elem_t x) {
     return un.b;
 }
 
-acc_t acc_t_bits_to_acc_t(acc_t_bits x) {
+static acc_t acc_t_bits_to_acc_t(acc_t_bits x) {
     union {
         acc_t_bits b;
         acc_t f;
@@ -98,7 +98,7 @@ acc_t acc_t_bits_to_acc_t(acc_t_bits x) {
     return un.f;
 }
 
-acc_t_bits acc_t_to_acc_t_bits(acc_t x) {
+static acc_t_bits acc_t_to_acc_t_bits(acc_t x) {
     union {
         acc_t_bits b;
         acc_t f;
@@ -108,7 +108,7 @@ acc_t_bits acc_t_to_acc_t_bits(acc_t x) {
     return un.b;
 }
 
-bool elem_t_isnan(elem_t x) {
+static bool elem_t_isnan(elem_t x) {
     elem_t_bits bits = elem_t_to_elem_t_bits(x);
     uint64_t exp = (bits >> (ELEM_T_SIG_BITS-1)) & (((uint64_t)1 << ELEM_T_EXP_BITS) - 1);
     uint64_t sig = bits & (((uint64_t)1 << ELEM_T_SIG_BITS) - 1);
@@ -117,7 +117,7 @@ bool elem_t_isnan(elem_t x) {
     return is_nan_or_inf && is_not_inf;
 }
 
-bool acc_t_isnan(acc_t x) {
+static bool acc_t_isnan(acc_t x) {
     acc_t_bits bits = acc_t_to_acc_t_bits(x);
     uint64_t exp = (bits >> (ACC_T_SIG_BITS-1)) & (((uint64_t)1 << ACC_T_EXP_BITS) - 1);
     uint64_t sig = bits & (((uint64_t)1 << ACC_T_SIG_BITS) - 1);
@@ -341,7 +341,7 @@ static void counter_reset() {
   gemmini_counter_access(placeholder, config_reg);
 }
 
-int ceil_divide_int(int a, int b){
+static int ceil_divide_int(int a, int b){
     int c = (a % b == 0) ? ((int)(a/b)) :(((int)(a/b)) + 1); 
     if(a < b) c = 1;
     return c;
