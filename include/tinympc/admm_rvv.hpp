@@ -89,11 +89,32 @@ inline void forward_pass_2(TinySolver *solver, int i) {
 #ifdef USE_MATVEC
     matvec(solver->work->Adyn.data, solver->work->x.col(i), solver->work->x1.data, NSTATES, NSTATES);
     matvec(solver->work->Bdyn.data, solver->work->u.col(i), solver->work->x2.data, NSTATES, NINPUTS);
+    matadd(solver->work->x1.data, solver->work->x2.data, solver->work->x.col(i + 1), 1, NSTATES);
+#else
+#ifdef USE_GEMMINI
+    gemmini_extended_config_ex(OUTPUT_STATIONARY, 0, 0, 1, false, false);
+    gemmini_config_st(4);
+    gemmini_extended3_config_ld(4, 1.0, false, 1);
+    gemmini_extended_mvin2(solver->work->x.col(i), x_spad + i*NSTATES, 1, NSTATES);
+    gemmini_extended_mvin2(solver->work->u.col(i), u_spad + i*NINPUTS, 1, NINPUTS);
+
+    for(size_t j = 0; j < NSTATES/DIM; j++){
+        gemmini_extended_preload(GARBAGE_ADDR, x_spad + (i+1)*NSTATES + j*DIM, 1, 4, 1, 4);
+        gemmini_compute_preloaded  (Adyn_spad + 0*NSTATES + j*DIM,         x_spad + i*NSTATES);
+        gemmini_compute_accumulated(Adyn_spad + 1*NSTATES + j*DIM,   x_spad + i*NSTATES + 1*DIM);
+        gemmini_compute_accumulated(Adyn_spad + 2*NSTATES + j*DIM, x_spad + i*NSTATES + 2*DIM);
+
+        gemmini_compute_accumulated(Bdyn_spad + j*DIM, u_spad + i*NINPUTS);
+        gemmini_extended_mvout(solver->work->x.col(i+1) + j*DIM, x_spad + (i+1)*NSTATES + j*DIM, 1, 4);
+    }
+    gemmini_fence();
+
 #else
     matmul(solver->work->x.col(i), solver->work->Adyn.data, solver->work->x1.data, 1, NSTATES, NSTATES);
     matmul(solver->work->u.col(i), solver->work->Bdyn.data, solver->work->x2.data, 1, NSTATES, NINPUTS);
-#endif
     matadd(solver->work->x1.data, solver->work->x2.data, solver->work->x.col(i + 1), 1, NSTATES);
+#endif
+#endif
     TRACE_CHECKSUM(forward_pass_2, solver->work->x);
 }
 
@@ -104,9 +125,31 @@ inline void backward_pass_1(TinySolver *solver, int i) {
     matadd(solver->work->r.col(i), solver->work->u1.data, solver->work->u2.data, 1, NINPUTS);
     matvec(solver->cache->Quu_inv.data, solver->work->u2.data, solver->work->d.col(i), NINPUTS, NINPUTS);
 #else
+#ifdef USE_GEMMINI
+    gemmini_extended_config_ex(OUTPUT_STATIONARY, 0, 0, 1, false, false);
+    gemmini_config_st(4);
+    gemmini_extended3_config_ld(4, 1.0, false, 1);
+    gemmini_extended_mvin2(solver->work->p.col(i+1), p_spad + (i+1)*NSTATES, 1, NSTATES);
+    gemmini_extended_mvin2(solver->work->r.col(i), r_spad + i*NINPUTS, 1, NINPUTS);
+
+    gemmini_extended_preload(GARBAGE_ADDR, d_spad + i*NINPUTS, 1, 4, 1, 4);
+    gemmini_compute_preloaded(BdynT_spad, p_spad + (i+1)*NSTATES);
+    gemmini_compute_accumulated(BdynT_spad+DIM, p_spad+(i+1)*NSTATES+DIM);
+    gemmini_compute_accumulated(BdynT_spad+2*DIM, p_spad+(i+1)*NSTATES+2*DIM);
+
+
+    gemmini_compute_accumulated(I_spad, r_spad+i*NINPUTS);
+
+    gemmini_compute_preloaded(Quu_inv_spad, d_spad+i*NINPUTS);
+
+    gemmini_extended_mvout(solver->work->d.col(i), d_spad + i*NINPUTS, 1, 4);
+    gemmini_fence();
+#else
     matmul(solver->work->p.col(i + 1), solver->work->BdynT.data, solver->work->u1.data, 1, NINPUTS, NSTATES);
     matadd(solver->work->r.col(i), solver->work->u1.data, solver->work->u2.data, 1, NINPUTS);
     matmul(solver->work->u2.data, solver->cache->Quu_inv.data, solver->work->d.col(i), 1, NINPUTS, NINPUTS);
+
+#endif
 #endif
     TRACE_CHECKSUM(backward_pass_1, solver->work->d);
 }
@@ -116,13 +159,43 @@ inline void backward_pass_2(TinySolver *solver, int i) {
 #ifdef USE_MATVEC
     matvec(solver->cache->AmBKt.data, solver->work->p.col(i + 1), solver->work->x1.data, NSTATES, NSTATES);
     matvec(solver->cache->KinfT.data, solver->work->r.col(i), solver->work->x2.data, NSTATES, NINPUTS);
-#else
-    matmul(solver->work->p.col(i + 1), solver->cache->AmBKt.data, solver->work->x1.data, 1, NSTATES, NSTATES);
-    matmul(solver->work->r.col(i), solver->cache->KinfT.data, solver->work->x2.data, 1, NSTATES, NINPUTS);
-#endif
     matsub(solver->work->x1.data, solver->work->x2.data, solver->work->x3.data, 1, NSTATES);
     matadd(solver->work->x3.data, solver->work->q.col(i), solver->work->p.col(i), 1, NSTATES);
     TRACE_CHECKSUM(backward_pass_2, solver->work->p);
+#else
+    #ifdef USE_GEMMINI
+    gemmini_extended_config_ex(OUTPUT_STATIONARY, 0, 0, 1, false, false);
+    gemmini_config_st(4);
+    gemmini_extended3_config_ld(4, 1.0, false, 1);
+    gemmini_extended_mvin2(solver->work->p.col(i+1), p_spad + (i+1)*NSTATES, 1, NSTATES);
+    gemmini_extended_mvin2(solver->work->q.col(i), q_spad + i*NSTATES, 1, NSTATES);
+    gemmini_extended_mvin2(solver->work->r.col(i), r_spad + i*NINPUTS, 1, NINPUTS);
+
+    for(size_t j = 0; j < NSTATES/DIM; j++){
+        gemmini_extended_preload(GARBAGE_ADDR, p_spad + (i)*NSTATES + j*DIM, 1, 4, 1, 4);
+        gemmini_compute_preloaded(KinfT_spad + j*DIM, r_spad + i*NINPUTS);
+        gemmini_compute_preloaded(nI_spad, p_spad + i*NSTATES + j*DIM);
+        // gemmini_extended_mvout(solver->work->x2.data + j*DIM, p_spad + i*NSTATES + j*DIM, 1, 4);
+
+        gemmini_compute_accumulated(AmBKt_spad + 0*NSTATES + j*DIM,   p_spad + (i+1)*NSTATES);
+        gemmini_compute_accumulated(AmBKt_spad + 1*NSTATES + j*DIM,   p_spad + (i+1)*NSTATES + 1*DIM);
+        gemmini_compute_accumulated(AmBKt_spad + 2*NSTATES + j*DIM,   p_spad + (i+1)*NSTATES + 2*DIM);
+        // gemmini_extended_mvout(solver->work->x3.data + j*DIM, p_spad + i*NSTATES + j*DIM, 1, 4);
+
+        gemmini_compute_accumulated(I_spad, q_spad + i*NSTATES + j*DIM);
+        gemmini_extended_mvout(solver->work->p.col(i) + j*DIM, p_spad + i*NSTATES + j*DIM, 1, 4);
+
+    }
+    gemmini_fence();
+
+    #else
+    matmul(solver->work->p.col(i + 1), solver->cache->AmBKt.data, solver->work->x1.data, 1, NSTATES, NSTATES);
+    matmul(solver->work->r.col(i), solver->cache->KinfT.data, solver->work->x2.data, 1, NSTATES, NINPUTS);
+    matsub(solver->work->x1.data, solver->work->x2.data, solver->work->x3.data, 1, NSTATES);
+    matadd(solver->work->x3.data, solver->work->q.col(i), solver->work->p.col(i), 1, NSTATES);
+    TRACE_CHECKSUM(backward_pass_2, solver->work->p);
+    #endif
+#endif
 }
 
 // y u znew  g x vnew
@@ -264,6 +337,7 @@ inline void update_dual(TinySolver *solver)
 {
     update_dual_1(solver);
 }
+
 
 /**
  * Update linear control cost terms in the Riccati feedback using

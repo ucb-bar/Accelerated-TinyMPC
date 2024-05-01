@@ -64,6 +64,7 @@ extern "C"
         mvin_matrix((tinytype *) nI, nI_spad, DIM, DIM);
         
         mvin_matrix(solver->cache->Kinf.data, Kinf_spad, NINPUTS, NSTATES);
+        mvin_matrix(solver->cache->KinfT.data, KinfT_spad, NSTATES, NINPUTS);
         mvin_matrix(solver->cache->Pinf.data, Pinf_spad, NSTATES, NSTATES);
         mvin_matrix(solver->cache->Quu_inv.data, Quu_inv_spad, NINPUTS, NINPUTS);
         mvin_matrix(solver->cache->AmBKt.data, AmBKt_spad, NSTATES,  NSTATES);
@@ -71,6 +72,7 @@ extern "C"
 
         mvin_matrix(solver->work->Adyn.data, Adyn_spad, NSTATES, NSTATES);
         mvin_matrix(solver->work->Bdyn.data, Bdyn_spad, NSTATES, NINPUTS);
+        mvin_matrix(solver->work->BdynT.data, BdynT_spad, NINPUTS, NSTATES);
         #endif 
     }
 

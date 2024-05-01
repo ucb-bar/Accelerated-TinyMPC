@@ -42,6 +42,7 @@ int main()
     cache.AmBKt.set(AmBKt_data);
     cache.coeff_d2p.set(coeff_d2p_data);
     work.Adyn.set(Adyn_data);
+    transpose(work.Adyn.data, work.AdynT.data, NSTATES, NSTATES);
     work.Bdyn.set(Bdyn_data);
     transpose(work.Bdyn.data, work.BdynT.data, NSTATES, NINPUTS);
     work.Q.set(Q_data);
