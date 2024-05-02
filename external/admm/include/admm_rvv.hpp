@@ -6,7 +6,7 @@
 #ifndef TINYMPC_ADMM_RVV_HPP
 #define TINYMPC_ADMM_RVV_HPP
 
-#include "types_rvv.hpp"
+#include <types_rvv.hpp>
 
 #ifndef USE_MATVEC
 #define USE_MATVEC 1

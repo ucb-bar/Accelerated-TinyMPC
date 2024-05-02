@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 
-#include <tinympc/admm.hpp>
+#include <admm.hpp>
 #include "problem_data/quadrotor_50hz_params_unconstrained.hpp"
 
 extern "C"

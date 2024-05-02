@@ -6,8 +6,8 @@
 #include <cmath>
 #include <cstdint>
 
-#include "matlib/matlib.h"
-#include "admm.hpp"
+#include <matlib.h>
+#include <admm.hpp>
 #include "test_admm_rvv.hpp"
 
 #define DEBUG 0

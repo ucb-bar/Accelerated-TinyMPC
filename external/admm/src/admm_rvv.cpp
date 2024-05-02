@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <cstdint>
 
-#include "tinympc/admm_rvv.hpp"
+#include <admm_rvv.hpp>
 
 extern "C"
 {

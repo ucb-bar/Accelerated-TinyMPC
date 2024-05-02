@@ -1,9 +1,9 @@
 #pragma once
 
 #if defined(USE_RVV) || defined(USE_CPU)
-#include "admm_rvv.hpp"
+#include <admm_rvv.hpp>
 #else
-#include "admm_eigen.hpp"
+#include <admm_eigen.hpp>
 #endif
 
 #ifdef __cplusplus

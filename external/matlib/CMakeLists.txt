@@ -1,0 +1,7 @@
+if(USE_RVV OR USE_CPU)
+    add_library (matlib STATIC src/matlib.cpp)
+    target_include_directories (matlib PUBLIC include)
+    add_executable(test_matlib_rvv test/test_matlib_rvv.cpp)
+    target_link_libraries(test_matlib_rvv LINK_PUBLIC matlib)
+    target_include_directories (test_matlib_rvv PUBLIC matlib)
+endif(USE_RVV OR USE_CPU)

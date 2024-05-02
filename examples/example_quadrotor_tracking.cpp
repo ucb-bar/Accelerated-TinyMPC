@@ -2,7 +2,7 @@
 #include <time.h>
 
 
-#include <tinympc/admm.hpp>
+#include <admm.hpp>
 #include "problem_data/quadrotor_20hz_params.hpp"
 #include "trajectory_data/quadrotor_20hz_y_axis_line.hpp"
 

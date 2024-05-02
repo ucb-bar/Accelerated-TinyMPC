@@ -6,8 +6,21 @@
 #include <cstdio>
 #include <assert.h>
 
-#include "glob_opts.hpp"
-#include "matlib/matlib.h"
+#include <matlib.h>
+
+#ifndef NSTATES
+#define NSTATES 12
+typedef float tinytype;
+#endif
+#ifndef NINPUTS
+#define NINPUTS 4
+#endif
+#ifndef NHORIZON
+#define NHORIZON 10
+#endif
+#ifndef NTOTAL
+#define NTOTAL 301
+#endif
 
 #ifdef RVV_DEFAULT_TO_ROW_MAJOR
 #define RVV_DEFAULT_MATRIX_STORAGE_ORDER_OPTION RowMajor

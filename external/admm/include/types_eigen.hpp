@@ -3,7 +3,7 @@
 #define TINYMPC_TYPES_H
 
 #include <Eigen.h>
-#include "glob_opts.hpp"
+#include <glob_opts.hpp>
 
 using Eigen::Matrix;
 

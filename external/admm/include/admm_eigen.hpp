@@ -6,7 +6,7 @@
 #ifndef TINYMPC_ADMM_EIGEN_HPP
 #define TINYMPC_ADMM_EIGEN_HPP
 
-#include "types_eigen.hpp"
+#include <types_eigen.hpp>
 
 extern "C" {
 

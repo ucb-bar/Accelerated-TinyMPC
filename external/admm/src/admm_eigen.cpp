@@ -2,7 +2,7 @@
 #include <fstream>
 #include <cstdint>
 
-#include "tinympc/admm_eigen.hpp"
+#include <admm_eigen.hpp>
 
 #define DEBUG_MODULE "TINYALG"
 

@@ -1,15 +1,15 @@
 #include <iostream>
-#include "gemmini.h"
-
-#include "admm.hpp"
-#include "glob_opts.hpp"
-#include "tinympc/types_eigen.hpp"
-
-#include <Eigen/Dense>
 #include <vector>
 #include <cstdlib>
 #include <fstream>
 #include <time.h>
+
+#include <gemmini.h>
+#include <admm.hpp>
+#include <glob_opts.hpp>
+#include <types_eigen.hpp>
+
+#include <Eigen/Dense>
 
 #define DEBUG_MODULE "TINYALG"
 // #define UNROLLED

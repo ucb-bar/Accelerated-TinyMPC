@@ -1,8 +1,8 @@
 #include <cstdio>
 #include <cmath>
 
-#include "tinympc/types_rvv.hpp"
-#include "matlib_cpu.h"
+#include <matlib.h>
+#include <matlib_cpu.h>
 
 extern "C" {
 

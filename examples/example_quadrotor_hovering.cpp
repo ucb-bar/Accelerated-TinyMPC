@@ -11,7 +11,7 @@
 
 #include <iostream>
 
-#include <tinympc/admm.hpp>
+#include <admm.hpp>
 #include "problem_data/quadrotor_50hz_params_unconstrained.hpp"
 #include <fstream>
 #include <Eigen/Dense>

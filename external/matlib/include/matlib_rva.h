@@ -2,7 +2,7 @@
 #ifndef TINYMPC_MATLIB_RVA_H
 #define TINYMPC_MATLIB_RVA_H
 
-#include "matlib/matlib_rvv.h"
+#include "matlib_rvv.h"
 
 extern "C"
 {

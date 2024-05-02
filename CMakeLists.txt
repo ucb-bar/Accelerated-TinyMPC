@@ -86,8 +86,9 @@ endif()
 include_directories(include/Eigen)
 include_directories(include/Gemmini)
 include_directories(include/RoSE)
-include_directories(include/matlib)
-include_directories(include/tinympc)
-add_subdirectory(src)
+
+add_subdirectory(external/matlib)
+add_subdirectory(external/admm)
+
 add_subdirectory(examples)
 add_subdirectory(test)

@@ -1,5 +1,5 @@
 generated_code/
-test/tinympc/test_admm_rvv.hpp
+external/admm/test/test_admm_rvv.hpp
 *.pyc
 
 #IDEs
