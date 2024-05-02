@@ -35,7 +35,7 @@ inline void forward_pass_1(TinySolver *solver, int i) {
 #ifdef USE_MATVEC
     matvec(solver->cache->Kinf.data, solver->work->x.col(i), solver->work->u1.data, NINPUTS, NSTATES);
 #else
-    matmul(solver->work->x.col(i), solver->cache->Kinf.array, solver->work->u1.array, 1, NINPUTS, NSTATES);
+    matmul(solver->work->x.col(i), solver->cache->Kinf.data, solver->work->u1.data, 1, NINPUTS, NSTATES);
 #endif
     TRACE_CHECKSUM(forward_pass_1, solver->work->u1);
     matadd(solver->work->u1.data, solver->work->d.col(i), solver->work->u2.data, 1, NINPUTS);
