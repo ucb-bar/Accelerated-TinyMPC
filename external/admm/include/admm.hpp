@@ -1,6 +1,6 @@
 #pragma once
 
-#if defined(USE_RVV) || defined(USE_CPU)
+#if defined(USE_RVV) || defined(USE_RVVU) || defined(USE_CPU)
 #include <admm_rvv.hpp>
 #else
 #include <admm_eigen.hpp>

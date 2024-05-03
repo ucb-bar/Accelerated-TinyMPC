@@ -5,11 +5,11 @@ if (NOT DEFINED MATLIB_CMAKE_PATH)
     include(${CMAKE_CURRENT_LIST_DIR}/external/matlib/matlib.cmake)
 endif()
 
-project(matlib VERSION 0.2.0 LANGUAGES CXX)
+project(admm VERSION 0.2.0 LANGUAGES CXX)
 
 if(USE_RVV OR USE_RVVU OR USE_CPU)
 
-    add_library (admm STATIC src/admm_rvv.cpp)
+    add_matlib_library (admm src/admm_rvv.cpp)
     target_include_directories (admm PUBLIC include)
     target_include_directories (admm PUBLIC ${MATLIB_CMAKE_PATH}/include)
 

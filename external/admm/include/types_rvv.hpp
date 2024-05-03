@@ -91,7 +91,7 @@ public:
         matsetv(this->data, data, outer, inner);
     }
 
-#if defined(USE_RVV) || defined(USE_CPU)
+#if defined(USE_RVV) || defined(USE_RVVU) || defined(USE_CPU)
     // Column if ColMajor
     Scalar_ *col(int col) {
         assert(!(Options_ & RowMajor));

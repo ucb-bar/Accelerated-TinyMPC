@@ -1,0 +1,3 @@
+[submodule "external/matlib"]
+	path = external/matlib
+	url = git@github.com:wid4soe/matlib.git
