@@ -2,9 +2,7 @@
 #ifndef TINYMPC_RVV_MATLIB_H
 #define TINYMPC_RVV_MATLIB_H
 
-#ifndef USE_LMUL
 #define USE_LMUL 1
-#endif
 
 #if USE_LMUL == 1
 #define __riscv_vfabs_v_f32 __riscv_vfabs_v_f32m1
@@ -21,6 +19,7 @@
 #define __riscv_vfredmax_vs_f32_f32 __riscv_vfredmax_vs_f32m1_f32m1
 #define __riscv_vfredmin_vs_f32_f32 __riscv_vfredmin_vs_f32m1_f32m1
 #define __riscv_vfredusum_vs_f32_f32 __riscv_vfredusum_vs_f32m1_f32m1
+#define __riscv_vfredosum_vs_f32_f32 __riscv_vfredosum_vs_f32m1_f32m1
 #define __riscv_vfsub_vv_f32 __riscv_vfsub_vv_f32m1
 #define __riscv_vle32_v_f32 __riscv_vle32_v_f32m1
 #define __riscv_vlse32_v_f32 __riscv_vlse32_v_f32m1
@@ -43,6 +42,7 @@
 #define __riscv_vfredmax_vs_f32_f32 __riscv_vfredmax_vs_f32m2_f32m1
 #define __riscv_vfredmin_vs_f32_f32 __riscv_vfredmin_vs_f32m2_f32m1
 #define __riscv_vfredusum_vs_f32_f32 __riscv_vfredusum_vs_f32m2_f32m1
+#define __riscv_vfredosum_vs_f32_f32 __riscv_vfredosum_vs_f32m2_f32m1
 #define __riscv_vfsub_vv_f32 __riscv_vfsub_vv_f32m2
 #define __riscv_vle32_v_f32 __riscv_vle32_v_f32m2
 #define __riscv_vlse32_v_f32 __riscv_vlse32_v_f32m2
@@ -65,6 +65,7 @@
 #define __riscv_vfredmax_vs_f32_f32 __riscv_vfredmax_vs_f32m4_f32m1
 #define __riscv_vfredmin_vs_f32_f32 __riscv_vfredmin_vs_f32m4_f32m1
 #define __riscv_vfredusum_vs_f32_f32 __riscv_vfredusum_vs_f32m4_f32m1
+#define __riscv_vfredosum_vs_f32_f32 __riscv_vfredosum_vs_f32m4_f32m1
 #define __riscv_vfsub_vv_f32 __riscv_vfsub_vv_f32m4
 #define __riscv_vle32_v_f32 __riscv_vle32_v_f32m4
 #define __riscv_vlse32_v_f32 __riscv_vlse32_v_f32m4
@@ -87,6 +88,7 @@
 #define __riscv_vfredmax_vs_f32_f32 __riscv_vfredmax_vs_f32m8_f32m1
 #define __riscv_vfredmin_vs_f32_f32 __riscv_vfredmin_vs_f32m8_f32m1
 #define __riscv_vfredusum_vs_f32_f32 __riscv_vfredusum_vs_f32m8_f32m1
+#define __riscv_vfredosum_vs_f32_f32 __riscv_vfredosum_vs_f32m8_f32m1
 #define __riscv_vfsub_vv_f32 __riscv_vfsub_vv_f32m8
 #define __riscv_vle32_v_f32 __riscv_vle32_v_f32m8
 #define __riscv_vlse32_v_f32 __riscv_vlse32_v_f32m8

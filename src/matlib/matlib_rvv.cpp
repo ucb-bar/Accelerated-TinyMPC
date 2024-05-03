@@ -44,7 +44,7 @@ float mincoeff_golden(float **a, int n, int m) {
     return min;
 }
 
-float mincoeff(float **a, int n, int m) {
+float mincoeff_rvv(float **a, int n, int m) {
     float min = std::numeric_limits<float>::max();
     vfloat32m1_t vec_min = __riscv_vfmv_s_f_f32m1(min, 1);
     float *ptr_a = &a[0][0];
@@ -200,7 +200,7 @@ void matmul_rvv(float **a, float **b, float **c, int n, int m, int o) {
                 vfloat32_t vec_b = __riscv_vle32_v_f32(ptr_b, vl);
                 vec_s = __riscv_vfmacc_vv_f32(vec_s, vec_a, vec_b, vl);
             }
-            vfloat32m1_t vec_sum = __riscv_vfredusum_vs_f32_f32(vec_s, vec_zero, vlmax);
+            vfloat32m1_t vec_sum = __riscv_vfredosum_vs_f32_f32(vec_s, vec_zero, vlmax);
             float sum = __riscv_vfmv_f_s_f32m1_f32(vec_sum);
             c[i][j] = sum;
         }
@@ -239,7 +239,7 @@ void matvec_rvv(float **a, float **b, float **c, int n, int m) {
             vfloat32_t vec_b = __riscv_vle32_v_f32(ptr_b, vl);
             vec_s = __riscv_vfmacc_vv_f32(vec_s, vec_a, vec_b, vl);
         }
-        vfloat32m1_t vec_sum = __riscv_vfredusum_vs_f32_f32(vec_s, vec_zero, vlmax);
+        vfloat32m1_t vec_sum = __riscv_vfredosum_vs_f32_f32(vec_s, vec_zero, vlmax);
         float sum = __riscv_vfmv_f_s_f32m1_f32(vec_sum);
         c[0][i] = sum;
     }
@@ -277,7 +277,7 @@ void matvec_transpose_rvv(float **a, float **b, float **c, int n, int m) {
             vfloat32_t vec_b = __riscv_vle32_v_f32(ptr_b, vl);
             vec_s = __riscv_vfmacc_vv_f32(vec_s, vec_a, vec_b, vl);
         }
-        vfloat32m1_t vec_sum = __riscv_vfredusum_vs_f32_f32(vec_s, vec_zero, vlmax);
+        vfloat32m1_t vec_sum = __riscv_vfredosum_vs_f32_f32(vec_s, vec_zero, vlmax);
         float sum = __riscv_vfmv_f_s_f32m1_f32(vec_sum);
         c[0][i] = sum;
     }
@@ -459,7 +459,7 @@ float matnorm_rvv(float **a, int n, int m) {
         vfloat32_t vec_a = __riscv_vle32_v_f32(ptr_a, vl);
         vec_s = __riscv_vfmacc_vv_f32(vec_s, vec_a, vec_a, vl);
     }
-    vfloat32m1_t vec_sum = __riscv_vfredusum_vs_f32_f32(vec_s, vec_zero, vlmax);
+    vfloat32m1_t vec_sum = __riscv_vfredosum_vs_f32_f32(vec_s, vec_zero, vlmax);
     float sum = __riscv_vfmv_f_s_f32m1_f32(vec_sum);
     return sqrt(sum);
 }

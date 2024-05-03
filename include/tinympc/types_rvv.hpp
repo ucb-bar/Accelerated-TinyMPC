@@ -166,6 +166,7 @@ typedef struct
     tiny_MatrixNuNu Quu_inv;
     tinytype * Quu_inv_data;
     tiny_MatrixNxNx AmBKt;
+    tiny_MatrixNxNx AmBKtT;
     tinytype * AmBKt_data;
     tiny_MatrixNxNu coeff_d2p;
 } TinyCache;
