@@ -1,14 +1,18 @@
-if(USE_GEMMINI)
-    add_library (admm STATIC src/admm_eigen.cpp)
-endif(USE_GEMMINI)
+cmake_minimum_required(VERSION 3.15.0)
 
-if(USE_RVV OR USE_CPU)
+message("Processing ${CMAKE_CURRENT_LIST_DIR}")
+if (NOT DEFINED MATLIB_CMAKE_PATH)
+    include(${CMAKE_CURRENT_LIST_DIR}/external/matlib/matlib.cmake)
+endif()
+
+project(matlib VERSION 0.2.0 LANGUAGES CXX)
+
+if(USE_RVV OR USE_RVVU OR USE_CPU)
+
     add_library (admm STATIC src/admm_rvv.cpp)
     target_include_directories (admm PUBLIC include)
-    target_include_directories (admm PUBLIC $<TARGET_PROPERTY:matlib,INTERFACE_INCLUDE_DIRECTORIES>)
-endif(USE_RVV OR USE_CPU)
+    target_include_directories (admm PUBLIC ${MATLIB_CMAKE_PATH}/include)
 
-if(USE_RVV OR USE_CPU)
     if(NOT EXISTS test/test_admm_rvv.hpp OR test/test_admm_rvv.py IS_NEWER_THAN test/test_admm_rvv.hpp)
         add_custom_command(
             OUTPUT test/test_admm_rvv.hpp
@@ -17,8 +21,10 @@ if(USE_RVV OR USE_CPU)
             COMMENT "Generating test_admm_rvv.hpp"
         )
     endif()
-    add_executable (test_admm_rvv test/test_admm_rvv.cpp test/test_admm_rvv.hpp)
+
+    add_matlib_executable (test_admm_rvv test/test_admm_rvv.cpp test/test_admm_rvv.hpp)
     target_link_libraries (test_admm_rvv LINK_PUBLIC admm matlib)
     target_include_directories (test_admm_rvv PUBLIC admm matlib)
-endif(USE_RVV OR USE_CPU)
+
+endif(USE_RVV OR USE_RVVU OR USE_CPU)
 

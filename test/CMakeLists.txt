@@ -1,7 +1,0 @@
-if(USE_GEMMINI)
-    add_executable(test_gemmini test_gemmini.cpp)
-    target_link_libraries(test_gemmini LINK_PUBLIC tinympc)
-    add_executable(test_admm_eigen test_admm_eigen.cpp)
-    target_link_libraries(test_admm_eigen LINK_PUBLIC tinympc)
-    target_include_directories (test_admm_eigen PUBLIC tinympc)
-endif(USE_GEMMINI)
