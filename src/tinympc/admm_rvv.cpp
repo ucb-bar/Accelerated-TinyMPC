@@ -63,6 +63,23 @@ extern "C"
         mvin_matrix((tinytype *) I, I_spad, DIM, DIM);
         mvin_matrix((tinytype *) nI, nI_spad, DIM, DIM);
         
+        // float temp_test[DIM][DIM];
+        // gemmini_extended_config_ex(OUTPUT_STATIONARY, 0, 0, 1, false, false);
+        // gemmini_extended_preload(GARBAGE_ADDR, 0x100, 4, 4, 4, 4);
+        // gemmini_compute_preloaded(I_spad, nI_spad);
+        // gemmini_extended_config_st(DIM*sizeof(float), 0, 1.0);
+        // printf("Moving Out\n");
+        // gemmini_extended_mvout(temp_test, 0x100, 4, 4);
+        // gemmini_fence();
+        // for (size_t i = 0; i < DIM; i++) {
+        //     for (size_t j = 0; j < DIM; j++) {
+        //         printf("%f ", temp_test[i][j]);
+        //     }
+        //     printf("\n");
+        // }
+        // printf("Done!\n");
+        // exit(0);
+        
         mvin_matrix(solver->cache->Kinf.data, Kinf_spad, NINPUTS, NSTATES);
         mvin_matrix(solver->cache->KinfT.data, KinfT_spad, NSTATES, NINPUTS);
         mvin_matrix(solver->cache->Pinf.data, Pinf_spad, NSTATES, NSTATES);

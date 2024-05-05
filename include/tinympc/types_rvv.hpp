@@ -233,6 +233,7 @@ typedef struct
     tiny_MatrixNxNu coeff_d2p;
 } TinyCache;
 
+
 /**
  * User settings
  */
@@ -245,6 +246,7 @@ typedef struct
     int en_state_bound;
     int en_input_bound;
 } TinySettings;
+
 
 /**
  * Problem variables

@@ -43,19 +43,50 @@ inline void forward_pass_1(TinySolver *solver, int i) {
 #else
     
 #ifdef USE_GEMMINI
+    // gemmini_extended_config_ex(OUTPUT_STATIONARY, 0, 0, 1, false, false);
     gemmini_extended_config_ex(OUTPUT_STATIONARY, 0, 0, 1, false, false);
-    gemmini_config_st(4);
+    // gemmini_config_st(4);
+    gemmini_extended_config_st(4, 0, 1.0);
     // TODO REMOVE MVIN
     gemmini_extended3_config_ld(4, 1.0, false, 1);
-    gemmini_extended_mvin2(solver->work->x.col(i), x_spad + i*NSTATES, 1, NSTATES);
-    gemmini_extended_preload(GARBAGE_ADDR, u_spad + i*NINPUTS, 1, 4, 1, 4);
+    // Print x.col(i)
+    // printf("x.col(i): ");
+    // for(int j = 0; j < NSTATES; j++) {
+    //     solver->work->x.col(i)[j] = j + 1.0;
+    //     printf("%0.5f ",solver->work->x.col(i)[j]);
+    // }
+    // printf("\n");
+
+    gemmini_extended_mvin2(solver->work->x.col(i), x_spad + i*NSTATES, 1, DIM);
+    gemmini_extended_mvin2(solver->work->x.col(i) + DIM, x_spad + i*NSTATES+ DIM, 1, DIM);
+    gemmini_extended_mvin2(solver->work->x.col(i) + 2*DIM, x_spad + i*NSTATES+ 2*DIM, 1, DIM);
+    // gemmini_extended_preload(GARBAGE_ADDR, u_spad + i*NINPUTS, 1, 4, 1, 4);
+    // gemmini_extended_preload(GARBAGE_ADDR, u_spad + i*NINPUTS, 1, 4, 1, 4);
+    // gemmini_extended_preload(GARBAGE_ADDR, u_spad + i*NINPUTS, 4, 4, 4, 4);
+    gemmini_extended_preload(GARBAGE_ADDR, GARBAGE_ADDR, 1, 4, 1, 4);
+    // gemmini_preload_zeros(u_spad + i*NINPUTS);
+
     gemmini_compute_preloaded(Kinf_spad, x_spad + i*NSTATES);
+    gemmini_extended_preload(GARBAGE_ADDR, GARBAGE_ADDR, 1, 4, 1, 4);
     gemmini_compute_accumulated(Kinf_spad+DIM, x_spad+i*NSTATES+DIM);
+    gemmini_extended_preload(GARBAGE_ADDR, GARBAGE_ADDR, 1, 4, 1, 4);
+    // gemmini_extended_preload(GARBAGE_ADDR, u_spad + i*NINPUTS, 1, 4, 1, 4);
     gemmini_compute_accumulated(Kinf_spad+2*DIM, x_spad+i*NSTATES+2*DIM);
+    gemmini_extended_mvout(solver->work->u1.data, u_spad + i*NINPUTS, 1, 4);
+    // gemmini_extended_mvout(solver->work->u1.data, u_spad + i*NINPUTS, 1, 1);
+    // gemmini_extended_mvout(solver->work->u1.data+1, u_spad + i*NINPUTS + 1, 1, 1);
+    // gemmini_extended_mvout(solver->work->u1.data+2, u_spad + i*NINPUTS + 2, 1, 1);
+    // gemmini_extended_mvout(solver->work->u1.data+3, u_spad + i*NINPUTS + 3, 1, 1);
+    // gemmini_fence();
     // for(int i = 0; i < NINPUTS; i++) {
     //     printf("u1[%d]: %0.5f\n", i, solver->work->u1.data[i]);
     // }
 
+    // matmul(solver->work->x.col(i), solver->cache->Kinf.data, solver->work->u1.data, 1, NINPUTS, NSTATES);
+    // for(int i = 0; i < NINPUTS; i++) {
+    //     printf("u1[%d]: %0.5f\n", i, solver->work->u1.data[i]);
+    // }
+    // exit(0);
 #else
     matmul(solver->work->x.col(i), solver->cache->Kinf.data, solver->work->u1.data, 1, NINPUTS, NSTATES);
 #endif
@@ -66,15 +97,45 @@ inline void forward_pass_1(TinySolver *solver, int i) {
     // gemmini_extended_mvout(solver->work->u1.data, u_spad + i*NINPUTS, 1, 4);
     // gemmini_fence();
     gemmini_extended3_config_ld(4, 1.0, false, 1);
-    gemmini_extended_mvin2(solver->work->d.col(i), d_spad + i*NSTATES, 1, NSTATES);
+    gemmini_extended_mvin2(solver->work->d.col(i), d_spad + i*NSTATES, 1, DIM);
+    gemmini_extended_mvin2(solver->work->d.col(i)+DIM, d_spad + i*NSTATES+DIM, 1, DIM);
+    gemmini_extended_mvin2(solver->work->d.col(i)+2*DIM, d_spad + i*NSTATES+2*DIM, 1, DIM);
+    // printf("Step 1!\n");
+    gemmini_extended_preload(GARBAGE_ADDR, u_spad + i*NINPUTS, 1, 4, 1, 4);
     gemmini_compute_accumulated(I_spad, d_spad + i*NSTATES);
+    // printf("Step 2!\n");
+    gemmini_extended_preload(GARBAGE_ADDR, u_spad + i*NINPUTS, 1, 4, 1, 4);
     gemmini_compute_preloaded(nI_spad, u_spad + i*NINPUTS);
     gemmini_extended_mvout(solver->work->u.col(i), u_spad + i*NINPUTS, 1, 4);
     gemmini_fence();
+    // gemmini_extended_preload(GARBAGE_ADDR, temp_spad, 1, 4, 1, 4);
+    // for(int i = 0; i < NINPUTS; i++) {
+    //     printf("u1[%d]: %0.5f\n", i, solver->work->u1.data[i]);
+    // }
+    // exit(0);
+    // printf("Step 0!: %p\n", solver->work->d.col(i));
+    // gemmini_extended_mvout(solver->work->u1.data, 0, 1, 4);
+    // gemmini_extended_mvout(solver->work->d.col(i), d_spad + i*NINPUTS, 1, 4);
+    // gemmini_extended_mvout(solver->work->d.col(i) + 1, d_spad + i*NINPUTS + 1, 1, 1);
+    // gemmini_extended_mvout(solver->work->d.col(i) + 3, d_spad + i*NINPUTS + 3, 1, 1);
+    // gemmini_fence();
+    // gemmini_extended_mvout(solver->work->d.col(i), d_spad + i*NINPUTS, 1, 1);
+    // gemmini_fence();
+    // gemmini_extended_mvout(solver->work->d.col(i) + 2, d_spad + i*NINPUTS + 2, 1, 1);
+    // gemmini_fence();
+    // for(int j = 0; j < NINPUTS; j++) {
+    //     printf("uf1[%d]: %0.5f\n", j, solver->work->u.col(i)[j]);
+    // }
 
     // TRACE_CHECKSUM(forward_pass_1, solver->work->u1);
     // matneg(solver->work->u2.data, solver->work->u.col(i), 1, NINPUTS);
     // TRACE_CHECKSUM(forward_pass_1, solver->work->u);
+    // matadd(solver->work->u1.data, solver->work->d.col(i), solver->work->u2.data, 1, NINPUTS);
+    // matneg(solver->work->u2.data, solver->work->u.col(i), 1, NINPUTS);
+    // for(int j = 0; j < NINPUTS; j++) {
+    //     printf("uf1[%d]: %0.5f\n", j, solver->work->u.col(i)[j]);
+    // }
+    // exit(0);
 #else
     TRACE_CHECKSUM(forward_pass_1, solver->work->u1);
     matadd(solver->work->u1.data, solver->work->d.col(i), solver->work->u2.data, 1, NINPUTS);
@@ -92,23 +153,46 @@ inline void forward_pass_2(TinySolver *solver, int i) {
     matadd(solver->work->x1.data, solver->work->x2.data, solver->work->x.col(i + 1), 1, NSTATES);
 #else
 #ifdef USE_GEMMINI
+    // printf("Step 4!\n");
     gemmini_extended_config_ex(OUTPUT_STATIONARY, 0, 0, 1, false, false);
     gemmini_config_st(4);
     gemmini_extended3_config_ld(4, 1.0, false, 1);
     gemmini_extended_mvin2(solver->work->x.col(i), x_spad + i*NSTATES, 1, NSTATES);
     gemmini_extended_mvin2(solver->work->u.col(i), u_spad + i*NINPUTS, 1, NINPUTS);
 
+    // printf("Step 5!\n");
     for(size_t j = 0; j < NSTATES/DIM; j++){
-        gemmini_extended_preload(GARBAGE_ADDR, x_spad + (i+1)*NSTATES + j*DIM, 1, 4, 1, 4);
+        gemmini_extended_preload(GARBAGE_ADDR, GARBAGE_ADDR, 1, 4, 1, 4);
         gemmini_compute_preloaded  (Adyn_spad + 0*NSTATES + j*DIM,         x_spad + i*NSTATES);
+        gemmini_extended_preload(GARBAGE_ADDR, GARBAGE_ADDR, 1, 4, 1, 4);
         gemmini_compute_accumulated(Adyn_spad + 1*NSTATES + j*DIM,   x_spad + i*NSTATES + 1*DIM);
+        gemmini_extended_preload(GARBAGE_ADDR, GARBAGE_ADDR, 1, 4, 1, 4);
         gemmini_compute_accumulated(Adyn_spad + 2*NSTATES + j*DIM, x_spad + i*NSTATES + 2*DIM);
 
+        gemmini_extended_preload(GARBAGE_ADDR, x_spad + (i+1)*NSTATES + j*DIM, 1, 4, 1, 4);
         gemmini_compute_accumulated(Bdyn_spad + j*DIM, u_spad + i*NINPUTS);
         gemmini_extended_mvout(solver->work->x.col(i+1) + j*DIM, x_spad + (i+1)*NSTATES + j*DIM, 1, 4);
     }
+    // printf("Step 6!\n");
     gemmini_fence();
+    // printf("xf1:  ");
+    // for(int j = 0; j < NSTATES; j++) {
+    //     printf("%0.5f ", solver->work->x.col(i+1)[j]);
+    // }
+    // printf("\n");
 
+    // printf("Step 7!\n");
+    // exit(0);
+
+    // matmul(solver->work->x.col(i), solver->work->Adyn.data, solver->work->x1.data, 1, NSTATES, NSTATES);
+    // matmul(solver->work->u.col(i), solver->work->Bdyn.data, solver->work->x2.data, 1, NSTATES, NINPUTS);
+    // matadd(solver->work->x1.data, solver->work->x2.data, solver->work->x.col(i + 1), 1, NSTATES);
+    // printf("xf1:  ");
+    // for(int j = 0; j < NSTATES; j++) {
+    //     printf("%0.5f ", solver->work->x.col(i+1)[j]);
+    // }
+    // printf("\n");
+    // exit(0);
 #else
     matmul(solver->work->x.col(i), solver->work->Adyn.data, solver->work->x1.data, 1, NSTATES, NSTATES);
     matmul(solver->work->u.col(i), solver->work->Bdyn.data, solver->work->x2.data, 1, NSTATES, NINPUTS);
@@ -129,21 +213,82 @@ inline void backward_pass_1(TinySolver *solver, int i) {
     gemmini_extended_config_ex(OUTPUT_STATIONARY, 0, 0, 1, false, false);
     gemmini_config_st(4);
     gemmini_extended3_config_ld(4, 1.0, false, 1);
-    gemmini_extended_mvin2(solver->work->p.col(i+1), p_spad + (i+1)*NSTATES, 1, NSTATES);
+    gemmini_extended_mvin2(solver->work->p.col(i+1), p_spad + (i+1)*NSTATES, 1, DIM);
+    gemmini_extended_mvin2(solver->work->p.col(i+1) + DIM, p_spad + (i+1)*NSTATES + DIM, 1, DIM);
+    gemmini_extended_mvin2(solver->work->p.col(i+1) + 2*DIM, p_spad + (i+1)*NSTATES + 2*DIM, 1, DIM);
     gemmini_extended_mvin2(solver->work->r.col(i), r_spad + i*NINPUTS, 1, NINPUTS);
 
-    gemmini_extended_preload(GARBAGE_ADDR, d_spad + i*NINPUTS, 1, 4, 1, 4);
+    // printf("p1:  ");
+    // for(int j = 0; j < NSTATES; j++) {
+    //     printf("%0.5f ", solver->work->p.col(i+1)[j]);
+    // }
+    // printf("\n");
+
+    // printf("r1:  ");
+    // for(int j = 0; j < NINPUTS; j++) {
+    //     printf("%0.5f ", solver->work->r.col(i)[j]);
+    // }
+    // printf("\n");
+
+    gemmini_extended_preload(GARBAGE_ADDR, GARBAGE_ADDR, 1, 4, 1, 4);
     gemmini_compute_preloaded(BdynT_spad, p_spad + (i+1)*NSTATES);
+    gemmini_extended_preload(GARBAGE_ADDR, GARBAGE_ADDR, 1, 4, 1, 4);
     gemmini_compute_accumulated(BdynT_spad+DIM, p_spad+(i+1)*NSTATES+DIM);
+    // gemmini_extended_preload(GARBAGE_ADDR, GARBAGE_ADDR, 1, 4, 1, 4);
+    // gemmini_extended_preload(GARBAGE_ADDR, d_spad + i*NINPUTS, 1, 4, 1, 4);
+    gemmini_extended_preload(GARBAGE_ADDR, GARBAGE_ADDR, 1, 4, 1, 4);
     gemmini_compute_accumulated(BdynT_spad+2*DIM, p_spad+(i+1)*NSTATES+2*DIM);
 
+    // gemmini_extended_mvout(solver->work->u1.data, d_spad + i*NINPUTS, 1, 4);
+    // gemmini_fence();
+    // printf("u1:  ");
+    // for(int j = 0; j < NINPUTS; j++) {
+    //     printf("%0.5f ", solver->work->u1.data[j]);
+    // }
+    // printf("\n");
 
+
+    gemmini_extended_preload(GARBAGE_ADDR, d_spad + i*NINPUTS, 1, 4, 1, 4);
     gemmini_compute_accumulated(I_spad, r_spad+i*NINPUTS);
 
+    gemmini_extended_mvout(solver->work->u2.data, d_spad + i*NINPUTS, 1, 4);
+    // gemmini_fence();
+    // printf("u2:  ");
+    // for(int j = 0; j < NINPUTS; j++) {
+    //     printf("%0.5f ", solver->work->u2.data[j]);
+    // }
+    // printf("\n");
+    gemmini_extended_preload(GARBAGE_ADDR, d_spad + i*NINPUTS, 1, 4, 1, 4);
     gemmini_compute_preloaded(Quu_inv_spad, d_spad+i*NINPUTS);
 
     gemmini_extended_mvout(solver->work->d.col(i), d_spad + i*NINPUTS, 1, 4);
     gemmini_fence();
+
+    // printf("d1:  ");
+    // for(int j = 0; j < NINPUTS; j++) {
+    //     printf("%0.5f ", solver->work->d.col(i)[j]);
+    // }
+    // printf("\n");
+
+    // matmul(solver->work->p.col(i + 1), solver->work->BdynT.data, solver->work->u1.data, 1, NINPUTS, NSTATES);
+    // matadd(solver->work->r.col(i), solver->work->u1.data, solver->work->u2.data, 1, NINPUTS);
+    // matmul(solver->work->u2.data, solver->cache->Quu_inv.data, solver->work->d.col(i), 1, NINPUTS, NINPUTS);
+    // printf("u1:  ");
+    // for(int j = 0; j < NINPUTS; j++) {
+    //     printf("%0.5f ", solver->work->u1.data[j]);
+    // }
+    // printf("\n");
+    // printf("u2:  ");
+    // for(int j = 0; j < NINPUTS; j++) {
+    //     printf("%0.5f ", solver->work->u2.data[j]);
+    // }
+    // printf("\n");
+    // printf("d2:  ");
+    // for(int j = 0; j < NINPUTS; j++) {
+    //     printf("%0.5f ", solver->work->d.col(i)[j]);
+    // }
+    // printf("\n");
+    // exit(0);
 #else
     matmul(solver->work->p.col(i + 1), solver->work->BdynT.data, solver->work->u1.data, 1, NINPUTS, NSTATES);
     matadd(solver->work->r.col(i), solver->work->u1.data, solver->work->u2.data, 1, NINPUTS);
@@ -167,26 +312,55 @@ inline void backward_pass_2(TinySolver *solver, int i) {
     gemmini_extended_config_ex(OUTPUT_STATIONARY, 0, 0, 1, false, false);
     gemmini_config_st(4);
     gemmini_extended3_config_ld(4, 1.0, false, 1);
-    gemmini_extended_mvin2(solver->work->p.col(i+1), p_spad + (i+1)*NSTATES, 1, NSTATES);
-    gemmini_extended_mvin2(solver->work->q.col(i), q_spad + i*NSTATES, 1, NSTATES);
+    gemmini_extended_mvin2(solver->work->p.col(i+1), p_spad + (i+1)*NSTATES, 1, DIM);
+    gemmini_extended_mvin2(solver->work->p.col(i+1) + DIM, p_spad + (i+1)*NSTATES + DIM, 1, DIM);
+    gemmini_extended_mvin2(solver->work->p.col(i+1) + 2*DIM, p_spad + (i+1)*NSTATES + 2*DIM, 1, DIM);
+    
+    gemmini_extended_mvin2(solver->work->q.col(i), q_spad + i*NSTATES, 1, DIM);
+    gemmini_extended_mvin2(solver->work->q.col(i) +DIM, q_spad + i*NSTATES + DIM, 1, DIM);
+    gemmini_extended_mvin2(solver->work->q.col(i) +2*DIM, q_spad + i*NSTATES + 2*DIM, 1, DIM);
+
     gemmini_extended_mvin2(solver->work->r.col(i), r_spad + i*NINPUTS, 1, NINPUTS);
 
     for(size_t j = 0; j < NSTATES/DIM; j++){
-        gemmini_extended_preload(GARBAGE_ADDR, p_spad + (i)*NSTATES + j*DIM, 1, 4, 1, 4);
+        gemmini_extended_preload(GARBAGE_ADDR, p_spad + i*NSTATES + j*DIM, 1, 4, 1, 4);
         gemmini_compute_preloaded(KinfT_spad + j*DIM, r_spad + i*NINPUTS);
+        gemmini_extended_preload(GARBAGE_ADDR, GARBAGE_ADDR, 1, 4, 1, 4);
         gemmini_compute_preloaded(nI_spad, p_spad + i*NSTATES + j*DIM);
         // gemmini_extended_mvout(solver->work->x2.data + j*DIM, p_spad + i*NSTATES + j*DIM, 1, 4);
 
+        gemmini_extended_preload(GARBAGE_ADDR, GARBAGE_ADDR, 1, 4, 1, 4);
         gemmini_compute_accumulated(AmBKt_spad + 0*NSTATES + j*DIM,   p_spad + (i+1)*NSTATES);
+        gemmini_extended_preload(GARBAGE_ADDR, GARBAGE_ADDR, 1, 4, 1, 4);
         gemmini_compute_accumulated(AmBKt_spad + 1*NSTATES + j*DIM,   p_spad + (i+1)*NSTATES + 1*DIM);
+        gemmini_extended_preload(GARBAGE_ADDR, GARBAGE_ADDR, 1, 4, 1, 4);
         gemmini_compute_accumulated(AmBKt_spad + 2*NSTATES + j*DIM,   p_spad + (i+1)*NSTATES + 2*DIM);
         // gemmini_extended_mvout(solver->work->x3.data + j*DIM, p_spad + i*NSTATES + j*DIM, 1, 4);
 
+        gemmini_extended_preload(GARBAGE_ADDR, p_spad + (i)*NSTATES + j*DIM, 1, 4, 1, 4);
         gemmini_compute_accumulated(I_spad, q_spad + i*NSTATES + j*DIM);
         gemmini_extended_mvout(solver->work->p.col(i) + j*DIM, p_spad + i*NSTATES + j*DIM, 1, 4);
 
     }
     gemmini_fence();
+    // printf("p1:  ");
+    // for(int j = 0; j < NSTATES; j++) {
+    //     printf("%0.5f ", solver->work->p.col(i)[j]);
+    // }
+    // printf("\n");
+
+
+    // matmul(solver->work->p.col(i + 1), solver->cache->AmBKt.data, solver->work->x1.data, 1, NSTATES, NSTATES);
+    // matmul(solver->work->r.col(i), solver->cache->KinfT.data, solver->work->x2.data, 1, NSTATES, NINPUTS);
+    // matsub(solver->work->x1.data, solver->work->x2.data, solver->work->x3.data, 1, NSTATES);
+    // matadd(solver->work->x3.data, solver->work->q.col(i), solver->work->p.col(i), 1, NSTATES);
+
+    // printf("p1:  ");
+    // for(int j = 0; j < NSTATES; j++) {
+    //     printf("%0.5f ", solver->work->p.col(i)[j]);
+    // }
+    // printf("\n");
+    // exit(0);
 
     #else
     matmul(solver->work->p.col(i + 1), solver->cache->AmBKt.data, solver->work->x1.data, 1, NSTATES, NSTATES);
