@@ -52,16 +52,23 @@ extern "C"
         #ifdef USE_GEMMINI
         tinytype I [DIM][DIM];
         tinytype nI [DIM][DIM];
+        tinytype rI [DIM][DIM];
+        tinytype nrI [DIM][DIM];
 
-        for (size_t i = 0; i < DIM; i++)
+        for (size_t i = 0; i < DIM; i++) {
             for (size_t j = 0; j < DIM; j++)
+            {
                 I[i][j] = i == j;
-        for (size_t i = 0; i < DIM; i++)
-            for (size_t j = 0; j < DIM; j++)
                 nI[i][j] = -(i == j);
+                rI[i][j] = (i == j) * solver->cache->rho;
+                nrI[i][j] = -(i == j) * solver->cache->rho;
+            }
+        }
 
         mvin_matrix((tinytype *) I, I_spad, DIM, DIM);
         mvin_matrix((tinytype *) nI, nI_spad, DIM, DIM);
+        mvin_matrix((tinytype *) rI, rI_spad, DIM, DIM);
+        mvin_matrix((tinytype *) nrI, nrI_spad, DIM, DIM);
         
         // float temp_test[DIM][DIM];
         // gemmini_extended_config_ex(OUTPUT_STATIONARY, 0, 0, 1, false, false);
