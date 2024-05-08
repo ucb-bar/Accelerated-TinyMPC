@@ -57,6 +57,8 @@ extern "C"
 
         tinytype test [DIM][DIM];
 
+        tinytype Qmat [NSTATES][DIM];
+
         // tinytype fwd  [DIM][DIM];
         // tinytype back [DIM][DIM];
         // tinytype max  [DIM][DIM];
@@ -77,95 +79,41 @@ extern "C"
             }
         }
 
+        // for(size_t i = 0; i < NSTATES; i++) {
+        //     for(size_t j = 0; j < DIM; j++) {
+        //         Qmat[i][j] = 0;
+        //     }
+        //     Qmat[i][i%DIM] = solver->work->Q.data[i];
+        // }
+        for(size_t i = 0; i < NSTATES; i++) {
+            for(size_t j = 0; j < DIM; j++) {
+                Qmat[i][j] = 0;
+            }
+            Qmat[i][i%DIM] = solver->work->Q.data[i];
+        }
+        // for(size_t i = 0; i < NSTATES; i+=DIM) {
+        //     for(size_t j = 0; j < DIM; j++) {
+        //         Qmat[i][j] = solver->work->Q.data[i+j];
+        //     }
+        // }
+
+
         mvin_matrix((tinytype *) I, I_spad, DIM, DIM);
         mvin_matrix((tinytype *) nI, nI_spad, DIM, DIM);
-
-        // gemmini_extended3_config_ld(sizeof(float) * DIM, 1.0, false, 0);
-        // gemmini_extended2_config_st(
-        //     stride=1,                 // Assuming stride of 1 for simplicity.
-        //     acc_act=0,                // No activation function required for max.
-        //     acc_scale=1.0,              // Assuming no scaling is needed.
-        //     pool_stride=1,            
-        //     pool_size=2,              
-        //     pool_out_dim=DIM,  // This should match your vector length.
-        //     porows=1,
-        //     pocols=1,
-        //     orows=1,
-        //     ocols=1,
-        //     upad=0,
-        //     lpad=0
-        // );
-        // gemmini_extended2_config_st(DIM*sizeof(float), 0, 1.0, 1, 2, DIM, 1, 1, 2, 1, 0, 0);
-        // gemmini_extended2_config_st(DIM*sizeof(float), 0, 1.0, 1, 2, DIM, 4, 1, 5, 4, 0, 1);
-        // gemmini_extended2_config_st(DIM*sizeof(float), 0, 1.0, 1, 2, DIM, 1, 1, 2, 1, 0, 0);
-        // gemmini_extended2_config_st(DIM*sizeof(float), 0, 1.0, 4, 2, DIM, 1, 1, 2, 1, 0, 0);
-
-        // mvin_matrix((tinytype *) fwd, rI_spad, DIM, DIM);
-        // mvin_matrix((tinytype *) back, nrI_spad, DIM, DIM);
-
-        // gemmini_extended_mvin(fwd, rI_spad, DIM, 1);
-
-        // gemmini_extended2_config_st(DIM*sizeof(float), 0, 1.0, 1, 2, DIM, 1, 1, 2, 4, 0, 1);
-
-        // gemmini_fence();
-        // gemmini_extended_mvout((float*) max, rI_spad, DIM, 1);
-        // gemmini_extended_mvout((float*) max+DIM, rI_spad+1, DIM, 1);
-        // gemmini_extended_mvout((float*) max+2*DIM, rI_spad+2, DIM, 1);
-        // gemmini_extended_mvout((float*) max+3*DIM, rI_spad+3, DIM, 1);
-        // gemmini_fence();
-
-        // printf("Max: ");
-        // for (size_t i = 0; i < DIM*DIM; i++) {
-        //     printf("%0.2f ", ((float *) max)[i]);
-        // }
-        // printf("\n");
-        // exit(0);
-
-
-        // gemmini_extended_config_ex(OUTPUT_STATIONARY, RELU, 0, 1, false, false);
-        // gemmini_extended_config_st(DIM*sizeof(float), 0, 1.0);
-
-        // gemmini_extended_preload(GARBAGE_ADDR, nrI_spad, 4, 4, 4, 4);
-        // gemmini_compute_preloaded(rI_spad,   I_spad);
-        // gemmini_extended_mvout(nrI, nrI_spad, 4, 4);
-        // gemmini_fence();
-
-        // printf("Test_out:\n");
-        // for(size_t i = 0; i < DIM; i++) {
-        //     for(size_t j = 0; j < DIM; j++) {
-        //         printf("%f ", nrI[i][j]);
-        //     }
-        //     printf("\n");
-        // }
-        // exit(0);
 
 
         mvin_matrix((tinytype *) rI, rI_spad, DIM, DIM);
         mvin_matrix((tinytype *) nrI, nrI_spad, DIM, DIM);
         
-        // float temp_test[DIM][DIM];
-        // gemmini_extended_config_ex(OUTPUT_STATIONARY, 0, 0, 1, false, false);
-        // gemmini_extended_preload(GARBAGE_ADDR, 0x100, 4, 4, 4, 4);
-        // gemmini_compute_preloaded(I_spad, nI_spad);
-        // gemmini_extended_config_st(DIM*sizeof(float), 0, 1.0);
-        // printf("Moving Out\n");
-        // gemmini_extended_mvout(temp_test, 0x100, 4, 4);
-        // gemmini_fence();
-        // for (size_t i = 0; i < DIM; i++) {
-        //     for (size_t j = 0; j < DIM; j++) {
-        //         printf("%f ", temp_test[i][j]);
-        //     }
-        //     printf("\n");
-        // }
-        // printf("Done!\n");
-        // exit(0);
-        
         mvin_matrix(solver->cache->Kinf.data, Kinf_spad, NINPUTS, NSTATES);
         mvin_matrix(solver->cache->KinfT.data, KinfT_spad, NSTATES, NINPUTS);
         mvin_matrix(solver->cache->Pinf.data, Pinf_spad, NSTATES, NSTATES);
+        mvin_matrix(solver->cache->PinfT.data, PinfT_spad, NSTATES, NSTATES);
         mvin_matrix(solver->cache->Quu_inv.data, Quu_inv_spad, NINPUTS, NINPUTS);
         mvin_matrix(solver->cache->AmBKt.data, AmBKt_spad, NSTATES,  NSTATES);
         mvin_matrix(solver->cache->coeff_d2p.data, coeff_d2p_spad, NSTATES, NINPUTS);
+
+        mvin_matrix((tinytype *) Qmat, Q_mat_spad, NSTATES, DIM);
 
         mvin_matrix(solver->work->Adyn.data, Adyn_spad, NSTATES, NSTATES);
         mvin_matrix(solver->work->Bdyn.data, Bdyn_spad, NSTATES, NINPUTS);
