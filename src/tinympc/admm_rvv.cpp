@@ -102,6 +102,10 @@ extern "C"
         // gemmini_extended_mvout((float*) max+DIM, 0, DIM, 1);
         // exit(0);
 
+        printf("BdynT spad: %p\n", BdynT_spad);
+        printf("Uref_spad - BANK_ROWS: %p\n", Uref_spad - BANK_ROWS);
+        printf("temp_spad: %p\n", temp_spad);
+
         mvin_matrix((tinytype *) I, I_spad, DIM, DIM);
         mvin_matrix((tinytype *) nI, nI_spad, DIM, DIM);
 
@@ -120,6 +124,7 @@ extern "C"
         mvin_matrix((tinytype *) Qmat, Q_mat_spad, NSTATES, DIM);
 
         mvin_matrix(solver->work->Adyn.data, Adyn_spad, NSTATES, NSTATES);
+        mvin_matrix(solver->work->AdynT.data, AdynT_spad, NSTATES, NSTATES);
         mvin_matrix(solver->work->Bdyn.data, Bdyn_spad, NSTATES, NINPUTS);
         mvin_matrix(solver->work->BdynT.data, BdynT_spad, NINPUTS, NSTATES);
         #endif 
