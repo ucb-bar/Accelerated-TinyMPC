@@ -51,15 +51,48 @@ void matsetv_gemmini(float *a, float *f, int n, int m);
 
 }
 
-// matrix maximum coefficient
+// // matrix maximum coefficient
+// inline float maxcoeff_gemmini(float *a, int n, int m) {
+//     float max1 = std::numeric_limits<float>::min();
+//     float max2 = std::numeric_limits<float>::min();
+//     float max3 = std::numeric_limits<float>::min();
+//     float max4 = std::numeric_limits<float>::min();
+//     int k = n*m;
+//     for(int i = 0; i < n*m; i+=4) {
+//         max1 = a[i+0] > max1 ? a[i+0] : max1;
+//         max2 = a[i+1] > max2 ? a[i+1] : max2;
+//         max3 = a[i+2] > max3 ? a[i+2] : max3;
+//         max4 = a[i+3] > max4 ? a[i+3] : max4;
+//     }
+//     max1 = max2 > max1 ? max2 : max1;
+//     max3 = max4 > max3 ? max4 : max3;
+//     return max3 > max1 ? max3 : max1;
+// }
+
 inline float maxcoeff_gemmini(float *a, int n, int m) {
-    float max = std::numeric_limits<float>::min();
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < m; ++j) {
-            max = a[i * m + j] > max ? a[i * m + j] : max;
-        }
+    float max1 = std::numeric_limits<float>::min();
+    float max2 = std::numeric_limits<float>::min();
+    float max3 = std::numeric_limits<float>::min();
+    float max4 = std::numeric_limits<float>::min();
+    int total = n * m;
+    
+    // Process in chunks of four
+    int limit = total - (total % 4);  // Adjust limit to avoid out of bounds
+    for (int i = 0; i < limit; i += 4) {
+        max1 = std::max(max1, a[i]);
+        max2 = std::max(max2, a[i+1]);
+        max3 = std::max(max3, a[i+2]);
+        max4 = std::max(max4, a[i+3]);
     }
-    return max;
+
+    // Handle the remainder elements
+    for (int i = limit; i < total; ++i) {
+        max1 = std::max(max1, a[i]);
+    }
+
+    // Reduce to single max value
+    max1 = std::max(std::max(max1, max2), std::max(max3, max4));
+    return max1;
 }
 
 // matrix min coefficient

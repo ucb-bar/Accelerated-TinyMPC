@@ -61,7 +61,7 @@ extern "C"
 
         // tinytype fwd  [DIM][DIM];
         // tinytype back [DIM][DIM];
-        // tinytype max  [DIM][DIM];
+        tinytype max  [DIM][DIM];
 
 
         for (size_t i = 0; i < DIM; i++) {
@@ -97,6 +97,10 @@ extern "C"
         //     }
         // }
 
+
+        // gemmini_extended2_config_st(DIM*sizeof(float), 0, 1.0, 1, 2, DIM, 1, 1, 2, 2, 0, 0);
+        // gemmini_extended_mvout((float*) max+DIM, 0, DIM, 1);
+        // exit(0);
 
         mvin_matrix((tinytype *) I, I_spad, DIM, DIM);
         mvin_matrix((tinytype *) nI, nI_spad, DIM, DIM);
@@ -168,6 +172,7 @@ int tiny_solve(TinySolver *solver)
         solver->work->z.set(solver->work->znew.data);
 
         solver->work->iter += 1;
+        // printf("Iter %d!\n", solver->work->iter);
         #ifdef MEASURE_CYCLES
         clock_gettime(CLOCK_MONOTONIC, &end);
         uint64_t timediff = (end.tv_sec - start.tv_sec)* 1e9 + (end.tv_nsec - start.tv_nsec);
