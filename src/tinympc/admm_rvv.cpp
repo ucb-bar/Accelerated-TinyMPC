@@ -54,6 +54,7 @@ extern "C"
         tinytype nI [DIM][DIM];
         tinytype rI [DIM][DIM];
         tinytype nrI [DIM][DIM];
+        tinytype zero [DIM][DIM];
 
         tinytype test [DIM][DIM];
 
@@ -71,6 +72,7 @@ extern "C"
                 nI[i][j] = -(i == j);
                 rI[i][j] = (i == j) * solver->cache->rho;
                 nrI[i][j] = -(i == j) * solver->cache->rho;
+                zero[i][j] = 0.0;
                 // fwd[i][j] = i*DIM + j;
                 // back[i][j] = 15 - (i*DIM + j);
                 /* The line `test[i][j] = i*DIM + j - 8.0;` is initializing the elements of the `test`
@@ -112,6 +114,7 @@ extern "C"
 
         mvin_matrix((tinytype *) rI, rI_spad, DIM, DIM);
         mvin_matrix((tinytype *) nrI, nrI_spad, DIM, DIM);
+        mvin_matrix((tinytype *) zero, zero_spad, DIM, DIM);
         
         mvin_matrix(solver->cache->Kinf.data, Kinf_spad, NINPUTS, NSTATES);
         mvin_matrix(solver->cache->KinfT.data, KinfT_spad, NSTATES, NINPUTS);
@@ -157,10 +160,18 @@ int tiny_solve(TinySolver *solver)
         #endif
         if (solver->work->iter % solver->settings->check_termination == 0)
         {
+            #ifdef USE_GEMMINI
+            primal_dual_residual_state(solver);
+            #else
             primal_residual_state(solver);
             dual_residual_state(solver);
+            #endif
+            #ifdef USE_GEMMINI
+            primal_dual_residual_input(solver);
+            #else
             primal_residual_input(solver);
             dual_residual_input(solver);
+            #endif
             if (solver->work->primal_residual_state < solver->settings->abs_pri_tol &&
                 solver->work->primal_residual_input < solver->settings->abs_pri_tol &&
                 solver->work->dual_residual_state < solver->settings->abs_dua_tol &&

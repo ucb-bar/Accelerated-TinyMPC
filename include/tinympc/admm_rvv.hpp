@@ -260,16 +260,16 @@ inline void backward_pass_1(TinySolver *solver, int i) {
     // matmul(solver->work->p.col(i + 1), solver->work->BdynT.data, solver->work->u1.data, 1, NINPUTS, NSTATES);
     // matadd(solver->work->r.col(i), solver->work->u1.data, solver->work->u2.data, 1, NINPUTS);
     // matmul(solver->work->u2.data, solver->cache->Quu_inv.data, solver->work->d.col(i), 1, NINPUTS, NINPUTS);
-    // printf("u1:  ");
-    // for(int j = 0; j < NINPUTS; j++) {
-    //     printf("%0.5f ", solver->work->u1.data[j]);
-    // }
-    // printf("\n");
-    // printf("u2:  ");
-    // for(int j = 0; j < NINPUTS; j++) {
-    //     printf("%0.5f ", solver->work->u2.data[j]);
-    // }
-    // printf("\n");
+    // // printf("u1:  ");
+    // // for(int j = 0; j < NINPUTS; j++) {
+    // //     printf("%0.5f ", solver->work->u1.data[j]);
+    // // }
+    // // printf("\n");
+    // // printf("u2:  ");
+    // // for(int j = 0; j < NINPUTS; j++) {
+    // //     printf("%0.5f ", solver->work->u2.data[j]);
+    // // }
+    // // printf("\n");
     // printf("d2:  ");
     // for(int j = 0; j < NINPUTS; j++) {
     //     printf("%0.5f ", solver->work->d.col(i)[j]);
@@ -305,6 +305,11 @@ inline void backward_pass_2(TinySolver *solver, int i) {
     // gemmini_extended_mvin2(solver->work->p.col(i+1), p_spad + (i+1)*NSTATES, 1, DIM);
     // gemmini_extended_mvin2(solver->work->p.col(i+1) + DIM, p_spad + (i+1)*NSTATES + DIM, 1, DIM);
     // gemmini_extended_mvin2(solver->work->p.col(i+1) + 2*DIM, p_spad + (i+1)*NSTATES + 2*DIM, 1, DIM);
+    // printf("q1:  ");
+    // for(int j = 0; j < NSTATES; j++) {
+    //     printf("%0.5f ", solver->work->q.col(i)[j]);
+    // }
+    // printf("\n");
     
     gemmini_extended_mvin2(solver->work->q.col(i), q_spad + i*NSTATES, 1, DIM);
     gemmini_extended_mvin2(solver->work->q.col(i) +DIM, q_spad + i*NSTATES + DIM, 1, DIM);
@@ -638,6 +643,70 @@ inline void update_slack_2(TinySolver *solver) {
     TRACE_CHECKSUM(update_slack_2, solver->work->vnew);
 }
 
+inline void primal_dual_residual_state(TinySolver *solver) {
+    gemmini_extended_config_ex(OUTPUT_STATIONARY, RELU, 0, 1, false, false);
+    gemmini_extended_config_st(DIM*sizeof(float), 0, 1.0);
+    gemmini_extended3_config_ld(sizeof(float) * DIM, 1.0, false, 0);
+
+    // gemmini_extended_preload(GARBAGE_ADDR, nrI_spad, 4, 4, 4, 4);
+    // gemmini_compute_preloaded(rI_spad,   I_spad);
+    // gemmini_extended_mvout(nrI, nrI_spad, 4, 4);
+    // gemmini_fence();
+    size_t i;
+    uint8_t remainder;
+
+
+    remainder = DIM;
+    // temp_spad + 2*DIM: pos_relu
+    // temp_spad + 3*DIM: neg_relu
+    // temp_spad + 4*DIM: abs_relu 
+    for(i = 0; i < (NHORIZON * NSTATES) / (DIM * DIM); i++) {
+        gemmini_extended_mvin(solver->work->v.data + i*DIM*DIM, temp_spad, DIM, remainder);
+        gemmini_extended_mvin(solver->work->x.data + i*DIM*DIM, temp_spad+5*DIM, DIM, remainder);
+        gemmini_extended_mvin(solver->work->vnew.data + i*DIM*DIM, temp_spad + 1*DIM, DIM, remainder);
+        gemmini_extended_preload(temp_spad, temp_spad+2*DIM, 4, 4, 4, 4); // preload x
+        gemmini_compute_preloaded(nI_spad,   temp_spad + 1*DIM); // vnew
+        gemmini_extended_preload(temp_spad+1*DIM, temp_spad+3*DIM, 4, 4, 4, 4); // preload vnew
+        gemmini_compute_preloaded(nI_spad,   temp_spad+5*DIM); // x
+        gemmini_extended_preload(temp_spad+2*DIM, temp_spad+4*DIM, 4, 4, 4, 4); // preload vnew
+        gemmini_compute_preloaded(I_spad,   temp_spad+3*DIM); // x
+
+        gemmini_extended_mvout(solver->work->s1.data + i*DIM*DIM, temp_spad+ 2*DIM, DIM, remainder);
+
+        gemmini_extended_preload(temp_spad, temp_spad+2*DIM, 4, 4, 4, 4); // preload v
+        gemmini_compute_preloaded(nI_spad,   temp_spad + 1*DIM); // vnew
+        gemmini_extended_preload(temp_spad+1*DIM, temp_spad+3*DIM, 4, 4, 4, 4); // preload vnew
+        gemmini_compute_preloaded(nI_spad,   temp_spad); // v
+        gemmini_extended_preload(temp_spad+2*DIM, temp_spad+4*DIM, 4, 4, 4, 4); // preload vnew
+        gemmini_compute_preloaded(I_spad,   temp_spad+3*DIM); // v
+        gemmini_extended_mvout(solver->work->s2.data + i*DIM*DIM, temp_spad+ 2*DIM, DIM, remainder);
+    }
+    remainder = ((NHORIZON * NSTATES) / DIM) % DIM;
+        gemmini_extended_mvin(solver->work->v.data + i*DIM*DIM, temp_spad, DIM, remainder);
+        gemmini_extended_mvin(solver->work->x.data + i*DIM*DIM, temp_spad+5*DIM, DIM, remainder);
+        gemmini_extended_mvin(solver->work->vnew.data + i*DIM*DIM, temp_spad + 1*DIM, DIM, remainder);
+        gemmini_extended_preload(temp_spad, temp_spad+2*DIM, 4, 4, 4, 4); // preload x
+        gemmini_compute_preloaded(nI_spad,   temp_spad + 1*DIM); // vnew
+        gemmini_extended_preload(temp_spad+1*DIM, temp_spad+3*DIM, 4, 4, 4, 4); // preload vnew
+        gemmini_compute_preloaded(nI_spad,   temp_spad+5*DIM); // x
+        gemmini_extended_preload(temp_spad+2*DIM, temp_spad+4*DIM, 4, 4, 4, 4); // preload vnew
+        gemmini_compute_preloaded(I_spad,   temp_spad+3*DIM); // x
+
+        gemmini_extended_mvout(solver->work->s1.data + i*DIM*DIM, temp_spad+ 2*DIM, DIM, remainder);
+
+        gemmini_extended_preload(temp_spad, temp_spad+2*DIM, 4, 4, 4, 4); // preload v
+        gemmini_compute_preloaded(nI_spad,   temp_spad + 1*DIM); // vnew
+        gemmini_extended_preload(temp_spad+1*DIM, temp_spad+3*DIM, 4, 4, 4, 4); // preload vnew
+        gemmini_compute_preloaded(nI_spad,   temp_spad); // v
+        gemmini_extended_preload(temp_spad+2*DIM, temp_spad+4*DIM, 4, 4, 4, 4); // preload vnew
+        gemmini_compute_preloaded(I_spad,   temp_spad+3*DIM); // v
+        gemmini_extended_mvout(solver->work->s2.data + i*DIM*DIM, temp_spad+ 2*DIM, DIM, remainder);
+    gemmini_fence();
+
+    solver->work->primal_residual_state = maxcoeff(solver->work->s1.data, NHORIZON, NSTATES);
+    solver->work->dual_residual_state = maxcoeff(solver->work->s2.data, NHORIZON, NSTATES)*solver->cache->rho;
+
+}
 
 inline void primal_residual_state(TinySolver *solver) {
     #ifdef USE_GEMMINI
@@ -739,6 +808,69 @@ inline void dual_residual_state(TinySolver *solver) {
     cwiseabs(solver->work->s1.data, solver->work->s2.data, NHORIZON, NSTATES);
     solver->work->dual_residual_state = maxcoeff(solver->work->s2.data, NHORIZON, NSTATES) * solver->cache->rho;
     TRACE_CHECKSUM(dual_residual_state, solver->work->s2);
+    #endif
+}
+
+inline void primal_dual_residual_input(TinySolver *solver) {
+    #ifdef USE_GEMMINI
+    gemmini_extended_config_ex(OUTPUT_STATIONARY, RELU, 0, 1, false, false);
+    gemmini_extended_config_st(DIM*sizeof(float), 0, 1.0);
+    gemmini_extended3_config_ld(sizeof(float) * DIM, 1.0, false, 0);
+
+    size_t i;
+    uint8_t remainder;
+
+
+
+    remainder = DIM;
+    for(i = 0; i < ((NHORIZON-1) * NINPUTS) / (DIM * DIM); i++) {
+        gemmini_extended_mvin(solver->work->z.data + i*DIM*DIM, temp_spad, DIM, remainder);
+        gemmini_extended_mvin(solver->work->u.data + i*DIM*DIM, temp_spad+5*DIM, DIM, remainder);
+        gemmini_extended_mvin(solver->work->znew.data + i*DIM*DIM, temp_spad + 1*DIM, DIM, remainder);
+        gemmini_extended_preload(temp_spad, temp_spad+2*DIM, 4, 4, 4, 4); // preload x
+        gemmini_compute_preloaded(nI_spad,   temp_spad + 1*DIM); // vnew
+        gemmini_extended_preload(temp_spad+1*DIM, temp_spad+3*DIM, 4, 4, 4, 4); // preload vnew
+        gemmini_compute_preloaded(nI_spad,   temp_spad + 5*DIM); // x
+        gemmini_extended_preload(temp_spad+2*DIM, temp_spad+4*DIM, 4, 4, 4, 4); // preload vnew
+        gemmini_compute_preloaded(I_spad,   temp_spad+3*DIM); // x
+        gemmini_extended_mvout(solver->work->m1.data + i*DIM*DIM, temp_spad+ 2*DIM, DIM, remainder);
+
+        gemmini_extended_preload(temp_spad, temp_spad+2*DIM, 4, 4, 4, 4); // preload x
+        gemmini_compute_preloaded(nI_spad,   temp_spad + 1*DIM); // vnew
+        gemmini_extended_preload(temp_spad+1*DIM, temp_spad+3*DIM, 4, 4, 4, 4); // preload vnew
+        gemmini_compute_preloaded(nI_spad,   temp_spad); // x
+        gemmini_extended_preload(temp_spad+2*DIM, temp_spad+4*DIM, 4, 4, 4, 4); // preload vnew
+        gemmini_compute_preloaded(I_spad,   temp_spad+3*DIM); // x
+        gemmini_extended_mvout(solver->work->m2.data + i*DIM*DIM, temp_spad+ 2*DIM, DIM, remainder);
+    }
+    remainder = (((NHORIZON-1) * NINPUTS) / DIM) % DIM;
+        gemmini_extended_mvin(solver->work->z.data + i*DIM*DIM, temp_spad, DIM, remainder);
+        gemmini_extended_mvin(solver->work->u.data + i*DIM*DIM, temp_spad+5*DIM, DIM, remainder);
+        gemmini_extended_mvin(solver->work->znew.data + i*DIM*DIM, temp_spad + 1*DIM, DIM, remainder);
+        gemmini_extended_preload(temp_spad, temp_spad+2*DIM, 4, 4, 4, 4); // preload x
+        gemmini_compute_preloaded(nI_spad,   temp_spad + 1*DIM); // vnew
+        gemmini_extended_preload(temp_spad+1*DIM, temp_spad+3*DIM, 4, 4, 4, 4); // preload vnew
+        gemmini_compute_preloaded(nI_spad,   temp_spad + 5*DIM); // x
+        gemmini_extended_preload(temp_spad+2*DIM, temp_spad+4*DIM, 4, 4, 4, 4); // preload vnew
+        gemmini_compute_preloaded(I_spad,   temp_spad+3*DIM); // x
+        gemmini_extended_mvout(solver->work->m1.data + i*DIM*DIM, temp_spad+ 2*DIM, DIM, remainder);
+
+        gemmini_extended_preload(temp_spad, temp_spad+2*DIM, 4, 4, 4, 4); // preload x
+        gemmini_compute_preloaded(nI_spad,   temp_spad + 1*DIM); // vnew
+        gemmini_extended_preload(temp_spad+1*DIM, temp_spad+3*DIM, 4, 4, 4, 4); // preload vnew
+        gemmini_compute_preloaded(nI_spad,   temp_spad); // x
+        gemmini_extended_preload(temp_spad+2*DIM, temp_spad+4*DIM, 4, 4, 4, 4); // preload vnew
+        gemmini_compute_preloaded(I_spad,   temp_spad+3*DIM); // x
+        gemmini_extended_mvout(solver->work->m2.data + i*DIM*DIM, temp_spad+ 2*DIM, DIM, remainder);
+    gemmini_fence();
+    solver->work->primal_residual_input = maxcoeff(solver->work->m1.data, NHORIZON - 1, NINPUTS);
+    solver->work->dual_residual_input = maxcoeff(solver->work->m1.data, NHORIZON - 1, NINPUTS)*solver->cache->rho;
+    #else
+
+    matsub(solver->work->u.data, solver->work->znew.data, solver->work->m1.data, NHORIZON - 1, NINPUTS);
+    cwiseabs(solver->work->m1.data, solver->work->m2.data, NHORIZON - 1, NINPUTS);
+    solver->work->primal_residual_input = maxcoeff(solver->work->m2.data, NHORIZON - 1, NINPUTS);
+    TRACE_CHECKSUM(primal_residual_input, solver->work->m2);
     #endif
 }
 
@@ -865,28 +997,102 @@ inline void update_linear_cost_1(TinySolver *solver) {
     TRACE_CHECKSUM(update_linear_cost_1, solver->work->r);
     #endif
 }
+inline void update_linear_cost_2_full(TinySolver *solver) {
+
+    #ifdef USE_GEMMINI
+    gemmini_extended_config_ex(OUTPUT_STATIONARY, 0, 0, 1, false, false);
+    gemmini_extended_config_st(sizeof(float)*DIM, 0, 1.0);
+    gemmini_extended3_config_ld(sizeof(float)*DIM, -1.0, false, 2);
+    uint32_t temp_Xref_0 = temp_spad + 3*DIM;
+    uint32_t temp_Xref_1 = temp_spad + 4*DIM;
+    uint32_t temp_Xref_2 = temp_spad + 5*DIM;
+
+    gemmini_preload_zeros(temp_Xref_0);
+    gemmini_compute_preloaded(I_spad, zero_spad);
+    gemmini_preload_zeros(temp_Xref_1);
+    gemmini_compute_preloaded(I_spad, zero_spad);
+    gemmini_preload_zeros(temp_Xref_2);
+    gemmini_compute_preloaded(I_spad, zero_spad);
+
+    for(size_t i = 0; i < NHORIZON; i++) {
+        gemmini_extended_mvin3(solver->work->Xref.col(i),         temp_Xref_0, DIM, 1);
+        gemmini_extended_mvin3(solver->work->Xref.col(i) + DIM,   temp_Xref_1, DIM, 1);
+        gemmini_extended_mvin3(solver->work->Xref.col(i) + 2*DIM, temp_Xref_2, DIM, 1);
+
+        gemmini_extended_preload(GARBAGE_ADDR, temp_spad+ 0*DIM, 4, 1, 4, 1);
+        gemmini_compute_preloaded(Q_mat_spad + 0*DIM,  temp_Xref_0);
+        gemmini_extended_preload(GARBAGE_ADDR, temp_spad + 1*DIM, 4, 1, 4, 1);
+        gemmini_compute_preloaded(Q_mat_spad + 1*DIM,  temp_Xref_1);
+        gemmini_extended_preload(GARBAGE_ADDR, temp_spad  + 2*DIM, 4, 1, 4, 1);
+        gemmini_compute_preloaded(Q_mat_spad + 2*DIM,  temp_Xref_2);
+        
+        gemmini_extended_mvout(solver->work->q.data + i*NSTATES + 0*DIM, temp_spad + 0*DIM, 4, 1);
+        gemmini_extended_mvout(solver->work->q.data + i*NSTATES + 1*DIM, temp_spad + 1*DIM, 4, 1);
+        gemmini_extended_mvout(solver->work->q.data + i*NSTATES + 2*DIM, temp_spad + 2*DIM, 4, 1);
+        // gemmini_fence();
+    }
+    // gemmini_fence();
+    // printf("q: ");
+    // for(int j = 0; j < NSTATES*NHORIZON; j++) {
+    //     printf("%0.5f ", solver->work->q.data[j]);
+    // }
+    // printf("\n\n");
+
+    // // printf("q: ");
+    // // for(int j = 0; j < NSTATES; j++) {
+    // //     printf("%0.5f ", solver->work->q.col(i)[j]);
+    // // }
+    // // printf("\n");
+    // for(size_t i = 0; i < NHORIZON; i++) { 
+    //     cwisemul(solver->work->Xref.col(i), solver->work->Q.data, solver->work->x1.data, 1, NSTATES);
+    //     matneg(solver->work->x1.data, solver->work->q.col(i), 1, NSTATES);
+    // }
+    // printf("q: ");
+    // for(int j = 0; j < NSTATES*NHORIZON; j++) {
+    //     printf("%0.5f ", solver->work->q.data[j]);
+    // }
+    // printf("\n\n");
+    // exit(0);
+
+    // printf("q: ");
+    // for(int j = 0; j < NSTATES; j++) {
+    //     printf("%0.5f ", solver->work->q.col(i)[j]);
+    // }
+    // printf("\n");
+    // exit(0);
+
+    #else
+    for(size_t i = 0; i < NHORIZON; i++) {
+        cwisemul(solver->work->Xref.col(i), solver->work->Q.data, solver->work->x1.data, 1, NSTATES);
+        matneg(solver->work->x1.data, solver->work->q.col(i), 1, NSTATES);
+    }
+    // cwisemul(solver->work->Xref.col(i), solver->work->Q.data, solver->work->x1.data, 1, NSTATES);
+    // matneg(solver->work->x1.data, solver->work->q.col(i), 1, NSTATES);
+    TRACE_CHECKSUM(update_linear_cost_2, solver->work->q);
+    #endif
+}
 
 inline void update_linear_cost_2(TinySolver *solver, int i) {
 
     #ifdef USE_GEMMINI
-    gemmini_extended_config_ex(OUTPUT_STATIONARY, 0, 0, 1, true, true);
-    gemmini_extended_config_st(4, 0, 1.0);
-    gemmini_extended3_config_ld(4, -1.0, false, 2);
+    // gemmini_extended_config_ex(OUTPUT_STATIONARY, 0, 0, 1, true, true);
+    // gemmini_extended_config_st(4, 0, 1.0);
+    // gemmini_extended3_config_ld(4, -1.0, false, 2);
 
-    gemmini_extended_mvin3(solver->work->Xref.col(i), Xref_spad         + (i)*NSTATES, 1, DIM);
-    gemmini_extended_mvin3(solver->work->Xref.col(i) + DIM, Xref_spad   + (i)*NSTATES + DIM, 1, DIM);
-    gemmini_extended_mvin3(solver->work->Xref.col(i) + 2*DIM, Xref_spad + (i)*NSTATES + 2*DIM, 1, DIM);
+    // gemmini_extended_mvin3(solver->work->Xref.col(i), Xref_spad         + (i)*NSTATES, 1, DIM);
+    // gemmini_extended_mvin3(solver->work->Xref.col(i) + DIM, Xref_spad   + (i)*NSTATES + DIM, 1, DIM);
+    // gemmini_extended_mvin3(solver->work->Xref.col(i) + 2*DIM, Xref_spad + (i)*NSTATES + 2*DIM, 1, DIM);
 
-    gemmini_extended_preload(GARBAGE_ADDR, q_spad + i*NSTATES + 0*DIM, 4, 4, 4, 1);
-    gemmini_compute_preloaded(Q_mat_spad + 0*DIM,  Xref_spad + i*NSTATES + 0*DIM);
-    gemmini_extended_preload(GARBAGE_ADDR, q_spad + i*NSTATES + 1*DIM, 4, 4, 4, 1);
-    gemmini_compute_preloaded(Q_mat_spad + 1*DIM,  Xref_spad + i*NSTATES + 1*DIM);
-    gemmini_extended_preload(GARBAGE_ADDR, q_spad + i*NSTATES + 2*DIM, 4, 4, 4, 1);
-    gemmini_compute_preloaded(Q_mat_spad + 2*DIM,  Xref_spad + i*NSTATES + 2*DIM);
+    // gemmini_extended_preload(GARBAGE_ADDR, q_spad + i*NSTATES + 0*DIM, 4, 4, 4, 1);
+    // gemmini_compute_preloaded(Q_mat_spad + 0*DIM,  Xref_spad + i*NSTATES + 0*DIM);
+    // gemmini_extended_preload(GARBAGE_ADDR, q_spad + i*NSTATES + 1*DIM, 4, 4, 4, 1);
+    // gemmini_compute_preloaded(Q_mat_spad + 1*DIM,  Xref_spad + i*NSTATES + 1*DIM);
+    // gemmini_extended_preload(GARBAGE_ADDR, q_spad + i*NSTATES + 2*DIM, 4, 4, 4, 1);
+    // gemmini_compute_preloaded(Q_mat_spad + 2*DIM,  Xref_spad + i*NSTATES + 2*DIM);
     
-    gemmini_extended_mvout(solver->work->q.data + i*NSTATES + 0*DIM, q_spad + i*NSTATES + 0*DIM, 4, 1);
-    gemmini_extended_mvout(solver->work->q.data + i*NSTATES + 1*DIM, q_spad + i*NSTATES + 1*DIM, 4, 1);
-    gemmini_extended_mvout(solver->work->q.data + i*NSTATES + 2*DIM, q_spad + i*NSTATES + 2*DIM, 4, 1);
+    // gemmini_extended_mvout(solver->work->q.data + i*NSTATES + 0*DIM, q_spad + i*NSTATES + 0*DIM, 4, 1);
+    // gemmini_extended_mvout(solver->work->q.data + i*NSTATES + 1*DIM, q_spad + i*NSTATES + 1*DIM, 4, 1);
+    // gemmini_extended_mvout(solver->work->q.data + i*NSTATES + 2*DIM, q_spad + i*NSTATES + 2*DIM, 4, 1);
     // gemmini_fence();
 
     // printf("q: ");
@@ -894,8 +1100,8 @@ inline void update_linear_cost_2(TinySolver *solver, int i) {
     //     printf("%0.5f ", solver->work->q.col(i)[j]);
     // }
     // printf("\n");
-    // cwisemul(solver->work->Xref.col(i), solver->work->Q.data, solver->work->x1.data, 1, NSTATES);
-    // matneg(solver->work->x1.data, solver->work->q.col(i), 1, NSTATES);
+    cwisemul(solver->work->Xref.col(i), solver->work->Q.data, solver->work->x1.data, 1, NSTATES);
+    matneg(solver->work->x1.data, solver->work->q.col(i), 1, NSTATES);
 
     // printf("q: ");
     // for(int j = 0; j < NSTATES; j++) {
@@ -1130,6 +1336,7 @@ inline void update_primal(TinySolver *solver)
 {
     CYCLE_CNT_WRAPPER(backward_pass, solver, "update_primal_backward_pass");
     CYCLE_CNT_WRAPPER(forward_pass, solver, "update_primal_forward_pass");
+    // exit(0);
 }
 
 /**
@@ -1140,6 +1347,9 @@ inline void update_slack(TinySolver *solver)
 {
     update_slack_1(solver);
     update_slack_2(solver);
+    #ifdef USE_GEMMINI
+    gemmini_fence();
+    #endif
 }
 
 /**
@@ -1149,6 +1359,9 @@ inline void update_slack(TinySolver *solver)
 inline void update_dual(TinySolver *solver)
 {
     update_dual_1(solver);
+    #ifdef USE_GEMMINI
+    gemmini_fence();
+    #endif
 }
 
 
@@ -1158,15 +1371,19 @@ inline void update_dual(TinySolver *solver)
  */
 inline void update_linear_cost(TinySolver *solver)
 {
+    // for (int i = 0; i < NHORIZON; i++) {
+    //     update_linear_cost_2(solver, i);
+    // }
+    update_linear_cost_2_full(solver);
     update_linear_cost_1(solver);
-    for (int i = 0; i < NHORIZON; i++) {
-        update_linear_cost_2(solver, i);
-    }
     #ifdef USE_GEMMINI
     gemmini_fence();
     #endif
     update_linear_cost_3(solver);
     update_linear_cost_4(solver);
+    #ifdef USE_GEMMINI
+    gemmini_fence();
+    #endif
 }
 
 void tiny_init(TinySolver *solver);
