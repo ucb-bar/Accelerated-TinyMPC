@@ -219,7 +219,7 @@ const static spad_ptr_t Xref_spad = x_max_spad + SPAD_VEC_ROWS(NSTATES * NHORIZO
 const static spad_ptr_t Uref_spad = Xref_spad + SPAD_VEC_ROWS(NSTATES * NHORIZON);
 
 // const static spad_ptr_t temp_spad = 2*BANK_ROWS;
-const static spad_ptr_t temp_spad = BANK_ROWS/2;
+const static spad_ptr_t temp_spad = BANK_ROWS*3/4;
 #endif
 
 typedef struct
