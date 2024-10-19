@@ -125,25 +125,25 @@ inline void matvec_rvv_12x4(float ** a, float **b, float **c) {
 
     vec_a = __riscv_vle32_v_f32m1(ptr_a, 12);
     vec_s = __riscv_vfmul_vv_f32m1(vec_a, vec_b, 12);
-    vec_sum = __riscv_vfredosum_vs_f32m1_f32m1(vec_s, vec_zero, 12);
+    vec_sum = __riscv_vfredusum_vs_f32m1_f32m1(vec_s, vec_zero, 12);
     sum = __riscv_vfmv_f_s_f32m1_f32(vec_sum);
     ptr_c[0] = sum;
 
     vec_a = __riscv_vle32_v_f32m1(ptr_a + 12, 12);
     vec_s = __riscv_vfmul_vv_f32m1(vec_a, vec_b, 12);
-    vec_sum = __riscv_vfredosum_vs_f32m1_f32m1(vec_s, vec_zero, 12);
+    vec_sum = __riscv_vfredusum_vs_f32m1_f32m1(vec_s, vec_zero, 12);
     sum = __riscv_vfmv_f_s_f32m1_f32(vec_sum);
     ptr_c[1] = sum;
 
     vec_a = __riscv_vle32_v_f32m1(ptr_a + 24, 12);
     vec_s = __riscv_vfmul_vv_f32m1(vec_a, vec_b, 12);
-    vec_sum = __riscv_vfredosum_vs_f32m1_f32m1(vec_s, vec_zero, 12);
+    vec_sum = __riscv_vfredusum_vs_f32m1_f32m1(vec_s, vec_zero, 12);
     sum = __riscv_vfmv_f_s_f32m1_f32(vec_sum);
     ptr_c[2] = sum;
 
     vec_a = __riscv_vle32_v_f32m1(ptr_a + 36, 12);
     vec_s = __riscv_vfmul_vv_f32m1(vec_a, vec_b, 12);
-    vec_sum = __riscv_vfredosum_vs_f32m1_f32m1(vec_s, vec_zero, 12);
+    vec_sum = __riscv_vfredusum_vs_f32m1_f32m1(vec_s, vec_zero, 12);
     sum = __riscv_vfmv_f_s_f32m1_f32(vec_sum);
     ptr_c[3] = sum;
 }
@@ -165,7 +165,7 @@ inline void matvec_rvv_12x4(float ** a, float **b, float **c) {
 //     for (int i = 0; i < 4; i++) {
 //         vec_a = __riscv_vle32_v_f32m1(ptr_a + i * 12, 12); // Correctly advance ptr_a for each row
 //         vec_s = __riscv_vfmul_vv_f32m1(vec_a, vec_b, 12);
-//         vec_sum = __riscv_vfredosum_vs_f32m1_f32m1(vec_s, vec_zero, 12);
+//         vec_sum = __riscv_vfredusum_vs_f32m1_f32m1(vec_s, vec_zero, 12);
 //         sum = __riscv_vfmv_f_s_f32m1_f32(vec_sum);
 //         ptr_c[i] = sum; // Assign the result to the correct position in c
 //     }
@@ -197,10 +197,10 @@ inline void forward_pass_redu(TinySolver *solver, int i) {
     vec_s_2 = __riscv_vfmul_vv_f32m1(vec_a_2, vec_b, 12);
     vec_s_3 = __riscv_vfmul_vv_f32m1(vec_a_3, vec_b, 12);
 
-    vec_sum_0 = __riscv_vfredosum_vs_f32m1_f32m1(vec_s_0, vec_zero, 12);
-    vec_sum_1 = __riscv_vfredosum_vs_f32m1_f32m1(vec_s_1, vec_zero, 12);
-    vec_sum_2 = __riscv_vfredosum_vs_f32m1_f32m1(vec_s_2, vec_zero, 12);
-    vec_sum_3 = __riscv_vfredosum_vs_f32m1_f32m1(vec_s_3, vec_zero, 12);
+    vec_sum_0 = __riscv_vfredusum_vs_f32m1_f32m1(vec_s_0, vec_zero, 12);
+    vec_sum_1 = __riscv_vfredusum_vs_f32m1_f32m1(vec_s_1, vec_zero, 12);
+    vec_sum_2 = __riscv_vfredusum_vs_f32m1_f32m1(vec_s_2, vec_zero, 12);
+    vec_sum_3 = __riscv_vfredusum_vs_f32m1_f32m1(vec_s_3, vec_zero, 12);
 
     ptr_c[0] = __riscv_vfmv_f_s_f32m1_f32(vec_sum_0);
     ptr_c[1] = __riscv_vfmv_f_s_f32m1_f32(vec_sum_1);
@@ -387,7 +387,7 @@ inline void backward_pass_1(TinySolver *solver, int i) {
     for(int j = 0; j < NINPUTS; j++) {
         vec_q_0 = __riscv_vle32_v_f32m1(ptr_q + j * NINPUTS, NINPUTS);
         vec_s_0 = __riscv_vfmul_vv_f32m1(vec_q_0, vec_s_4, 12);
-        vec_sum_0 = __riscv_vfredosum_vs_f32m1_f32m1(vec_s_0, vec_zero, NINPUTS);
+        vec_sum_0 = __riscv_vfredusum_vs_f32m1_f32m1(vec_s_0, vec_zero, NINPUTS);
         ptr_d[j] = __riscv_vfmv_f_s_f32m1_f32(vec_sum_0);
     }
 
@@ -856,8 +856,7 @@ inline void update_linear_cost_3(TinySolver *solver) {
         vec_q = __riscv_vle32_v_f32(ptr_q, vl);
         vec_vnew = __riscv_vle32_v_f32(ptr_vnew, vl);
         vec_s = __riscv_vfsub_vv_f32(vec_vnew, vec_g, vl);
-        vec_s = __riscv_vfmul_vf_f32(vec_s, rho, vl);
-        vec_s = __riscv_vfsub_vv_f32(vec_q, vec_s, vl);
+        vec_s = __riscv_vfmsac_vf_f32(vec_q, rho, vec_s, vl);
         __riscv_vse32_v_f32(ptr_q, vec_s, vl);
     }
 
