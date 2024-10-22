@@ -54,21 +54,3 @@ make
 ./examples/codegen_cartpole
 ```
 
-## Citing TinyMPC
-
-If you are using TinyMPC, we encourage you to
-
-* [Cite the related papers](https://tinympc.org/docs/citing/),
-* Put a star on this repository.
-
-**Excited to hear your TinyMPC success stories—share them with us!**
-
-## Bug reports and support
-
-Please report any issues via the [Github issue tracker](https://github.com/TinyMPC/TinyMPC/issues). All types of issues are welcome including bug reports, documentation typos, feature requests and so on.
-
-## Running on MCUs
-
-Numerical benchmarks against other solvers on MCUs are available [here](https://github.com/RoboticExplorationLab/mcu-solver-benchmarks).
-
-## Notes
