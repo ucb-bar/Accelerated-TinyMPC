@@ -1,18 +1,26 @@
-# TinyMPC
+# Accelerated TinyMPC
 
-Model-predictive control on resource-constrained microcontrollers
+This repository contains the implementation of **Accelerated TinyMPC**, a project focused on design space exploration of embedded architectures for real-time optimal control. It aims to profile, optimize, and accelerate **TinyMPC** [tinympc.org](https://tinympc.org/) workloads using scalar CPUs, vector architectures, and domain-specific accelerators such as **RISC-V** cores, **Saturn vector units**, and **Gemmini systolic arrays**. The project provides profiling and acceleration results; and demonstrates quantitative performance and area trade-offs across various architectures, aiming to find the most effective hardware optimizations for robotic model-based control algorithms.
 
-If you have any questions related to the solver, visit the [GitHub Discussions](https://github.com/orgs/TinyMPC/discussions) page. This guarantees accessibility for everyone.
 
-The documentation is available at [tinympc.org](https://tinympc.org/)
+## Report
+
+For detailed insights into the design space exploration and performance evaluations, please refer to the attached report:  
+[Design-Space-Exploration-of-Embedded-SoC-Architectures-for-Real-Time-Optimal-Control.pdf](Design-Space-Exploration-of-Embedded-SoC-Architectures-for-Real-Time-Optimal-Control.pdf)
+
+
+----
+
+# Usage
 
 ## Building
 
 1. On terminal, clone this repo
 
-```bash
-git clone https://github.com/TinyMPC/TinyMPC.git
-```
+   ```bash
+   git clone https://github.com/ucb-bar/Accelerated-TinyMPC.git
+   cd Accelerated-TinyMPC
+
 
 2. Navigate to root directory and run
 
