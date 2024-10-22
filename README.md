@@ -1,6 +1,6 @@
 # Accelerated TinyMPC
 
-This repository contains the implementation of **Accelerated TinyMPC**, a project focused on design space exploration of embedded architectures for real-time optimal control. It aims to profile, optimize, and accelerate **TinyMPC** [tinympc.org](https://tinympc.org/) workloads using scalar CPUs, vector architectures, and domain-specific accelerators such as **RISC-V** cores, **Saturn vector units**, and **Gemmini systolic arrays**. The project provides profiling and acceleration results; and demonstrates quantitative performance and area trade-offs across various architectures, aiming to find the most effective hardware optimizations for robotic model-based control algorithms.
+This repository contains the implementation of **Accelerated TinyMPC**, a project focused on design space exploration of embedded architectures for real-time optimal control. It aims to profile, optimize, and accelerate  [TinyMPC](https://tinympc.org/) workloads using scalar CPUs, vector architectures, and domain-specific accelerators such as **RISC-V** cores, **Saturn vector units**, and **Gemmini systolic arrays**. The project provides profiling and acceleration results; and demonstrates quantitative performance and area trade-offs across various architectures, aiming to find the most effective hardware optimizations for robotic model-based control algorithms.
 
 
 ## Report
