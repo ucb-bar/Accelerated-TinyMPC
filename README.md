@@ -1,14 +1,26 @@
-# TinyMPC
+# Accelerated TinyMPC
 
-Model-predictive control on resource-constrained microcontrollers
+This repository contains the implementation of **Accelerated TinyMPC**, a project focused on design space exploration of embedded architectures for real-time optimal control. It aims to profile, optimize, and accelerate  [TinyMPC](https://tinympc.org/) workloads using scalar CPUs, vector architectures, and domain-specific accelerators. The project provides profiling and acceleration results; and demonstrates quantitative performance and area trade-offs across various architectures, aiming to find the most effective hardware optimizations for robotic model-based control algorithms.
 
-## Building on Ubuntu
+
+## Report
+
+For detailed insights into the design space exploration and performance evaluations, please refer to the attached report:  
+[Design-Space-Exploration-of-Embedded-SoC-Architectures-for-Real-Time-Optimal-Control.pdf](Design-Space-Exploration-of-Embedded-SoC-Architectures-for-Real-Time-Optimal-Control.pdf)
+
+
+----
+
+# Usage
+
+## Building
 
 1. On terminal, clone this repo
 
-```bash
-git clone git@github.com:TinyMPC/TinyMPC.git
-```
+   ```bash
+   git clone https://github.com/ucb-bar/Accelerated-TinyMPC.git
+   cd Accelerated-TinyMPC
+
 
 2. Navigate to root directory and run
 
@@ -30,20 +42,15 @@ make
 
 ## Examples
 
-* Run the quadrotor hovering example
+* Run the `quadrotor_hovering` example
 
 ```bash
-./examples/example_quadrotor_hovering
+./examples/quadrotor_hovering
 ```
 
-* Run the codegen example then follow the same building steps inside that directory
+* Run the `codegen_cartpole` example then follow the same building steps inside that directory
 
 ```bash
-./examples/example_codegen
+./examples/codegen_cartpole
 ```
 
-## Running on MCUs
-
-To be documented
-
-## Notes
