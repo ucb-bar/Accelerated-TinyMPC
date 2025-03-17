@@ -7,11 +7,11 @@ endif()
 
 project(admm VERSION 0.2.0 LANGUAGES CXX)
 
-if(USE_RVV OR USE_RVVU OR USE_CPU)
+if((USE_RVV OR USE_RVVU OR USE_RVVF OR USE_CPU) AND (USE_TYPE STREQUAL "float32" OR USE_TYPE STREQUAL "float64"))
 
     add_matlib_library (admm src/admm_rvv.cpp)
     target_include_directories (admm PUBLIC include)
-    target_include_directories (admm PUBLIC ${MATLIB_CMAKE_PATH}/include)
+    target_include_directories (admm PUBLIC ${MATLIB_CMAKE_PATH}/include/${USE_TYPE})
 
     if(NOT EXISTS test/test_admm_rvv.hpp OR test/test_admm_rvv.py IS_NEWER_THAN test/test_admm_rvv.hpp)
         add_custom_command(
@@ -26,5 +26,5 @@ if(USE_RVV OR USE_RVVU OR USE_CPU)
     target_link_libraries (test_admm_rvv LINK_PUBLIC admm matlib)
     target_include_directories (test_admm_rvv PUBLIC admm matlib)
 
-endif(USE_RVV OR USE_RVVU OR USE_CPU)
+endif((USE_RVV OR USE_RVVU OR USE_RVVF OR USE_CPU) AND (USE_TYPE STREQUAL "float32" OR USE_TYPE STREQUAL "float64"))
 

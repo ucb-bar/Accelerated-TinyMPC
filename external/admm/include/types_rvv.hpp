@@ -10,7 +10,6 @@
 
 #ifndef NSTATES
 #define NSTATES 12
-typedef float tinytype;
 #endif
 #ifndef NINPUTS
 #define NINPUTS 4

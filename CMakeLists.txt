@@ -4,6 +4,7 @@ message("Processing ${CMAKE_CURRENT_LIST_DIR}")
 include(${CMAKE_CURRENT_LIST_DIR}/external/matlib/matlib.cmake)
 add_subdirectory(external/matlib)
 add_subdirectory(external/admm)
+add_subdirectory(external/rtrbench)
 
 project(TinyMPC VERSION 0.2.0 LANGUAGES CXX)
 
@@ -30,7 +31,7 @@ if(USE_GEMMINI)
 
 endif(USE_GEMMINI)
 
-if(USE_RVV OR USE_RVVU)
+if((USE_RVV OR USE_RVVU OR USE_RVVF) AND (USE_TYPE STREQUAL "float32" OR USE_TYPE STREQUAL "float64"))
 
     add_matlib_executable(example_quadrotor_hovering_rvv examples/example_quadrotor_hovering_rvv.cpp)
     target_link_libraries(example_quadrotor_hovering_rvv LINK_PUBLIC admm matlib)
@@ -40,7 +41,7 @@ if(USE_RVV OR USE_RVVU)
     target_link_libraries(example_quadrotor_tracking_rvv LINK_PUBLIC admm matlib)
     target_include_directories(example_quadrotor_tracking_rvv PUBLIC $<TARGET_PROPERTY:admm,INTERFACE_INCLUDE_DIRECTORIES>)
 
-endif(USE_RVV OR USE_RVVU)
+endif((USE_RVV OR USE_RVVU OR USE_RVVF) AND (USE_TYPE STREQUAL "float32" OR USE_TYPE STREQUAL "float64"))
 
 if(USE_CPU)
 
@@ -53,6 +54,3 @@ if(USE_CPU)
     target_include_directories(example_quadrotor_tracking_cpu PUBLIC $<TARGET_PROPERTY:admm,INTERFACE_INCLUDE_DIRECTORIES>)
 
 endif(USE_CPU)
-
-# add_executable(example_quadrotor_hovering_rose example_quadrotor_hovering_rose.cpp)
-# target_link_libraries(example_quadrotor_hovering_rose LINK_PUBLIC admm matlib)
