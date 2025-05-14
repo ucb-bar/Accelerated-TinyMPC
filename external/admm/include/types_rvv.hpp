@@ -27,6 +27,8 @@
 #define RVV_DEFAULT_MATRIX_STORAGE_ORDER_OPTION ColMajor
 #endif
 
+typedef float tinytype;
+
 enum StorageOptions {
     /** Storage order is column major (see \ref TopicStorageOrders). */
     ColMajor = 0,

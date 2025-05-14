@@ -47,7 +47,6 @@ int tiny_solve(TinySolver *solver)
                 return 0;
             }
         }
-
         // Save previous slack variables
         solver->work->v.set(solver->work->vnew.data);
         solver->work->z.set(solver->work->znew.data);
