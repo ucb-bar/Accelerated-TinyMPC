@@ -2,6 +2,8 @@
 #include <cstdint>
 
 #include <admm_rvv.hpp>
+#include <stddef.h> 
+
 
 extern "C"
 {
@@ -27,10 +29,7 @@ int tiny_solve(TinySolver *solver)
         // Update linear control cost terms using reference trajectory, duals, and slack variables
         CYCLE_CNT_WRAPPER(update_linear_cost, solver, "update_linear_cost");
 
-        #ifdef MEASURE_CYCLES
-        struct timespec start, end;
-        clock_gettime(CLOCK_MONOTONIC, &start);
-        #endif
+
         if (solver->work->iter % solver->settings->check_termination == 0)
         {
             primal_residual_state(solver);
@@ -48,24 +47,99 @@ int tiny_solve(TinySolver *solver)
             }
         }
         // Save previous slack variables
-        solver->work->v.set(solver->work->vnew.data);
-        solver->work->z.set(solver->work->znew.data);
+        matsetv(solver->work->v.data, solver->work->vnew.data, solver->work->v.outer, solver->work->v.inner);
+        matsetv(solver->work->z.data, solver->work->znew.data, solver->work->z.outer, solver->work->z.inner);
 
-        solver->work->iter += 1;
-        #ifdef MEASURE_CYCLES
-        clock_gettime(CLOCK_MONOTONIC, &end);
-        uint64_t timediff = (end.tv_sec - start.tv_sec)* 1e9 + (end.tv_nsec - start.tv_nsec);
-        outputFile << "termination_check" << ", " << timediff << std::endl;
-        #endif
 
-        #ifdef DEBUG
-        std::cout << solver->work->primal_residual_state << std::endl;
-        std::cout << solver->work->dual_residual_state << std::endl;
-        std::cout << solver->work->primal_residual_input << std::endl;
-        std::cout << solver->work->dual_residual_input << "\n" << std::endl;
-        #endif
+
     }
     return 1;
 }
+
+void tiny_init(TinySolver* solver)
+{
+    if (!solver || !solver->work || !solver->cache || !solver->settings)
+        return;
+
+    TinyWorkspace* w = solver->work;
+    TinyCache* c = solver->cache;
+
+    // ==== Cache ====
+    init_MatrixNuNx(&c->Kinf);
+    init_MatrixNxNu(&c->KinfT);
+    init_MatrixNxNx(&c->Pinf);
+    init_MatrixNxNx(&c->PinfT);
+    init_MatrixNuNu(&c->Quu_inv);
+    init_MatrixNxNx(&c->AmBKt);
+    init_MatrixNxNu(&c->coeff_d2p);
+
+    c->Kinf_data = c->Kinf.data;
+    c->Pinf_data = c->Pinf.data;
+    c->Quu_inv_data = c->Quu_inv.data;
+    c->AmBKt_data = c->AmBKt.data;
+
+    // ==== Workspace ====
+
+    init_MatrixNxNh(&w->x);
+    init_MatrixNuNhm1(&w->u);
+    init_MatrixNxNh(&w->q);
+    init_MatrixNuNhm1(&w->r);
+    init_MatrixNxNh(&w->p);
+    init_MatrixNuNhm1(&w->d);
+    init_MatrixNxNh(&w->v);
+    init_MatrixNxNh(&w->vnew);
+    init_MatrixNuNhm1(&w->z);
+    init_MatrixNuNhm1(&w->znew);
+    init_MatrixNxNh(&w->g);
+    init_MatrixNuNhm1(&w->y);
+
+    init_VectorNx(&w->Q);
+    init_VectorNx(&w->Qf);
+    init_VectorNu(&w->R);
+
+    init_MatrixNxNx(&w->Adyn);
+    init_MatrixNxNx(&w->AdynT);
+    w->Adyn_data = w->Adyn.data;
+
+    init_MatrixNxNu(&w->Bdyn);
+    init_MatrixNuNx(&w->BdynT);
+    w->Bdyn_data = w->Bdyn.data;
+
+    init_MatrixNuNhm1(&w->u_min);
+    init_MatrixNuNhm1(&w->u_max);
+    init_MatrixNxNh(&w->x_min);
+    init_MatrixNxNh(&w->x_max);
+    init_MatrixNxNh(&w->Xref);
+    init_MatrixNuNhm1(&w->Uref);
+
+    init_VectorNu(&w->Qu);
+    init_VectorNu(&w->u1);
+    init_VectorNu(&w->u2);
+    init_VectorNx(&w->x1);
+    init_VectorNx(&w->x2);
+    init_VectorNx(&w->x3);
+
+    init_MatrixNuNhm1(&w->m1);
+    init_MatrixNuNhm1(&w->m2);
+    init_MatrixNxNh(&w->s1);
+    init_MatrixNxNh(&w->s2);
+
+    // ==== Settings defaults (can override later) ====
+    solver->settings->abs_pri_tol = 1e-3f;
+    solver->settings->abs_dua_tol = 1e-3f;
+    solver->settings->max_iter = 10;
+    solver->settings->check_termination = 1;
+    solver->settings->en_state_bound = 1;
+    solver->settings->en_input_bound = 1;
+
+    // ==== Status ====
+    w->status = 0;
+    w->iter = 0;
+    w->primal_residual_state = 0;
+    w->primal_residual_input = 0;
+    w->dual_residual_state = 0;
+    w->dual_residual_input = 0;
+}
+
 
 } /* extern "C" */

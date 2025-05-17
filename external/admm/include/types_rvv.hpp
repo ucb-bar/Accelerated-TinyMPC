@@ -2,8 +2,8 @@
 #ifndef TINYMPC_TYPES_RVV_H
 #define TINYMPC_TYPES_RVV_H
 
-#include <cstdlib>
-#include <cstdio>
+// #include <cstdlib>
+
 #include <assert.h>
 
 #include <matlib.h>
@@ -21,13 +21,12 @@
 #define NTOTAL 301
 #endif
 
-#ifdef RVV_DEFAULT_TO_ROW_MAJOR
-#define RVV_DEFAULT_MATRIX_STORAGE_ORDER_OPTION RowMajor
-#else
+
 #define RVV_DEFAULT_MATRIX_STORAGE_ORDER_OPTION ColMajor
-#endif
+
 
 typedef float tinytype;
+
 
 enum StorageOptions {
     /** Storage order is column major (see \ref TopicStorageOrders). */
@@ -79,107 +78,179 @@ public:
             data[i] = 0;
     }
 
-    // Copy Constructor
-    Matrix(const Matrix& other) {
-        assert(other.rows <= MaxRows_ && other.cols <= MaxCols_);
-        _Matrix(Rows_, Cols_);
-        matcopy(data, other.data, outer, inner);
-    }
 
-    // Copy Constructor
-    Matrix(Scalar_ *data) {
-        _Matrix(Rows_, Cols_);
-        matsetv(this->data, data, outer, inner);
-    }
 
-#if defined(USE_RVV) || defined(USE_RVVU) || defined(USE_CPU)
-    // Column if ColMajor
-    Scalar_ *col(int col) {
-        assert(!(Options_ & RowMajor));
-        return vector[col];
-    }
 
-    // Row if RowMajor
-    Scalar_ *row(int row) {
-        assert(Options_ & RowMajor);
-        return vector[row];
-    }
-#endif
-#ifdef USE_RVA
-    // Column if ColMajor
-    Scalar_ **col(int col) {
-        assert(!(Options_ & RowMajor));
-        return &vector[col];
-    }
 
-    // Row if RowMajor
-    Scalar_ **row(int row) {
-        assert(Options_ & RowMajor);
-        return &vector[row];
-    }
-#endif
 
-    // Assignment Operator
-    // TODO: it has a bug in the last statement
-    virtual Matrix& operator=(const Matrix *other) {
-        if (this == other) return *this;
-        matcopy(other->data, data, outer, inner);
-        return *this;
-    }
 
-    // Assignment Operator
-    virtual Matrix& operator=(const Scalar_ f) {
-        matset(data, f, outer, inner);
-        return *this;
-    }
-
-    // Assignment Operator
-    Matrix& set(Scalar_ *f) {
-        matsetv(data, f, outer, inner);
-        return *this;
-    }
-
-    // Access Operator
-    Scalar_& operator()(int row, int col) {
-        // Access elements based on storage order
-        if (Options_ & RowMajor) {
-            return array[col][row];
-        } else {
-            return array[row][col];
-        }
-    }
-
-    Scalar_ checksum() {
-        Scalar_ sum = 0;
-        for (int i = 0; i < outer; i++) {
-            for (int j = 0; j < inner; j++) {
-                sum += array[i][j];
-	    }
-        }
-        return sum;
-    }
-
-    void print(const char *type, const char *name) {
-        print_array_2d(data, outer, inner, type, name);
-    }
-
-    virtual void toString() {
-        printf("const array: %x rows: %d cols: %d outer: %d inner: %d (%d, %d)\n", data, rows, cols, outer, inner, Rows_, Cols_);
-    }
 };
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef Matrix<tinytype, NSTATES, 1> tiny_VectorNx;
-typedef Matrix<tinytype, NINPUTS, 1> tiny_VectorNu;
-typedef Matrix<tinytype, NSTATES, NSTATES, RowMajor> tiny_MatrixNxNx;
-typedef Matrix<tinytype, NSTATES, NINPUTS, RowMajor> tiny_MatrixNxNu;
-typedef Matrix<tinytype, NINPUTS, NSTATES, RowMajor> tiny_MatrixNuNx;
-typedef Matrix<tinytype, NINPUTS, NINPUTS, RowMajor> tiny_MatrixNuNu;
-typedef Matrix<tinytype, NSTATES, NHORIZON> tiny_MatrixNxNh;       // Nx x Nh
-typedef Matrix<tinytype, NINPUTS, NHORIZON - 1> tiny_MatrixNuNhm1; // Nu x Nh-1
+
+
+
+// ======== Matrix Structs =========
+
+// Vector of NSTATES x 1 (ColMajor)
+typedef struct {
+    tinytype data[NSTATES];
+    tinytype* vector[1];  // only 1 column
+    tinytype** array;
+    int rows, cols;
+    int outer, inner;
+} tiny_VectorNx;
+
+// Vector of NINPUTS x 1 (ColMajor)
+typedef struct {
+    tinytype data[NINPUTS];
+    tinytype* vector[1];
+    tinytype** array;
+    int rows, cols;
+    int outer, inner;
+} tiny_VectorNu;
+
+// Matrix NSTATES x NSTATES (RowMajor)
+typedef struct {
+    tinytype data[NSTATES * NSTATES];
+    tinytype* vector[NSTATES];  // one row per entry
+    tinytype** array;
+    int rows, cols;
+    int outer, inner;
+} tiny_MatrixNxNx;
+
+// Matrix NSTATES x NINPUTS (RowMajor)
+typedef struct {
+    tinytype data[NSTATES * NINPUTS];
+    tinytype* vector[NSTATES];
+    tinytype** array;
+    int rows, cols;
+    int outer, inner;
+} tiny_MatrixNxNu;
+
+// Matrix NINPUTS x NSTATES (RowMajor)
+typedef struct {
+    tinytype data[NINPUTS * NSTATES];
+    tinytype* vector[NINPUTS];
+    tinytype** array;
+    int rows, cols;
+    int outer, inner;
+} tiny_MatrixNuNx;
+
+// Matrix NINPUTS x NINPUTS (RowMajor)
+typedef struct {
+    tinytype data[NINPUTS * NINPUTS];
+    tinytype* vector[NINPUTS];
+    tinytype** array;
+    int rows, cols;
+    int outer, inner;
+} tiny_MatrixNuNu;
+
+// Matrix NSTATES x NHORIZON (ColMajor)
+typedef struct {
+    tinytype data[NSTATES * NHORIZON];
+    tinytype* vector[NHORIZON];  // each column
+    tinytype** array;
+    int rows, cols;
+    int outer, inner;
+} tiny_MatrixNxNh;
+
+// Matrix NINPUTS x (NHORIZON - 1) (ColMajor)
+typedef struct {
+    tinytype data[NINPUTS * (NHORIZON - 1)];
+    tinytype* vector[NHORIZON - 1];
+    tinytype** array;
+    int rows, cols;
+    int outer, inner;
+} tiny_MatrixNuNhm1;
+
+// ======== Init Helpers =========
+
+static inline void init_col_major_layout(tinytype* data, tinytype** vector, int outer, int inner) {
+    for (int i = 0; i < outer; ++i)
+        vector[i] = &data[i * inner];
+}
+
+static inline void init_row_major_layout(tinytype* data, tinytype** vector, int outer, int inner) {
+    for (int i = 0; i < outer; ++i)
+        vector[i] = &data[i * inner];
+}
+static inline void init_VectorNx(tiny_VectorNx* mat) {
+    mat->rows = NSTATES;
+    mat->cols = 1;
+    mat->outer = 1;
+    mat->inner = NSTATES;
+    mat->array = mat->vector;
+    init_col_major_layout(mat->data, mat->vector, mat->outer, mat->inner);
+}
+
+static inline void init_VectorNu(tiny_VectorNu* mat) {
+    mat->rows = NINPUTS;
+    mat->cols = 1;
+    mat->outer = 1;
+    mat->inner = NINPUTS;
+    mat->array = mat->vector;
+    init_col_major_layout(mat->data, mat->vector, mat->outer, mat->inner);
+}
+
+static inline void init_MatrixNxNx(tiny_MatrixNxNx* mat) {
+    mat->rows = NSTATES;
+    mat->cols = NSTATES;
+    mat->outer = NSTATES;
+    mat->inner = NSTATES;
+    mat->array = mat->vector;
+    init_row_major_layout(mat->data, mat->vector, mat->outer, mat->inner);
+}
+
+static inline void init_MatrixNxNu(tiny_MatrixNxNu* mat) {
+    mat->rows = NSTATES;
+    mat->cols = NINPUTS;
+    mat->outer = NSTATES;
+    mat->inner = NINPUTS;
+    mat->array = mat->vector;
+    init_row_major_layout(mat->data, mat->vector, mat->outer, mat->inner);
+}
+
+static inline void init_MatrixNuNx(tiny_MatrixNuNx* mat) {
+    mat->rows = NINPUTS;
+    mat->cols = NSTATES;
+    mat->outer = NINPUTS;
+    mat->inner = NSTATES;
+    mat->array = mat->vector;
+    init_row_major_layout(mat->data, mat->vector, mat->outer, mat->inner);
+}
+
+static inline void init_MatrixNuNu(tiny_MatrixNuNu* mat) {
+    mat->rows = NINPUTS;
+    mat->cols = NINPUTS;
+    mat->outer = NINPUTS;
+    mat->inner = NINPUTS;
+    mat->array = mat->vector;
+    init_row_major_layout(mat->data, mat->vector, mat->outer, mat->inner);
+}
+
+static inline void init_MatrixNxNh(tiny_MatrixNxNh* mat) {
+    mat->rows = NSTATES;
+    mat->cols = NHORIZON;
+    mat->outer = NHORIZON;
+    mat->inner = NSTATES;
+    mat->array = mat->vector;
+    init_col_major_layout(mat->data, mat->vector, mat->outer, mat->inner);
+}
+
+static inline void init_MatrixNuNhm1(tiny_MatrixNuNhm1* mat) {
+    mat->rows = NINPUTS;
+    mat->cols = NHORIZON - 1;
+    mat->outer = NHORIZON - 1;
+    mat->inner = NINPUTS;
+    mat->array = mat->vector;
+    init_col_major_layout(mat->data, mat->vector, mat->outer, mat->inner);
+}
+
+
 
 /**
  * Matrices that must be recomputed with changes in time step, rho
