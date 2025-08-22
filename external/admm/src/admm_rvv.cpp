@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <cstdint>
 
-#include <admm_rvv.hpp>
+#include <admm.hpp>
 #include <stddef.h> 
+
+
+// #define MAX_ITERS 1
 
 
 extern "C"
@@ -43,7 +46,11 @@ int tiny_solve(TinySolver *solver)
             {
                 // Solved without error (return 0)
                 solver->work->status = 1;
-                return 0;
+                
+                #ifndef MAX_ITERS
+                    // printf("Converged after %d iterations\n", solver->work->iter);
+                    return 0;
+                #endif
             }
         }
         // Save previous slack variables
@@ -71,6 +78,7 @@ void tiny_init(TinySolver* solver)
     init_MatrixNxNx(&c->PinfT);
     init_MatrixNuNu(&c->Quu_inv);
     init_MatrixNxNx(&c->AmBKt);
+    init_MatrixNxNx(&c->AmBKtT);
     init_MatrixNxNu(&c->coeff_d2p);
 
     c->Kinf_data = c->Kinf.data;
