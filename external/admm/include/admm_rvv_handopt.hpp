@@ -6,7 +6,7 @@
 #ifndef TINYMPC_ADMM_RVV_HANDOPT_HPP
 #define TINYMPC_ADMM_RVV_HANDOPT_HPP
 
-#include <types_rvv.hpp>
+#include <types_matlib.hpp>
 
 #ifndef USE_MATVEC
 #define USE_MATVEC 1

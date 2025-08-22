@@ -17,7 +17,7 @@ if((USE_RVV OR USE_RVVU OR USE_RVVF OR USE_CPU) AND (USE_TYPE STREQUAL "float32"
         target_include_directories (admm PUBLIC ${MATLIB_CMAKE_PATH}/include/${USE_TYPE})
         target_include_directories (admm PUBLIC ${CMAKE_CURRENT_LIST_DIR}/../../include/Eigen/)
     else()
-        add_matlib_library (admm src/admm_rvv.cpp)
+        add_matlib_library (admm src/admm_matlib.cpp)
         target_include_directories (admm PUBLIC include)
         target_include_directories (admm PUBLIC ${MATLIB_CMAKE_PATH}/include/${USE_TYPE})
         if(NOT EXISTS test/test_admm_rvv.hpp OR test/test_admm_rvv.py IS_NEWER_THAN test/test_admm_rvv.hpp)

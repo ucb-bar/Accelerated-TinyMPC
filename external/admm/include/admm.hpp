@@ -6,7 +6,7 @@
 #if defined(USE_HANDOPT)
 #include <admm_rvv_handopt.hpp>
 #else
-#include <admm_rvv.hpp>
+#include <admm_matlib.hpp>
 #endif
 #else
 #include <admm_eigen.hpp>
