@@ -1,7 +1,11 @@
 #pragma once
 
 #if defined(USE_RVV) || defined(USE_RVVU) || defined(USE_CPU)
+#if defined(USE_HANDOPT)
+#include <admm_rvv_handopt.hpp>
+#else
 #include <admm_rvv.hpp>
+#endif
 #else
 #include <admm_eigen.hpp>
 #endif
