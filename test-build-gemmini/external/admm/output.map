@@ -1,0 +1,1580 @@
+Archive member included to satisfy reference by file (symbol)
+
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+                              CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o (vtable for __cxxabiv1::__class_type_info)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(del_ops.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o) (operator delete(void*, unsigned long))
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(si_class_type_info.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o) (vtable for __cxxabiv1::__si_class_type_info)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(tinfo.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o) (std::type_info::~type_info())
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(del_op.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(del_ops.o) (operator delete(void*))
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(del_op.o) (free)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o) (_malloc_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mlock.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o) (__malloc_lock)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-impure.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o) (_impure_ptr)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-sbrkr.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o) (_sbrk_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-strcmp.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o) (strcmp)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-freer.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o) (_free_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reent.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-sbrkr.o) (errno)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-sbrkr.o) (_sbrk)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+                              CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o (__wrap_printf)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o) (__printbuflen)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+                              (_start)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o) (_start_main)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o) (handle_trap)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o) (__init_tls)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o) (__main)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o) (_exit)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o) (_write)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o) (__vxprintf)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o) (htif_syscall)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-atexit.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o) (atexit)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-environ.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o) (environ)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-exit.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o) (exit)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-exit.o) (__stdio_exit_handler)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fwalk.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o) (_fwalk_sglue)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-stdio.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o) (__sread)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-strnlen.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o) (strnlen)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-closer.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-stdio.o) (_close_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-lseekr.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-stdio.o) (_lseek_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-readr.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-stdio.o) (_read_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-writer.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-stdio.o) (_write_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-errno.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o) (__errno)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-init.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o) (__libc_init_array)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fini.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o) (__libc_fini_array)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-memset.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o) (memset)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-memcpy-asm.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o) (memcpy)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-atexit.o) (__register_exitproc)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__call_atexit.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o) (__call_exitprocs)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fflush.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o) (_fflush_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-closer.o) (_close)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-lseekr.o) (_lseek)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-readr.o) (_read)
+
+Discarded input sections
+
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0x8 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0x8 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0x8 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0x8 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0x8 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0x8 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0x8 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0x8 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .group         0x0000000000000000        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+ .group         0x0000000000000000        0xc /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+ .group         0x0000000000000000        0xc /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+ .group         0x0000000000000000        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(si_class_type_info.o)
+ .group         0x0000000000000000        0xc /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(si_class_type_info.o)
+ .group         0x0000000000000000        0xc /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(si_class_type_info.o)
+ .group         0x0000000000000000        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(tinfo.o)
+ .group         0x0000000000000000        0xc /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(tinfo.o)
+ .group         0x0000000000000000        0xc /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(tinfo.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+rom              0x0000000080000000 0x0000000001000000 xr
+ram              0x0000000081000000 0x0000000001000000 !xr
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a
+LOAD CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+LOAD libadmm.a
+LOAD ../matlib/libmatlib.a
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libm_nano.a
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/bin/../lib/gcc/riscv64-unknown-elf/13.2.0/libgcc.a
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/bin/../lib/gcc/riscv64-unknown-elf/13.2.0/libgcc.a
+START GROUP
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/bin/../lib/gcc/riscv64-unknown-elf/13.2.0/libgcc.a
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a
+END GROUP
+                0x0000000080000000                PROVIDE (__origin = 0x80000000)
+                0x0000000001000000                PROVIDE (__length = 0x1000000)
+                0x0000000080000000                . = __origin
+                0x0000000000006000                PROVIDE (__stack_size_min = 0x6000)
+
+.text           0x0000000080000000     0x3e38
+ *(.text.init)
+ .text.init     0x0000000080000000      0x1f2 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+                0x0000000080000000                _start
+ .text.init     0x00000000800001f2       0x4a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+                0x00000000800001f2                _start_main
+                0x0000000080000216                _start_secondary
+ *(.text.unlikely .text.unlikely.*)
+ *(.text.startup .text.startup.*)
+ *(.text .text.*)
+ .text          0x000000008000023c      0x666 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x000000008000024c                init_solver
+                0x00000000800004d8                main
+ .text._ZN6MatrixIfLi4ELi1ELi0ELi4ELi1EEaSEf
+                0x00000000800008a2       0x2c CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800008a2                Matrix<float, 4, 1, 0, 4, 1>::operator=(float)
+ .text._ZN6MatrixIfLi12ELi1ELi0ELi12ELi1EEaSEf
+                0x00000000800008ce       0x2c CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800008ce                Matrix<float, 12, 1, 0, 12, 1>::operator=(float)
+ .text._ZN6MatrixIfLi4ELi9ELi0ELi4ELi9EEaSEf
+                0x00000000800008fa       0x2e CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800008fa                Matrix<float, 4, 9, 0, 4, 9>::operator=(float)
+ .text._ZN6MatrixIfLi12ELi10ELi0ELi12ELi10EEaSEf
+                0x0000000080000928       0x30 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000928                Matrix<float, 12, 10, 0, 12, 10>::operator=(float)
+ .text._ZN6MatrixIfLi4ELi4ELi1ELi4ELi4EEaSEf
+                0x0000000080000958       0x2e CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000958                Matrix<float, 4, 4, 1, 4, 4>::operator=(float)
+ .text._ZN6MatrixIfLi12ELi12ELi1ELi12ELi12EEaSEf
+                0x0000000080000986       0x30 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000986                Matrix<float, 12, 12, 1, 12, 12>::operator=(float)
+ .text._ZN6MatrixIfLi12ELi4ELi1ELi12ELi4EEaSEf
+                0x00000000800009b6       0x2e CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800009b6                Matrix<float, 12, 4, 1, 12, 4>::operator=(float)
+ .text._ZN6MatrixIfLi4ELi12ELi1ELi4ELi12EEaSEf
+                0x00000000800009e4       0x2e CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800009e4                Matrix<float, 4, 12, 1, 4, 12>::operator=(float)
+ .text._ZN6MatrixIfLi4ELi12ELi1ELi4ELi12EE8toStringEv
+                0x0000000080000a12       0x2c CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000a12                Matrix<float, 4, 12, 1, 4, 12>::toString()
+ .text._ZN6MatrixIfLi4ELi4ELi1ELi4ELi4EE8toStringEv
+                0x0000000080000a3e       0x28 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000a3e                Matrix<float, 4, 4, 1, 4, 4>::toString()
+ .text._ZN6MatrixIfLi12ELi12ELi1ELi12ELi12EE8toStringEv
+                0x0000000080000a66       0x2e CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000a66                Matrix<float, 12, 12, 1, 12, 12>::toString()
+ .text._ZN6MatrixIfLi12ELi4ELi1ELi12ELi4EE8toStringEv
+                0x0000000080000a94       0x2c CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000a94                Matrix<float, 12, 4, 1, 12, 4>::toString()
+ .text._ZN6MatrixIfLi4ELi1ELi0ELi4ELi1EE8toStringEv
+                0x0000000080000ac0       0x24 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000ac0                Matrix<float, 4, 1, 0, 4, 1>::toString()
+ .text._ZN6MatrixIfLi12ELi1ELi0ELi12ELi1EE8toStringEv
+                0x0000000080000ae4       0x24 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000ae4                Matrix<float, 12, 1, 0, 12, 1>::toString()
+ .text._ZN6MatrixIfLi4ELi9ELi0ELi4ELi9EE8toStringEv
+                0x0000000080000b08       0x2c CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000b08                Matrix<float, 4, 9, 0, 4, 9>::toString()
+ .text._ZN6MatrixIfLi12ELi10ELi0ELi12ELi10EE8toStringEv
+                0x0000000080000b34       0x2e CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000b34                Matrix<float, 12, 10, 0, 12, 10>::toString()
+ .text.matneg_cpu
+                0x0000000080000b62       0x30 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000b62                matneg_cpu
+ .text.cwisemul_cpu
+                0x0000000080000b92       0x3a CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000b92                cwisemul_cpu
+ .text.transpose_cpu
+                0x0000000080000bcc       0x36 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000bcc                transpose_cpu
+ .text.matcopy_cpu
+                0x0000000080000c02       0x2c CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000c02                matcopy_cpu
+ .text._ZN6MatrixIfLi4ELi12ELi1ELi4ELi12EEaSEPKS0_
+                0x0000000080000c2e       0x28 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000c2e                Matrix<float, 4, 12, 1, 4, 12>::operator=(Matrix<float, 4, 12, 1, 4, 12> const*)
+ .text._ZN6MatrixIfLi4ELi4ELi1ELi4ELi4EEaSEPKS0_
+                0x0000000080000c56       0x28 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000c56                Matrix<float, 4, 4, 1, 4, 4>::operator=(Matrix<float, 4, 4, 1, 4, 4> const*)
+ .text._ZN6MatrixIfLi12ELi12ELi1ELi12ELi12EEaSEPKS0_
+                0x0000000080000c7e       0x2c CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000c7e                Matrix<float, 12, 12, 1, 12, 12>::operator=(Matrix<float, 12, 12, 1, 12, 12> const*)
+ .text._ZN6MatrixIfLi12ELi4ELi1ELi12ELi4EEaSEPKS0_
+                0x0000000080000caa       0x28 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000caa                Matrix<float, 12, 4, 1, 12, 4>::operator=(Matrix<float, 12, 4, 1, 12, 4> const*)
+ .text._ZN6MatrixIfLi4ELi1ELi0ELi4ELi1EEaSEPKS0_
+                0x0000000080000cd2       0x24 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000cd2                Matrix<float, 4, 1, 0, 4, 1>::operator=(Matrix<float, 4, 1, 0, 4, 1> const*)
+ .text._ZN6MatrixIfLi12ELi1ELi0ELi12ELi1EEaSEPKS0_
+                0x0000000080000cf6       0x24 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000cf6                Matrix<float, 12, 1, 0, 12, 1>::operator=(Matrix<float, 12, 1, 0, 12, 1> const*)
+ .text._ZN6MatrixIfLi4ELi9ELi0ELi4ELi9EEaSEPKS0_
+                0x0000000080000d1a       0x28 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000d1a                Matrix<float, 4, 9, 0, 4, 9>::operator=(Matrix<float, 4, 9, 0, 4, 9> const*)
+ .text._ZN6MatrixIfLi12ELi10ELi0ELi12ELi10EEaSEPKS0_
+                0x0000000080000d42       0x2c CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000d42                Matrix<float, 12, 10, 0, 12, 10>::operator=(Matrix<float, 12, 10, 0, 12, 10> const*)
+ .text.matsetv_cpu
+                0x0000000080000d6e       0x32 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000d6e                matsetv_cpu
+ .text.forward_pass_1
+                0x0000000080000da0      0x118 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000da0                forward_pass_1
+ .text.forward_pass_2
+                0x0000000080000eb8      0x12a CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000eb8                forward_pass_2
+ .text.backward_pass_1
+                0x0000000080000fe2      0x124 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080000fe2                backward_pass_1
+ .text.backward_pass_2
+                0x0000000080001106      0x1c8 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080001106                backward_pass_2
+ .text.update_dual_1
+                0x00000000800012ce      0x230 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800012ce                update_dual_1
+ .text.update_slack_1
+                0x00000000800014fe      0x202 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800014fe                update_slack_1
+ .text.update_slack_2
+                0x0000000080001700      0x202 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080001700                update_slack_2
+ .text.update_linear_cost_1
+                0x0000000080001902       0xe6 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080001902                update_linear_cost_1
+ .text.update_linear_cost_2_full
+                0x00000000800019e8      0x180 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800019e8                update_linear_cost_2_full
+ .text.update_linear_cost_2
+                0x0000000080001b68       0x5c CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080001b68                update_linear_cost_2
+ .text.update_linear_cost_3
+                0x0000000080001bc4      0x16c CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080001bc4                update_linear_cost_3
+ .text.update_linear_cost_4
+                0x0000000080001d30      0x254 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080001d30                update_linear_cost_4
+ .text.backward_pass
+                0x0000000080001f84       0x8c CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080001f84                backward_pass
+ .text.forward_pass
+                0x0000000080002010       0x8a CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080002010                forward_pass
+ .text.update_slack
+                0x000000008000209a       0x1e CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x000000008000209a                update_slack
+ .text.update_linear_cost
+                0x00000000800020b8       0x2e CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800020b8                update_linear_cost
+ .text._ZN6MatrixIfLi4ELi4ELi1ELi4ELi4EE3setEPf
+                0x00000000800020e6       0x20 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800020e6                Matrix<float, 4, 4, 1, 4, 4>::set(float*)
+ .text._ZN6MatrixIfLi12ELi12ELi1ELi12ELi12EE3setEPf
+                0x0000000080002106       0x22 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080002106                Matrix<float, 12, 12, 1, 12, 12>::set(float*)
+ .text._ZN6MatrixIfLi4ELi12ELi1ELi4ELi12EE3setEPf
+                0x0000000080002128       0x20 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080002128                Matrix<float, 4, 12, 1, 4, 12>::set(float*)
+ .text._ZN6MatrixIfLi4ELi9ELi0ELi4ELi9EE3setEPf
+                0x0000000080002148       0x20 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080002148                Matrix<float, 4, 9, 0, 4, 9>::set(float*)
+ .text._ZN6MatrixIfLi12ELi10ELi0ELi12ELi10EE3setEPf
+                0x0000000080002168       0x22 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080002168                Matrix<float, 12, 10, 0, 12, 10>::set(float*)
+ .text._ZN6MatrixIfLi12ELi1ELi0ELi12ELi1EE3setEPf
+                0x000000008000218a       0x1c CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x000000008000218a                Matrix<float, 12, 1, 0, 12, 1>::set(float*)
+ .text._ZN6MatrixIfLi4ELi1ELi0ELi4ELi1EE3setEPf
+                0x00000000800021a6       0x1c CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800021a6                Matrix<float, 4, 1, 0, 4, 1>::set(float*)
+ .text._ZN6MatrixIfLi12ELi4ELi1ELi12ELi4EE3setEPf
+                0x00000000800021c2       0x20 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800021c2                Matrix<float, 12, 4, 1, 12, 4>::set(float*)
+ .text._ZN6MatrixIfLi4ELi12ELi1ELi4ELi12EE7_MatrixEii
+                0x00000000800021e2       0x44 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800021e2                Matrix<float, 4, 12, 1, 4, 12>::_Matrix(int, int)
+ .text._ZN6MatrixIfLi4ELi12ELi1ELi4ELi12EEC2Ev
+                0x0000000080002226       0x48 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080002226                Matrix<float, 4, 12, 1, 4, 12>::Matrix()
+                0x0000000080002226                Matrix<float, 4, 12, 1, 4, 12>::Matrix()
+ .text._ZN6MatrixIfLi12ELi4ELi1ELi12ELi4EE7_MatrixEii
+                0x000000008000226e       0x48 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x000000008000226e                Matrix<float, 12, 4, 1, 12, 4>::_Matrix(int, int)
+ .text._ZN6MatrixIfLi12ELi4ELi1ELi12ELi4EEC2Ev
+                0x00000000800022b6       0x48 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800022b6                Matrix<float, 12, 4, 1, 12, 4>::Matrix()
+                0x00000000800022b6                Matrix<float, 12, 4, 1, 12, 4>::Matrix()
+ .text._ZN6MatrixIfLi12ELi12ELi1ELi12ELi12EE7_MatrixEii
+                0x00000000800022fe       0x4a CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800022fe                Matrix<float, 12, 12, 1, 12, 12>::_Matrix(int, int)
+ .text._ZN6MatrixIfLi12ELi12ELi1ELi12ELi12EEC2Ev
+                0x0000000080002348       0x4a CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080002348                Matrix<float, 12, 12, 1, 12, 12>::Matrix()
+                0x0000000080002348                Matrix<float, 12, 12, 1, 12, 12>::Matrix()
+ .text._ZN6MatrixIfLi4ELi4ELi1ELi4ELi4EE7_MatrixEii
+                0x0000000080002392       0x40 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080002392                Matrix<float, 4, 4, 1, 4, 4>::_Matrix(int, int)
+ .text._ZN6MatrixIfLi4ELi4ELi1ELi4ELi4EEC2Ev
+                0x00000000800023d2       0x48 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800023d2                Matrix<float, 4, 4, 1, 4, 4>::Matrix()
+                0x00000000800023d2                Matrix<float, 4, 4, 1, 4, 4>::Matrix()
+ .text._ZN9TinyCacheC2Ev
+                0x000000008000241a       0x5a CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x000000008000241a                TinyCache::TinyCache()
+                0x000000008000241a                TinyCache::TinyCache()
+ .text._ZN6MatrixIfLi12ELi10ELi0ELi12ELi10EE7_MatrixEii
+                0x0000000080002474       0x4a CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080002474                Matrix<float, 12, 10, 0, 12, 10>::_Matrix(int, int)
+ .text._ZN6MatrixIfLi12ELi10ELi0ELi12ELi10EEC2Ev
+                0x00000000800024be       0x4a CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800024be                Matrix<float, 12, 10, 0, 12, 10>::Matrix()
+                0x00000000800024be                Matrix<float, 12, 10, 0, 12, 10>::Matrix()
+ .text._ZN6MatrixIfLi4ELi9ELi0ELi4ELi9EE7_MatrixEii
+                0x0000000080002508       0x44 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080002508                Matrix<float, 4, 9, 0, 4, 9>::_Matrix(int, int)
+ .text._ZN6MatrixIfLi4ELi9ELi0ELi4ELi9EEC2Ev
+                0x000000008000254c       0x48 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x000000008000254c                Matrix<float, 4, 9, 0, 4, 9>::Matrix()
+                0x000000008000254c                Matrix<float, 4, 9, 0, 4, 9>::Matrix()
+ .text._ZN6MatrixIfLi12ELi1ELi0ELi12ELi1EE7_MatrixEii
+                0x0000000080002594       0x38 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080002594                Matrix<float, 12, 1, 0, 12, 1>::_Matrix(int, int)
+ .text._ZN6MatrixIfLi12ELi1ELi0ELi12ELi1EEC2Ev
+                0x00000000800025cc       0x44 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800025cc                Matrix<float, 12, 1, 0, 12, 1>::Matrix()
+                0x00000000800025cc                Matrix<float, 12, 1, 0, 12, 1>::Matrix()
+ .text._ZN6MatrixIfLi4ELi1ELi0ELi4ELi1EE7_MatrixEii
+                0x0000000080002610       0x38 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080002610                Matrix<float, 4, 1, 0, 4, 1>::_Matrix(int, int)
+ .text._ZN6MatrixIfLi4ELi1ELi0ELi4ELi1EEC2Ev
+                0x0000000080002648       0x44 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080002648                Matrix<float, 4, 1, 0, 4, 1>::Matrix()
+                0x0000000080002648                Matrix<float, 4, 1, 0, 4, 1>::Matrix()
+ .text._ZN13TinyWorkspaceC2Ev
+                0x000000008000268c      0x19c CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x000000008000268c                TinyWorkspace::TinyWorkspace()
+                0x000000008000268c                TinyWorkspace::TinyWorkspace()
+ .text._ZN6MatrixIfLi4ELi9ELi0ELi4ELi9EE8checksumEv
+                0x0000000080002828       0x3a CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080002828                Matrix<float, 4, 9, 0, 4, 9>::checksum()
+ .text._Z11test_assertIfLi4ELi9ELi0ELi4ELi9EEvPKcfR6MatrixIT_XT0_EXT1_EXT2_EXT3_EXT4_EE
+                0x0000000080002862       0x7c CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080002862                void test_assert<float, 4, 9, 0, 4, 9>(char const*, float, Matrix<float, 4, 9, 0, 4, 9>&)
+ .text._ZN6MatrixIfLi12ELi10ELi0ELi12ELi10EE8checksumEv
+                0x00000000800028de       0x3c CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800028de                Matrix<float, 12, 10, 0, 12, 10>::checksum()
+ .text._Z11test_assertIfLi12ELi10ELi0ELi12ELi10EEvPKcfR6MatrixIT_XT0_EXT1_EXT2_EXT3_EXT4_EE
+                0x000000008000291a       0x7c CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x000000008000291a                void test_assert<float, 12, 10, 0, 12, 10>(char const*, float, Matrix<float, 12, 10, 0, 12, 10>&)
+ .text          0x0000000080002996        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+ .text._ZNK10__cxxabiv117__class_type_info11__do_upcastEPKS0_PPv
+                0x0000000080002996       0x36 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+                0x0000000080002996                __cxxabiv1::__class_type_info::__do_upcast(__cxxabiv1::__class_type_info const*, void**) const
+ .text._ZNK10__cxxabiv117__class_type_info20__do_find_public_srcElPKvPKS0_S2_
+                0x00000000800029cc        0xa /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+                0x00000000800029cc                __cxxabiv1::__class_type_info::__do_find_public_src(long, void const*, __cxxabiv1::__class_type_info const*, void const*) const
+ .text._ZN10__cxxabiv117__class_type_infoD2Ev
+                0x00000000800029d6        0xc /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+                0x00000000800029d6                __cxxabiv1::__class_type_info::~__class_type_info()
+                0x00000000800029d6                __cxxabiv1::__class_type_info::~__class_type_info()
+ .text._ZN10__cxxabiv117__class_type_infoD0Ev
+                0x00000000800029e2       0x18 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+                0x00000000800029e2                __cxxabiv1::__class_type_info::~__class_type_info()
+ .text._ZNKSt9type_infoeqERKS_.isra.0
+                0x00000000800029fa       0x36 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+ .text._ZNK10__cxxabiv117__class_type_info11__do_upcastEPKS0_PKvRNS0_15__upcast_resultE
+                0x0000000080002a30       0x2a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+                0x0000000080002a30                __cxxabiv1::__class_type_info::__do_upcast(__cxxabiv1::__class_type_info const*, void const*, __cxxabiv1::__class_type_info::__upcast_result&) const
+ .text._ZNK10__cxxabiv117__class_type_info12__do_dyncastElNS0_10__sub_kindEPKS0_PKvS3_S5_RNS0_16__dyncast_resultE
+                0x0000000080002a5a       0x54 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+                0x0000000080002a5a                __cxxabiv1::__class_type_info::__do_dyncast(long, __cxxabiv1::__class_type_info::__sub_kind, __cxxabiv1::__class_type_info const*, void const*, __cxxabiv1::__class_type_info const*, void const*, __cxxabiv1::__class_type_info::__dyncast_result&) const
+ .text._ZNK10__cxxabiv117__class_type_info10__do_catchEPKSt9type_infoPPvj
+                0x0000000080002aae       0x44 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+                0x0000000080002aae                __cxxabiv1::__class_type_info::__do_catch(std::type_info const*, void**, unsigned int) const
+ .text          0x0000000080002af2        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(del_ops.o)
+ .text._ZdlPvm  0x0000000080002af2        0x2 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(del_ops.o)
+                0x0000000080002af2                operator delete(void*, unsigned long)
+ .text          0x0000000080002af4        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(si_class_type_info.o)
+ .text._ZN10__cxxabiv120__si_class_type_infoD2Ev
+                0x0000000080002af4        0xc /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(si_class_type_info.o)
+                0x0000000080002af4                __cxxabiv1::__si_class_type_info::~__si_class_type_info()
+                0x0000000080002af4                __cxxabiv1::__si_class_type_info::~__si_class_type_info()
+ .text._ZN10__cxxabiv120__si_class_type_infoD0Ev
+                0x0000000080002b00       0x18 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(si_class_type_info.o)
+                0x0000000080002b00                __cxxabiv1::__si_class_type_info::~__si_class_type_info()
+ .text._ZNKSt9type_infoeqERKS_.isra.0
+                0x0000000080002b18       0x36 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(si_class_type_info.o)
+ .text._ZNK10__cxxabiv120__si_class_type_info12__do_dyncastElNS_17__class_type_info10__sub_kindEPKS1_PKvS4_S6_RNS1_16__dyncast_resultE
+                0x0000000080002b4e       0xb4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(si_class_type_info.o)
+                0x0000000080002b4e                __cxxabiv1::__si_class_type_info::__do_dyncast(long, __cxxabiv1::__class_type_info::__sub_kind, __cxxabiv1::__class_type_info const*, void const*, __cxxabiv1::__class_type_info const*, void const*, __cxxabiv1::__class_type_info::__dyncast_result&) const
+ .text._ZNK10__cxxabiv120__si_class_type_info20__do_find_public_srcElPKvPKNS_17__class_type_infoES2_
+                0x0000000080002c02       0x44 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(si_class_type_info.o)
+                0x0000000080002c02                __cxxabiv1::__si_class_type_info::__do_find_public_src(long, void const*, __cxxabiv1::__class_type_info const*, void const*) const
+ .text._ZNK10__cxxabiv120__si_class_type_info11__do_upcastEPKNS_17__class_type_infoEPKvRNS1_15__upcast_resultE
+                0x0000000080002c46       0x44 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(si_class_type_info.o)
+                0x0000000080002c46                __cxxabiv1::__si_class_type_info::__do_upcast(__cxxabiv1::__class_type_info const*, void const*, __cxxabiv1::__class_type_info::__upcast_result&) const
+ .text          0x0000000080002c8a        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(tinfo.o)
+ .text._ZNSt9type_infoD2Ev
+                0x0000000080002c8a        0x2 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(tinfo.o)
+                0x0000000080002c8a                std::type_info::~type_info()
+                0x0000000080002c8a                std::type_info::~type_info()
+ .text._ZNKSt9type_info14__is_pointer_pEv
+                0x0000000080002c8c        0x4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(tinfo.o)
+                0x0000000080002c8c                std::type_info::__is_function_p() const
+                0x0000000080002c8c                std::type_info::__is_pointer_p() const
+ .text._ZNKSt9type_info11__do_upcastEPKN10__cxxabiv117__class_type_infoEPPv
+                0x0000000080002c90        0x4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(tinfo.o)
+                0x0000000080002c90                std::type_info::__do_upcast(__cxxabiv1::__class_type_info const*, void**) const
+ .text._ZNSt9type_infoD0Ev
+                0x0000000080002c94        0x4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(tinfo.o)
+                0x0000000080002c94                std::type_info::~type_info()
+ .text._ZNKSt9type_info10__do_catchEPKS_PPvj
+                0x0000000080002c98       0x3a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(tinfo.o)
+                0x0000000080002c98                std::type_info::__do_catch(std::type_info const*, void**, unsigned int) const
+ .text          0x0000000080002cd2        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(del_op.o)
+ .text._ZdlPv   0x0000000080002cd2        0x2 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(del_op.o)
+                0x0000000080002cd2                operator delete(void*)
+ .text          0x0000000080002cd4        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o)
+ .text.malloc   0x0000000080002cd4        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o)
+                0x0000000080002cd4                malloc
+ .text.free     0x0000000080002cdc        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o)
+                0x0000000080002cdc                free
+ .text          0x0000000080002ce4        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+ .text.sbrk_aligned
+                0x0000000080002ce4       0x5a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+ .text._malloc_r
+                0x0000000080002d3e      0x130 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+                0x0000000080002d3e                _malloc_r
+ .text          0x0000000080002e6e        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mlock.o)
+ .text.__malloc_lock
+                0x0000000080002e6e        0x2 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mlock.o)
+                0x0000000080002e6e                __malloc_lock
+ .text.__malloc_unlock
+                0x0000000080002e70        0x2 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mlock.o)
+                0x0000000080002e70                __malloc_unlock
+ .text          0x0000000080002e72        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-impure.o)
+ .text          0x0000000080002e72        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-sbrkr.o)
+ .text._sbrk_r  0x0000000080002e72       0x28 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-sbrkr.o)
+                0x0000000080002e72                _sbrk_r
+ .text          0x0000000080002e9a       0x18 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-strcmp.o)
+                0x0000000080002e9a                strcmp
+ .text          0x0000000080002eb2        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-freer.o)
+ .text._free_r  0x0000000080002eb2       0xa0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-freer.o)
+                0x0000000080002eb2                _free_r
+ .text          0x0000000080002f52        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reent.o)
+ .text._reclaim_reent
+                0x0000000080002f52       0xcc /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reent.o)
+                0x0000000080002f52                _reclaim_reent
+ .text          0x000000008000301e       0x3c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+                0x000000008000301e                _sbrk
+ .text          0x000000008000305a       0xa6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+                0x00000000800030cc                __wrap_printf
+ .text          0x0000000080003100        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .text          0x0000000080003100        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .text          0x0000000080003100        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .text          0x0000000080003100       0x16 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+                0x0000000080003100                handle_trap
+ .text          0x0000000080003116       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+                0x0000000080003116                __init_tls
+ .text          0x0000000080003146        0x6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+                0x0000000080003146                __main
+ .text          0x000000008000314c       0x22 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+                0x000000008000314c                _exit
+ .text          0x000000008000316e        0x6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+                0x000000008000316e                _write
+ .text          0x0000000080003174      0x462 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+                0x0000000080003174                simple_pow
+                0x0000000080003188                __vxprintf
+ .text          0x00000000800035d6       0x4c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+                0x00000000800035d6                htif_syscall
+ .text          0x0000000080003622        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-atexit.o)
+ .text.atexit   0x0000000080003622        0xa /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-atexit.o)
+                0x0000000080003622                atexit
+ .text          0x000000008000362c        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-environ.o)
+ .text          0x000000008000362c        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-exit.o)
+ .text.exit     0x000000008000362c       0x26 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-exit.o)
+                0x000000008000362c                exit
+ .text          0x0000000080003652        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+ .text.__fp_lock
+                0x0000000080003652        0x4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+ .text.std      0x0000000080003656       0x66 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+ .text.stdio_exit_handler
+                0x00000000800036bc       0x1a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+ .text.cleanup_stdio
+                0x00000000800036d6       0x4e /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+ .text.global_stdio_init.part.0
+                0x0000000080003724       0x42 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+ .text.__fp_unlock
+                0x0000000080003766        0x4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+ .text.__sfp    0x000000008000376a       0xb6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+                0x000000008000376a                __sfp
+ .text.__sinit  0x0000000080003820       0x18 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+                0x0000000080003820                __sinit
+ .text.__sfp_lock_acquire
+                0x0000000080003838        0x2 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+                0x0000000080003838                __sfp_lock_acquire
+ .text.__sfp_lock_release
+                0x000000008000383a        0x2 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+                0x000000008000383a                __sfp_lock_release
+ .text.__fp_lock_all
+                0x000000008000383c       0x14 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+                0x000000008000383c                __fp_lock_all
+ .text.__fp_unlock_all
+                0x0000000080003850       0x14 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+                0x0000000080003850                __fp_unlock_all
+ .text          0x0000000080003864        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fwalk.o)
+ .text._fwalk_sglue
+                0x0000000080003864       0x6a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fwalk.o)
+                0x0000000080003864                _fwalk_sglue
+ .text          0x00000000800038ce        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-stdio.o)
+ .text.__sread  0x00000000800038ce       0x32 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-stdio.o)
+                0x00000000800038ce                __sread
+ .text.__seofread
+                0x0000000080003900        0x4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-stdio.o)
+                0x0000000080003900                __seofread
+ .text.__swrite
+                0x0000000080003904       0x50 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-stdio.o)
+                0x0000000080003904                __swrite
+ .text.__sseek  0x0000000080003954       0x38 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-stdio.o)
+                0x0000000080003954                __sseek
+ .text.__sclose
+                0x000000008000398c        0x6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-stdio.o)
+                0x000000008000398c                __sclose
+ .text          0x0000000080003992        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-strnlen.o)
+ .text.strnlen  0x0000000080003992       0x18 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-strnlen.o)
+                0x0000000080003992                strnlen
+ .text          0x00000000800039aa        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-closer.o)
+ .text._close_r
+                0x00000000800039aa       0x28 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-closer.o)
+                0x00000000800039aa                _close_r
+ .text          0x00000000800039d2        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-lseekr.o)
+ .text._lseek_r
+                0x00000000800039d2       0x2c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-lseekr.o)
+                0x00000000800039d2                _lseek_r
+ .text          0x00000000800039fe        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-readr.o)
+ .text._read_r  0x00000000800039fe       0x2c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-readr.o)
+                0x00000000800039fe                _read_r
+ .text          0x0000000080003a2a        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-writer.o)
+ .text._write_r
+                0x0000000080003a2a       0x2c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-writer.o)
+                0x0000000080003a2a                _write_r
+ .text          0x0000000080003a56        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-errno.o)
+ .text.__errno  0x0000000080003a56        0x6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-errno.o)
+                0x0000000080003a56                __errno
+ .text          0x0000000080003a5c        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-init.o)
+ .text.__libc_init_array
+                0x0000000080003a5c       0x5e /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-init.o)
+                0x0000000080003a5c                __libc_init_array
+ .text          0x0000000080003aba        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fini.o)
+ .text.__libc_fini_array
+                0x0000000080003aba       0x36 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fini.o)
+                0x0000000080003aba                __libc_fini_array
+ .text          0x0000000080003af0       0x10 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-memset.o)
+                0x0000000080003af0                memset
+ .text          0x0000000080003b00       0x16 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-memcpy-asm.o)
+                0x0000000080003b00                memcpy
+ .text          0x0000000080003b16        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o)
+ .text.__register_exitproc
+                0x0000000080003b16       0x7e /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o)
+                0x0000000080003b16                __register_exitproc
+ .text          0x0000000080003b94        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__call_atexit.o)
+ .text.__call_exitprocs
+                0x0000000080003b94       0xc8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__call_atexit.o)
+                0x0000000080003b94                __call_exitprocs
+ .text          0x0000000080003c5c        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fflush.o)
+ .text.__sflush_r
+                0x0000000080003c5c      0x140 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fflush.o)
+                0x0000000080003c5c                __sflush_r
+ .text._fflush_r
+                0x0000000080003d9c       0x38 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fflush.o)
+                0x0000000080003d9c                _fflush_r
+ .text.fflush   0x0000000080003dd4       0x26 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fflush.o)
+                0x0000000080003dd4                fflush
+ .text          0x0000000080003dfa       0x14 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+                0x0000000080003dfa                _close
+ .text          0x0000000080003e0e       0x14 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+                0x0000000080003e0e                _lseek
+ .text          0x0000000080003e22       0x16 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+                0x0000000080003e22                _read
+ *(.gnu.linkonce.t.*)
+                [!provide]                        PROVIDE (_etext = .)
+
+.rodata         0x0000000080003e38      0x904
+ *(.rodata .rodata.*)
+ .rodata._ZN6MatrixIfLi4ELi12ELi1ELi4ELi12EE8toStringEv.str1.8
+                0x0000000080003e38      0x317 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                                         0x40 (size before relaxing)
+ .rodata._Z11test_assertIfLi4ELi9ELi0ELi4ELi9EEvPKcfR6MatrixIT_XT0_EXT1_EXT2_EXT3_EXT4_EE.str1.8
+                0x000000008000414f       0x2c CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rodata.str1.8
+                0x000000008000414f      0x297 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ *fill*         0x000000008000414f        0x1 
+ .rodata._ZTS6MatrixIfLi4ELi12ELi1ELi4ELi12EE
+                0x0000000080004150       0x21 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080004150                typeinfo name for Matrix<float, 4, 12, 1, 4, 12>
+ *fill*         0x0000000080004171        0x7 
+ .rodata._ZTI6MatrixIfLi4ELi12ELi1ELi4ELi12EE
+                0x0000000080004178       0x10 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080004178                typeinfo for Matrix<float, 4, 12, 1, 4, 12>
+ .rodata._ZTS6MatrixIfLi12ELi4ELi1ELi12ELi4EE
+                0x0000000080004188       0x21 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080004188                typeinfo name for Matrix<float, 12, 4, 1, 12, 4>
+ *fill*         0x00000000800041a9        0x7 
+ .rodata._ZTI6MatrixIfLi12ELi4ELi1ELi12ELi4EE
+                0x00000000800041b0       0x10 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800041b0                typeinfo for Matrix<float, 12, 4, 1, 12, 4>
+ .rodata._ZTS6MatrixIfLi12ELi12ELi1ELi12ELi12EE
+                0x00000000800041c0       0x23 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800041c0                typeinfo name for Matrix<float, 12, 12, 1, 12, 12>
+ *fill*         0x00000000800041e3        0x5 
+ .rodata._ZTI6MatrixIfLi12ELi12ELi1ELi12ELi12EE
+                0x00000000800041e8       0x10 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800041e8                typeinfo for Matrix<float, 12, 12, 1, 12, 12>
+ .rodata._ZTS6MatrixIfLi4ELi4ELi1ELi4ELi4EE
+                0x00000000800041f8       0x1f CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800041f8                typeinfo name for Matrix<float, 4, 4, 1, 4, 4>
+ *fill*         0x0000000080004217        0x1 
+ .rodata._ZTI6MatrixIfLi4ELi4ELi1ELi4ELi4EE
+                0x0000000080004218       0x10 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080004218                typeinfo for Matrix<float, 4, 4, 1, 4, 4>
+ .rodata._ZTS6MatrixIfLi12ELi10ELi0ELi12ELi10EE
+                0x0000000080004228       0x23 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080004228                typeinfo name for Matrix<float, 12, 10, 0, 12, 10>
+ *fill*         0x000000008000424b        0x5 
+ .rodata._ZTI6MatrixIfLi12ELi10ELi0ELi12ELi10EE
+                0x0000000080004250       0x10 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080004250                typeinfo for Matrix<float, 12, 10, 0, 12, 10>
+ .rodata._ZTS6MatrixIfLi4ELi9ELi0ELi4ELi9EE
+                0x0000000080004260       0x1f CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080004260                typeinfo name for Matrix<float, 4, 9, 0, 4, 9>
+ *fill*         0x000000008000427f        0x1 
+ .rodata._ZTI6MatrixIfLi4ELi9ELi0ELi4ELi9EE
+                0x0000000080004280       0x10 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080004280                typeinfo for Matrix<float, 4, 9, 0, 4, 9>
+ .rodata._ZTS6MatrixIfLi12ELi1ELi0ELi12ELi1EE
+                0x0000000080004290       0x21 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080004290                typeinfo name for Matrix<float, 12, 1, 0, 12, 1>
+ *fill*         0x00000000800042b1        0x7 
+ .rodata._ZTI6MatrixIfLi12ELi1ELi0ELi12ELi1EE
+                0x00000000800042b8       0x10 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800042b8                typeinfo for Matrix<float, 12, 1, 0, 12, 1>
+ .rodata._ZTS6MatrixIfLi4ELi1ELi0ELi4ELi1EE
+                0x00000000800042c8       0x1f CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800042c8                typeinfo name for Matrix<float, 4, 1, 0, 4, 1>
+ *fill*         0x00000000800042e7        0x1 
+ .rodata._ZTI6MatrixIfLi4ELi1ELi0ELi4ELi1EE
+                0x00000000800042e8       0x10 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800042e8                typeinfo for Matrix<float, 4, 1, 0, 4, 1>
+ .rodata._ZTV6MatrixIfLi4ELi12ELi1ELi4ELi12EE
+                0x00000000800042f8       0x28 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800042f8                vtable for Matrix<float, 4, 12, 1, 4, 12>
+ .rodata._ZTV6MatrixIfLi12ELi4ELi1ELi12ELi4EE
+                0x0000000080004320       0x28 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080004320                vtable for Matrix<float, 12, 4, 1, 12, 4>
+ .rodata._ZTV6MatrixIfLi12ELi12ELi1ELi12ELi12EE
+                0x0000000080004348       0x28 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080004348                vtable for Matrix<float, 12, 12, 1, 12, 12>
+ .rodata._ZTV6MatrixIfLi4ELi4ELi1ELi4ELi4EE
+                0x0000000080004370       0x28 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080004370                vtable for Matrix<float, 4, 4, 1, 4, 4>
+ .rodata._ZTV6MatrixIfLi12ELi10ELi0ELi12ELi10EE
+                0x0000000080004398       0x28 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080004398                vtable for Matrix<float, 12, 10, 0, 12, 10>
+ .rodata._ZTV6MatrixIfLi4ELi9ELi0ELi4ELi9EE
+                0x00000000800043c0       0x28 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800043c0                vtable for Matrix<float, 4, 9, 0, 4, 9>
+ .rodata._ZTV6MatrixIfLi12ELi1ELi0ELi12ELi1EE
+                0x00000000800043e8       0x28 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x00000000800043e8                vtable for Matrix<float, 12, 1, 0, 12, 1>
+ .rodata._ZTV6MatrixIfLi4ELi1ELi0ELi4ELi1EE
+                0x0000000080004410       0x28 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080004410                vtable for Matrix<float, 4, 1, 0, 4, 1>
+ .rodata._ZTSN10__cxxabiv117__class_type_infoE
+                0x0000000080004438       0x22 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+                0x0000000080004438                typeinfo name for __cxxabiv1::__class_type_info
+ *fill*         0x000000008000445a        0x6 
+ .rodata._ZTIN10__cxxabiv117__class_type_infoE
+                0x0000000080004460       0x18 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+                0x0000000080004460                typeinfo for __cxxabiv1::__class_type_info
+ .rodata._ZTVN10__cxxabiv117__class_type_infoE
+                0x0000000080004478       0x58 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+                0x0000000080004478                vtable for __cxxabiv1::__class_type_info
+ .rodata._ZTSN10__cxxabiv120__si_class_type_infoE
+                0x00000000800044d0       0x25 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(si_class_type_info.o)
+                0x00000000800044d0                typeinfo name for __cxxabiv1::__si_class_type_info
+ *fill*         0x00000000800044f5        0x3 
+ .rodata._ZTIN10__cxxabiv120__si_class_type_infoE
+                0x00000000800044f8       0x18 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(si_class_type_info.o)
+                0x00000000800044f8                typeinfo for __cxxabiv1::__si_class_type_info
+ .rodata._ZTVN10__cxxabiv120__si_class_type_infoE
+                0x0000000080004510       0x58 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(si_class_type_info.o)
+                0x0000000080004510                vtable for __cxxabiv1::__si_class_type_info
+ .rodata._ZTSSt9type_info
+                0x0000000080004568        0xd /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(tinfo.o)
+                0x0000000080004568                typeinfo name for std::type_info
+ *fill*         0x0000000080004575        0x3 
+ .rodata._ZTISt9type_info
+                0x0000000080004578       0x10 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(tinfo.o)
+                0x0000000080004578                typeinfo for std::type_info
+ .rodata._ZTVSt9type_info
+                0x0000000080004588       0x40 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(tinfo.o)
+                0x0000000080004588                vtable for std::type_info
+ .rodata        0x00000000800045c8       0x19 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .rodata.str1.8
+                0x00000000800045e1        0x7 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ *fill*         0x00000000800045e1        0x3 
+ .rodata        0x00000000800045e4      0x158 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ *(.gnu.linkonce.r.*)
+
+.eh_frame       0x0000000080004740      0xcac
+ .eh_frame      0x0000000080004740      0x9c0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .eh_frame      0x0000000080005100      0x118 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+                                        0x130 (size before relaxing)
+ .eh_frame      0x0000000080005218       0x18 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(del_ops.o)
+                                         0x28 (size before relaxing)
+ .eh_frame      0x0000000080005230      0x120 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(si_class_type_info.o)
+                                        0x130 (size before relaxing)
+ .eh_frame      0x0000000080005350       0x70 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(tinfo.o)
+                                         0x80 (size before relaxing)
+ .eh_frame      0x00000000800053c0       0x18 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(del_op.o)
+                                         0x28 (size before relaxing)
+ .eh_frame      0x00000000800053d8       0x14 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+                                         0x28 (size before relaxing)
+
+.rela.dyn       0x00000000800053f0        0x0
+ .rela.text._ZN6MatrixIfLi4ELi12ELi1ELi4ELi12EEC2Ev
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.text._ZN6MatrixIfLi12ELi4ELi1ELi12ELi4EEC2Ev
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.text._ZN6MatrixIfLi12ELi12ELi1ELi12ELi12EEC2Ev
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.text._ZN6MatrixIfLi4ELi4ELi1ELi4ELi4EEC2Ev
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.text._ZN6MatrixIfLi12ELi10ELi0ELi12ELi10EEC2Ev
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.text._ZN6MatrixIfLi4ELi9ELi0ELi4ELi9EEC2Ev
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.text._ZN6MatrixIfLi12ELi1ELi0ELi12ELi1EEC2Ev
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.text._ZN6MatrixIfLi4ELi1ELi0ELi4ELi1EEC2Ev
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTI6MatrixIfLi4ELi12ELi1ELi4ELi12EE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTI6MatrixIfLi12ELi4ELi1ELi12ELi4EE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTI6MatrixIfLi12ELi12ELi1ELi12ELi12EE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTI6MatrixIfLi4ELi4ELi1ELi4ELi4EE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTI6MatrixIfLi12ELi10ELi0ELi12ELi10EE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTI6MatrixIfLi4ELi9ELi0ELi4ELi9EE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTI6MatrixIfLi12ELi1ELi0ELi12ELi1EE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTI6MatrixIfLi4ELi1ELi0ELi4ELi1EE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTV6MatrixIfLi4ELi12ELi1ELi4ELi12EE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTV6MatrixIfLi12ELi4ELi1ELi12ELi4EE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTV6MatrixIfLi12ELi12ELi1ELi12ELi12EE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTV6MatrixIfLi4ELi4ELi1ELi4ELi4EE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTV6MatrixIfLi12ELi10ELi0ELi12ELi10EE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTV6MatrixIfLi4ELi9ELi0ELi4ELi9EE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTV6MatrixIfLi12ELi1ELi0ELi12ELi1EE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTV6MatrixIfLi4ELi1ELi0ELi4ELi1EE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.text._ZN10__cxxabiv117__class_type_infoD2Ev
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTIN10__cxxabiv117__class_type_infoE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTVN10__cxxabiv117__class_type_infoE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.text._ZN10__cxxabiv120__si_class_type_infoD2Ev
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTIN10__cxxabiv120__si_class_type_infoE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTVN10__cxxabiv120__si_class_type_infoE
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTISt9type_info
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.rodata._ZTVSt9type_info
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.text     0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.sdata    0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.got      0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.text.init
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.text.__libc_init_array
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.text.__libc_fini_array
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .rela.text.__register_exitproc
+                0x00000000800053f0        0x0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080009b2c                . = (. + (SIZEOF (.text) + SIZEOF (.rodata)))
+
+.preinit_array  0x0000000080009b28        0x0
+                0x0000000080009b28                PROVIDE (__preinit_array_start = .)
+ *(.preinit_array)
+                0x0000000080009b28                PROVIDE (__preinit_array_end = .)
+
+.init_array     0x0000000080009b28        0x8
+                0x0000000080009b28                PROVIDE (__init_array_start = .)
+ *(SORT_BY_INIT_PRIORITY(.init_array.*) SORT_BY_INIT_PRIORITY(.ctors.*))
+ *(.init_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .ctors)
+ .init_array    0x0000000080009b28        0x8 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000080009b30                PROVIDE (__init_array_end = .)
+
+.fini_array     0x0000000080009b30        0x0
+                0x0000000080009b30                PROVIDE (__fini_array_start = .)
+ *(SORT_BY_INIT_PRIORITY(.fini_array.*) SORT_BY_INIT_PRIORITY(.dtors.*))
+ *(.fini_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .dtors)
+                0x0000000080009b30                PROVIDE (__fini_array_end = .)
+
+.ctors
+ *crtbegin.o(.ctors)
+ *crtbegin?.o(.ctors)
+ *(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors)
+ *(SORT_BY_NAME(.ctors.*))
+ *(.ctors)
+
+.dtors
+ *crtbegin.o(.dtors)
+ *crtbegin?.o(.dtors)
+ *(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors)
+ *(SORT_BY_NAME(.dtors.*))
+ *(.dtors)
+
+.htif           0x0000000080009b40       0x10
+ *(.htif)
+ .htif          0x0000000080009b40       0x10 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+                0x0000000080009b40                tohost
+                0x0000000080009b48                fromhost
+                0x0000000081000000                . = (__origin + __length)
+
+.tdata          0x0000000081000000        0x0
+                0x0000000081000000                PROVIDE (__tdata_start = .)
+ *(.tdata .tdata.*)
+ *(.gnu.linkonce.td.*)
+                [!provide]                        PROVIDE (__tdata_end = .)
+                0x0000000000000000                PROVIDE (__tdata_size = SIZEOF (.tdata))
+
+.tbss           0x0000000081000000       0xc0
+                0x0000000081000000                PROVIDE (__tbss_start = .)
+                0x0000000000000000                PROVIDE (__tbss_offset = ABSOLUTE ((__tbss_start - __tdata_start)))
+ *(.tbss .tbss.*)
+ .tbss          0x0000000081000000       0xc0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+                0x0000000081000000                __printbuflen
+                0x0000000081000040                __printbuf
+ *(.gnu.linkonce.tb.*)
+ *(.tcommon)
+                0x00000000810000c0                PROVIDE (__tbss_end = .)
+                0x00000000000000c0                PROVIDE (__tbss_size = SIZEOF (.tbss))
+
+.data           0x0000000081000000     0x1c58
+ *(.data)
+ .data          0x0000000081000000     0x1c58 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000081000000                Quu_inv_data
+                0x0000000081000040                AmBKt_data
+                0x0000000081000280                Kinf_data
+                0x0000000081000340                Pinf_data
+                0x0000000081000580                r_data
+                0x0000000081000610                q_data
+                0x00000000810007f0                p_data
+                0x00000000810009d0                d_data
+                0x0000000081000a60                x_data
+                0x0000000081000c40                u_data
+                0x0000000081000cd0                g_data
+                0x0000000081000eb0                y_data
+                0x0000000081000f40                Q_data
+                0x0000000081000f70                R_data
+                0x0000000081000f80                Adyn_data
+                0x00000000810011c0                Bdyn_data
+                0x0000000081001280                znew_data
+                0x0000000081001310                vnew_data
+                0x00000000810014f0                u_min_data
+                0x0000000081001580                u_max_data
+                0x0000000081001610                x_min_data
+                0x00000000810017f0                x_max_data
+                0x00000000810019d0                Xref_data
+                0x0000000081001bb0                Uref_data
+                0x0000000081001c40                solver
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(del_ops.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(si_class_type_info.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(tinfo.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(del_op.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mlock.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-impure.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-sbrkr.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-strcmp.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-freer.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reent.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-atexit.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-environ.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-exit.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fwalk.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-stdio.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-strnlen.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-closer.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-lseekr.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-readr.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-writer.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-errno.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-init.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fini.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-memset.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-memcpy-asm.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__call_atexit.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fflush.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .data          0x0000000081001c58        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+ *(.gnu.linkonce.d.*)
+
+.got            0x0000000081001c58       0x18
+ .got           0x0000000081001c58       0x18 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000081001c58                _GLOBAL_OFFSET_TABLE_
+
+.got.plt        0x0000000081001c70       0x10
+ .got.plt       0x0000000081001c70       0x10 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+
+.data._impure_data
+                0x0000000081001c80       0x90
+ .data._impure_data
+                0x0000000081001c80       0x90 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-impure.o)
+                0x0000000081001c80                _impure_data
+
+.data.__sglue   0x0000000081001d10       0x18
+ .data.__sglue  0x0000000081001d10       0x18 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+                0x0000000081001d10                __sglue
+
+.sdata          0x0000000081001d28       0xb4
+                0x0000000081002528                PROVIDE (__global_pointer$ = (. + 0x800))
+ *(.sdata .sdata.*)
+ .sdata         0x0000000081001d28       0x74 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000081001d28                test__update_linear_cost_4__p
+                0x0000000081001d2c                test__update_linear_cost_4__q
+                0x0000000081001d30                test__update_linear_cost_4__r
+                0x0000000081001d34                test__update_linear_cost_3__p
+                0x0000000081001d38                test__update_linear_cost_3__q
+                0x0000000081001d3c                test__update_linear_cost_3__r
+                0x0000000081001d40                test__update_linear_cost_2__p
+                0x0000000081001d44                test__update_linear_cost_2__q
+                0x0000000081001d48                test__update_linear_cost_2__r
+                0x0000000081001d4c                test__update_linear_cost_1__p
+                0x0000000081001d50                test__update_linear_cost_1__q
+                0x0000000081001d54                test__update_linear_cost__p
+                0x0000000081001d58                test__update_linear_cost__q
+                0x0000000081001d5c                test__update_dual__g
+                0x0000000081001d60                test__update_dual__y
+                0x0000000081001d64                test__update_slack__vnew
+                0x0000000081001d68                test__update_slack__znew
+                0x0000000081001d6c                test__update_primal__d
+                0x0000000081001d70                test__update_primal__p
+                0x0000000081001d74                test__update_primal__x
+                0x0000000081001d78                test__update_primal__u
+                0x0000000081001d7c                test__backward_pass_2__p
+                0x0000000081001d80                test__backward_pass_1__d
+                0x0000000081001d84                test__backward_pass__p
+                0x0000000081001d88                test__backward_pass__d
+                0x0000000081001d8c                test__forward_pass_2__x
+                0x0000000081001d90                test__forward_pass_1__u
+                0x0000000081001d94                test__forward_pass__x
+                0x0000000081001d98                test__forward_pass__u
+ *fill*         0x0000000081001d9c        0x4 
+ .sdata._impure_ptr
+                0x0000000081001da0        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-impure.o)
+                0x0000000081001da0                _impure_ptr
+ .sdata         0x0000000081001da8        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .sdata.environ
+                0x0000000081001db0        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-environ.o)
+                0x0000000081001db0                environ
+ .sdata.__atexit_dummy
+                0x0000000081001db8        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o)
+                0x0000000081001db8                __atexit_dummy
+ *(.gnu.linkonce.s.*)
+ *(.srodata.cst16)
+ *(.srodata.cst8)
+ .srodata.cst8  0x0000000081001dc0       0x10 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ *(.srodata.cst4)
+ .srodata.cst4  0x0000000081001dd0        0xc CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ *(.srodata.cst2)
+ *(.srodata .srodata.*)
+                [!provide]                        PROVIDE (_edata = .)
+
+.bss            0x0000000081001de0     0x42a0
+                0x0000000081001de0                PROVIDE (__bss_start = .)
+ *(.sbss .sbss.*)
+ .sbss          0x0000000081001de0        0x8 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000081001de0                test__update_linear_cost_1__r
+                0x0000000081001de4                test__update_linear_cost__r
+ .sbss.__malloc_sbrk_start
+                0x0000000081001de8        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+                0x0000000081001de8                __malloc_sbrk_start
+ .sbss.__malloc_free_list
+                0x0000000081001df0        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+                0x0000000081001df0                __malloc_free_list
+ .sbss.errno    0x0000000081001df8        0x4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reent.o)
+                0x0000000081001df8                errno
+ *fill*         0x0000000081001dfc        0x4 
+ .sbss          0x0000000081001e00        0x4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ *fill*         0x0000000081001e04        0x4 
+ .sbss.initial_env
+                0x0000000081001e08        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-environ.o)
+ .sbss.__stdio_exit_handler
+                0x0000000081001e10        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+                0x0000000081001e10                __stdio_exit_handler
+ .sbss.__atexit
+                0x0000000081001e18        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__call_atexit.o)
+                0x0000000081001e18                __atexit
+ *(.gnu.linkonce.sb.*)
+ *(.bss .bss.*)
+ .bss           0x0000000081001e20     0x3f30 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                0x0000000081001e20                settings
+                0x0000000081001e38                work
+                0x0000000081004de8                cache
+ .bss           0x0000000081005d50        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+ .bss           0x0000000081005d50        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(del_ops.o)
+ .bss           0x0000000081005d50        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(si_class_type_info.o)
+ .bss           0x0000000081005d50        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(tinfo.o)
+ .bss           0x0000000081005d50        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(del_op.o)
+ .bss           0x0000000081005d50        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o)
+ .bss           0x0000000081005d50        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+ .bss           0x0000000081005d50        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mlock.o)
+ .bss           0x0000000081005d50        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-impure.o)
+ .bss           0x0000000081005d50        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-sbrkr.o)
+ .bss           0x0000000081005d50        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-strcmp.o)
+ .bss           0x0000000081005d50        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-freer.o)
+ .bss           0x0000000081005d50        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reent.o)
+ .bss           0x0000000081005d50        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .bss           0x0000000081005d50        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .bss           0x0000000081005d50        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .bss           0x0000000081005d50        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .bss           0x0000000081005d50        0x4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .bss           0x0000000081005d54        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .bss           0x0000000081005d54        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .bss           0x0000000081005d54        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .bss           0x0000000081005d54        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .bss           0x0000000081005d54        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .bss           0x0000000081005d54        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ .bss           0x0000000081005d54        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .bss           0x0000000081005d54        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-atexit.o)
+ .bss           0x0000000081005d54        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-environ.o)
+ .bss           0x0000000081005d54        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-exit.o)
+ .bss           0x0000000081005d54        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+ *fill*         0x0000000081005d54        0x4 
+ .bss.__sf      0x0000000081005d58      0x210 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+                0x0000000081005d58                __sf
+ .bss           0x0000000081005f68        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fwalk.o)
+ .bss           0x0000000081005f68        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-stdio.o)
+ .bss           0x0000000081005f68        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-strnlen.o)
+ .bss           0x0000000081005f68        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-closer.o)
+ .bss           0x0000000081005f68        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-lseekr.o)
+ .bss           0x0000000081005f68        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-readr.o)
+ .bss           0x0000000081005f68        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-writer.o)
+ .bss           0x0000000081005f68        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-errno.o)
+ .bss           0x0000000081005f68        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-init.o)
+ .bss           0x0000000081005f68        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fini.o)
+ .bss           0x0000000081005f68        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-memset.o)
+ .bss           0x0000000081005f68        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-memcpy-asm.o)
+ .bss           0x0000000081005f68        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o)
+ .bss.__atexit0
+                0x0000000081005f68      0x118 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o)
+                0x0000000081005f68                __atexit0
+ .bss           0x0000000081006080        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__call_atexit.o)
+ .bss           0x0000000081006080        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fflush.o)
+ .bss           0x0000000081006080        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .bss           0x0000000081006080        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .bss           0x0000000081006080        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+ *(.gnu.linkonce.b.*)
+ *(COMMON)
+                0x0000000081006080                PROVIDE (__bss_end = .)
+                0x0000000081006080                . = ALIGN (0x8)
+                0x0000000081006080                PROVIDE (_end = .)
+                0x0000000000020000                PROVIDE (__heap_size = 0x20000)
+                0x0000000081026080                . = (. + __heap_size)
+                0x0000000081027000                . = ALIGN (0x1000)
+                0x0000000081027000                PROVIDE (__heap_end = .)
+                0x00000000000000c0                PROVIDE (__tcb_size = (__tbss_end - __tdata_start))
+                0x0000000000000010                PROVIDE (__stack_align = MAX (ALIGNOF (.tdata), 0x10))
+                0x0000000081027000                PROVIDE (__stack_start = ALIGN (__stack_align))
+                0x000000000000000f                PROVIDE (__stack_shift = LOG2CEIL (ALIGN ((__stack_size_min + __tcb_size), __stack_align)))
+                0x0000000000008000                PROVIDE (__stack_size = (0x1 << __stack_shift))
+                0x0000000000000000                PROVIDE (__boot_hart = 0x0)
+OUTPUT(test_admm_rvv elf64-littleriscv)
+
+.debug_info     0x0000000000000000     0x96de
+ .debug_info    0x0000000000000000     0x7f00 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .debug_info    0x0000000000007f00      0x136 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .debug_info    0x0000000000008036      0x2ca /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .debug_info    0x0000000000008300       0xb3 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .debug_info    0x00000000000083b3       0x29 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .debug_info    0x00000000000083dc       0x28 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .debug_info    0x0000000000008404      0x13a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .debug_info    0x000000000000853e      0x169 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .debug_info    0x00000000000086a7       0x49 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .debug_info    0x00000000000086f0       0xe4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .debug_info    0x00000000000087d4      0x178 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .debug_info    0x000000000000894c      0x75d /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ .debug_info    0x00000000000090a9      0x340 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .debug_info    0x00000000000093e9       0xd1 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .debug_info    0x00000000000094ba      0x111 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .debug_info    0x00000000000095cb      0x113 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+
+.debug_abbrev   0x0000000000000000     0x14c2
+ .debug_abbrev  0x0000000000000000      0x8c6 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .debug_abbrev  0x00000000000008c6       0xda /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .debug_abbrev  0x00000000000009a0      0x1af /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .debug_abbrev  0x0000000000000b4f       0x69 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .debug_abbrev  0x0000000000000bb8       0x14 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .debug_abbrev  0x0000000000000bcc       0x14 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .debug_abbrev  0x0000000000000be0       0xba /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .debug_abbrev  0x0000000000000c9a       0xe3 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .debug_abbrev  0x0000000000000d7d       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .debug_abbrev  0x0000000000000dad       0x93 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .debug_abbrev  0x0000000000000e40       0xaa /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .debug_abbrev  0x0000000000000eea      0x22e /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ .debug_abbrev  0x0000000000001118      0x1e8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .debug_abbrev  0x0000000000001300       0x7d /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .debug_abbrev  0x000000000000137d       0x9f /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .debug_abbrev  0x000000000000141c       0xa6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+
+.debug_loclists
+                0x0000000000000000     0x1b9c
+ .debug_loclists
+                0x0000000000000000     0x132a CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .debug_loclists
+                0x000000000000132a       0x38 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .debug_loclists
+                0x0000000000001362       0x85 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .debug_loclists
+                0x00000000000013e7       0x4a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .debug_loclists
+                0x0000000000001431       0x36 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .debug_loclists
+                0x0000000000001467      0x63e /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ .debug_loclists
+                0x0000000000001aa5       0x71 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .debug_loclists
+                0x0000000000001b16       0x1a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .debug_loclists
+                0x0000000000001b30       0x36 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .debug_loclists
+                0x0000000000001b66       0x36 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+
+.debug_aranges  0x0000000000000000      0x7a0
+ .debug_aranges
+                0x0000000000000000      0x4e0 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .debug_aranges
+                0x00000000000004e0       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .debug_aranges
+                0x0000000000000510       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .debug_aranges
+                0x0000000000000540       0x20 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .debug_aranges
+                0x0000000000000560       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .debug_aranges
+                0x0000000000000590       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .debug_aranges
+                0x00000000000005c0       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .debug_aranges
+                0x00000000000005f0       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .debug_aranges
+                0x0000000000000620       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .debug_aranges
+                0x0000000000000650       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .debug_aranges
+                0x0000000000000680       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .debug_aranges
+                0x00000000000006b0       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ .debug_aranges
+                0x00000000000006e0       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .debug_aranges
+                0x0000000000000710       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .debug_aranges
+                0x0000000000000740       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .debug_aranges
+                0x0000000000000770       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+
+.debug_rnglists
+                0x0000000000000000      0x4d0
+ .debug_rnglists
+                0x0000000000000000      0x426 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .debug_rnglists
+                0x0000000000000426       0x26 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .debug_rnglists
+                0x000000000000044c       0x71 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ .debug_rnglists
+                0x00000000000004bd       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+
+.debug_line     0x0000000000000000     0x6623
+ .debug_line    0x0000000000000000     0x49b4 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .debug_line    0x00000000000049b4      0x125 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .debug_line    0x0000000000004ad9      0x250 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .debug_line    0x0000000000004d29       0x48 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .debug_line    0x0000000000004d71      0x432 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .debug_line    0x00000000000051a3       0x60 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .debug_line    0x0000000000005203       0xb7 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .debug_line    0x00000000000052ba       0xdf /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .debug_line    0x0000000000005399       0x6a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .debug_line    0x0000000000005403       0xbf /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .debug_line    0x00000000000054c2       0x8d /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .debug_line    0x000000000000554f      0xcff /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ .debug_line    0x000000000000624e      0x1f6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .debug_line    0x0000000000006444       0x96 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .debug_line    0x00000000000064da       0xa0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .debug_line    0x000000000000657a       0xa9 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+
+.debug_str      0x0000000000000000     0x3268
+ .debug_str     0x0000000000000000     0x3268 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                                       0x31ca (size before relaxing)
+ .debug_str     0x0000000000003268      0x165 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .debug_str     0x0000000000003268      0x1d3 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .debug_str     0x0000000000003268      0x143 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .debug_str     0x0000000000003268       0x52 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .debug_str     0x0000000000003268       0x55 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .debug_str     0x0000000000003268      0x15d /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .debug_str     0x0000000000003268      0x186 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .debug_str     0x0000000000003268       0x95 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .debug_str     0x0000000000003268      0x13b /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .debug_str     0x0000000000003268      0x179 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .debug_str     0x0000000000003268      0x23f /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ .debug_str     0x0000000000003268      0x1b4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .debug_str     0x0000000000003268      0x137 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .debug_str     0x0000000000003268      0x14c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .debug_str     0x0000000000003268      0x14e /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+
+.debug_line_str
+                0x0000000000000000      0x750
+ .debug_line_str
+                0x0000000000000000      0x750 CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                                        0x642 (size before relaxing)
+ .debug_line_str
+                0x0000000000000750      0x155 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .debug_line_str
+                0x0000000000000750      0x1f6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .debug_line_str
+                0x0000000000000750      0x11e /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .debug_line_str
+                0x0000000000000750       0x46 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .debug_line_str
+                0x0000000000000750       0x49 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .debug_line_str
+                0x0000000000000750      0x172 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .debug_line_str
+                0x0000000000000750      0x151 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .debug_line_str
+                0x0000000000000750       0x93 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .debug_line_str
+                0x0000000000000750      0x16a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .debug_line_str
+                0x0000000000000750      0x1e6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .debug_line_str
+                0x0000000000000750      0x175 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ .debug_line_str
+                0x0000000000000750      0x180 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .debug_line_str
+                0x0000000000000750       0xf0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .debug_line_str
+                0x0000000000000750      0x101 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .debug_line_str
+                0x0000000000000750      0x166 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+
+.comment        0x0000000000000000       0x2d
+ .comment       0x0000000000000000       0x2d CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+                                         0x1c (size before relaxing)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(del_ops.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(si_class_type_info.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(tinfo.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(del_op.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mlock.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-impure.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-sbrkr.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-freer.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reent.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-atexit.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-environ.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-exit.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fwalk.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-stdio.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-strnlen.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-closer.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-lseekr.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-readr.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-writer.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-errno.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-init.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fini.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__call_atexit.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fflush.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+
+.riscv.attributes
+                0x0000000000000000       0xbe
+ .riscv.attributes
+                0x0000000000000000       0xbe CMakeFiles/test_admm_rvv.dir/test/test_admm_rvv.cpp.o
+ .riscv.attributes
+                0x00000000000000be       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(class_type_info.o)
+ .riscv.attributes
+                0x0000000000000105       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(del_ops.o)
+ .riscv.attributes
+                0x000000000000014c       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(si_class_type_info.o)
+ .riscv.attributes
+                0x0000000000000193       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(tinfo.o)
+ .riscv.attributes
+                0x00000000000001da       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a(del_op.o)
+ .riscv.attributes
+                0x0000000000000221       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o)
+ .riscv.attributes
+                0x0000000000000268       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+ .riscv.attributes
+                0x00000000000002af       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mlock.o)
+ .riscv.attributes
+                0x00000000000002f6       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-impure.o)
+ .riscv.attributes
+                0x000000000000033d       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-sbrkr.o)
+ .riscv.attributes
+                0x0000000000000384       0x45 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-strcmp.o)
+ .riscv.attributes
+                0x00000000000003c9       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-freer.o)
+ .riscv.attributes
+                0x0000000000000410       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reent.o)
+ .riscv.attributes
+                0x0000000000000457       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .riscv.attributes
+                0x000000000000049e       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .riscv.attributes
+                0x00000000000004e5       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .riscv.attributes
+                0x000000000000052c       0x49 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .riscv.attributes
+                0x0000000000000575       0x45 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .riscv.attributes
+                0x00000000000005ba       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .riscv.attributes
+                0x0000000000000601       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .riscv.attributes
+                0x0000000000000648       0x4b /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .riscv.attributes
+                0x0000000000000693       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .riscv.attributes
+                0x00000000000006da       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .riscv.attributes
+                0x0000000000000721       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ .riscv.attributes
+                0x0000000000000768       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .riscv.attributes
+                0x00000000000007af       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-atexit.o)
+ .riscv.attributes
+                0x00000000000007f6       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-environ.o)
+ .riscv.attributes
+                0x000000000000083d       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-exit.o)
+ .riscv.attributes
+                0x0000000000000884       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-findfp.o)
+ .riscv.attributes
+                0x00000000000008cb       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fwalk.o)
+ .riscv.attributes
+                0x0000000000000912       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-stdio.o)
+ .riscv.attributes
+                0x0000000000000959       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-strnlen.o)
+ .riscv.attributes
+                0x00000000000009a0       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-closer.o)
+ .riscv.attributes
+                0x00000000000009e7       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-lseekr.o)
+ .riscv.attributes
+                0x0000000000000a2e       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-readr.o)
+ .riscv.attributes
+                0x0000000000000a75       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-writer.o)
+ .riscv.attributes
+                0x0000000000000abc       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-errno.o)
+ .riscv.attributes
+                0x0000000000000b03       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-init.o)
+ .riscv.attributes
+                0x0000000000000b4a       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fini.o)
+ .riscv.attributes
+                0x0000000000000b91       0x45 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-memset.o)
+ .riscv.attributes
+                0x0000000000000bd6       0x45 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-memcpy-asm.o)
+ .riscv.attributes
+                0x0000000000000c1b       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o)
+ .riscv.attributes
+                0x0000000000000c62       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__call_atexit.o)
+ .riscv.attributes
+                0x0000000000000ca9       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fflush.o)
+ .riscv.attributes
+                0x0000000000000cf0       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .riscv.attributes
+                0x0000000000000d37       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .riscv.attributes
+                0x0000000000000d7e       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+
+.debug_frame    0x0000000000000000      0x310
+ .debug_frame   0x0000000000000000       0x38 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .debug_frame   0x0000000000000038       0x70 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .debug_frame   0x00000000000000a8       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .debug_frame   0x00000000000000d8       0x38 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .debug_frame   0x0000000000000110       0x28 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .debug_frame   0x0000000000000138       0x28 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .debug_frame   0x0000000000000160       0x28 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .debug_frame   0x0000000000000188       0xb0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ .debug_frame   0x0000000000000238       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .debug_frame   0x0000000000000268       0x38 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .debug_frame   0x00000000000002a0       0x38 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .debug_frame   0x00000000000002d8       0x38 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)

@@ -1,0 +1,1237 @@
+Archive member included to satisfy reference by file (symbol)
+
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o)
+                              CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o (malloc)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o) (_malloc_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mlock.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o) (__malloc_lock)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-rand.o)
+                              CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o (srand)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-impure.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o) (_impure_ptr)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-sbrkr.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o) (_sbrk_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-assert.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-rand.o) (__assert_func)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-freer.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o) (_free_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fprintf.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-assert.o) (fiprintf)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reent.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-sbrkr.o) (errno)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-abort.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-assert.o) (abort)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fprintf.o) (_vfprintf_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf_i.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf.o) (_printf_i)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf.o) (__sinit)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fvwrite.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf.o) (__sfvwrite_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fwalk.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o) (_fwalk_sglue)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-stdio.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o) (__sread)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-wbuf.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf.o) (__swbuf_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-wsetup.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf.o) (__swsetup_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memchr.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf.o) (memchr)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signal.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-abort.o) (raise)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-closer.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-stdio.o) (_close_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-lseekr.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-stdio.o) (_lseek_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-readr.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-stdio.o) (_read_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signalr.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signal.o) (_kill_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-writer.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-stdio.o) (_write_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memmove.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fvwrite.o) (memmove)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memset.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o) (memset)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memcpy-asm.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fvwrite.o) (memcpy)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reallocr.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fvwrite.o) (_realloc_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fflush.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o) (_fflush_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-makebuf.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-wsetup.o) (__smakebuf_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fstatr.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-makebuf.o) (_fstat_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-isattyr.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-makebuf.o) (_isatty_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-msizer.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reallocr.o) (_malloc_usable_size_r)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-closer.o) (_close)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-abort.o) (_exit)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(fstat.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fstatr.o) (_fstat)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(getpid.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signalr.o) (_getpid)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(isatty.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-isattyr.o) (_isatty)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(kill.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signalr.o) (_kill)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-lseekr.o) (_lseek)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-readr.o) (_read)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-sbrkr.o) (_sbrk)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-writer.o) (_write)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+                              CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o (__wrap_printf)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o) (__printbuflen)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+                              (_start)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o) (_start_main)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o) (handle_trap)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o) (__init_tls)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o) (__main)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o) (htif_syscall)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o) (__vxprintf)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-atexit.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o) (atexit)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-environ.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o) (environ)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-exit.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o) (exit)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-strnlen.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o) (strnlen)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-errno.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o) (__errno)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-init.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o) (__libc_init_array)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fini.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o) (__libc_fini_array)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-atexit.o) (__register_exitproc)
+/scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__call_atexit.o)
+                              /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o) (__call_exitprocs)
+
+Discarded input sections
+
+ .group         0x0000000000000000        0xc CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .group         0x0000000000000000        0xc CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+rom              0x0000000080000000 0x0000000001000000 xr
+ram              0x0000000081000000 0x0000000001000000 !xr
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a
+LOAD CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+LOAD libmatlib.a
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libstdc++.a
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libm_nano.a
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/bin/../lib/gcc/riscv64-unknown-elf/13.2.0/libgcc.a
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/bin/../lib/gcc/riscv64-unknown-elf/13.2.0/libgcc.a
+START GROUP
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/bin/../lib/gcc/riscv64-unknown-elf/13.2.0/libgcc.a
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a
+LOAD /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a
+END GROUP
+                0x0000000080000000                PROVIDE (__origin = 0x80000000)
+                0x0000000001000000                PROVIDE (__length = 0x1000000)
+                0x0000000080000000                . = __origin
+                0x0000000000006000                PROVIDE (__stack_size_min = 0x6000)
+
+.text           0x0000000080000000     0x2788
+ *(.text.init)
+ .text.init     0x0000000080000000      0x1ee /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+                0x0000000080000000                _start
+ .text.init     0x00000000800001ee       0x42 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+                0x00000000800001ee                _start_main
+                0x000000008000020e                _start_secondary
+ *(.text.unlikely .text.unlikely.*)
+ *(.text.startup .text.startup.*)
+ *(.text .text.*)
+ .text          0x0000000080000230       0x30 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+                0x0000000080000230                main
+ .text.gen_rand_2d
+                0x0000000080000260       0x64 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+                0x0000000080000260                gen_rand_2d
+ .text.alloc_array_2d
+                0x00000000800002c4       0x3c CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+                0x00000000800002c4                alloc_array_2d
+ .text.matmul_cpu
+                0x0000000080000300       0x6a CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+                0x0000000080000300                matmul_cpu
+ .text.matvec_cpu
+                0x000000008000036a       0x4e CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+                0x000000008000036a                matvec_cpu
+ .text.test_matmul
+                0x00000000800003b8      0x16a CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+                0x00000000800003b8                test_matmul
+ .text.test_matvec
+                0x0000000080000522       0x86 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+                0x0000000080000522                test_matvec
+ .text          0x00000000800005a8        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o)
+ .text.malloc   0x00000000800005a8        0xc /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o)
+                0x00000000800005a8                malloc
+ .text.free     0x00000000800005b4        0xc /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o)
+                0x00000000800005b4                free
+ .text          0x00000000800005c0        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+ .text.sbrk_aligned
+                0x00000000800005c0       0x5a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+ .text._malloc_r
+                0x000000008000061a      0x130 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+                0x000000008000061a                _malloc_r
+ .text          0x000000008000074a        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mlock.o)
+ .text.__malloc_lock
+                0x000000008000074a        0x2 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mlock.o)
+                0x000000008000074a                __malloc_lock
+ .text.__malloc_unlock
+                0x000000008000074c        0x2 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mlock.o)
+                0x000000008000074c                __malloc_unlock
+ .text          0x000000008000074e        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-rand.o)
+ .text.srand    0x000000008000074e       0x6a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-rand.o)
+                0x000000008000074e                srand
+ .text.rand     0x00000000800007b8       0x86 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-rand.o)
+                0x00000000800007b8                rand
+ .text          0x000000008000083e        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-impure.o)
+ .text          0x000000008000083e        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-sbrkr.o)
+ .text._sbrk_r  0x000000008000083e       0x28 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-sbrkr.o)
+                0x000000008000083e                _sbrk_r
+ .text          0x0000000080000866        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-assert.o)
+ .text.__assert_func
+                0x0000000080000866       0x3e /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-assert.o)
+                0x0000000080000866                __assert_func
+ .text.__assert
+                0x00000000800008a4        0xc /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-assert.o)
+                0x00000000800008a4                __assert
+ .text          0x00000000800008b0        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-freer.o)
+ .text._free_r  0x00000000800008b0       0xa0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-freer.o)
+                0x00000000800008b0                _free_r
+ .text          0x0000000080000950        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fprintf.o)
+ .text._fprintf_r
+                0x0000000080000950       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fprintf.o)
+                0x0000000080000950                _fprintf_r
+                0x0000000080000950                _fiprintf_r
+ .text.fprintf  0x000000008000096c       0x2a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fprintf.o)
+                0x000000008000096c                fprintf
+                0x000000008000096c                fiprintf
+ .text          0x0000000080000996        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reent.o)
+ .text._reclaim_reent
+                0x0000000080000996       0xd0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reent.o)
+                0x0000000080000996                _reclaim_reent
+ .text          0x0000000080000a66        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-abort.o)
+ .text.abort    0x0000000080000a66       0x10 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-abort.o)
+                0x0000000080000a66                abort
+ .text          0x0000000080000a76        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf.o)
+ .text.__sfputc_r
+                0x0000000080000a76       0x2c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf.o)
+ .text.__sfputs_r
+                0x0000000080000aa2       0x44 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf.o)
+                0x0000000080000aa2                __sfputs_r
+ .text.__sprint_r
+                0x0000000080000ae6       0x24 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf.o)
+                0x0000000080000ae6                __sprint_r
+ .text._vfprintf_r
+                0x0000000080000b0a      0x27c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf.o)
+                0x0000000080000b0a                _vfiprintf_r
+                0x0000000080000b0a                _vfprintf_r
+ .text.vfprintf
+                0x0000000080000d86       0x10 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf.o)
+                0x0000000080000d86                vfiprintf
+                0x0000000080000d86                vfprintf
+ .text          0x0000000080000d96        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf_i.o)
+ .text._printf_common
+                0x0000000080000d96      0x11e /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf_i.o)
+                0x0000000080000d96                _printf_common
+ .text._printf_i
+                0x0000000080000eb4      0x28a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf_i.o)
+                0x0000000080000eb4                _printf_i
+ .text          0x000000008000113e        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+ .text.__fp_lock
+                0x000000008000113e        0x4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+ .text.std      0x0000000080001142       0x66 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+ .text.stdio_exit_handler
+                0x00000000800011a8       0x1a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+ .text.cleanup_stdio
+                0x00000000800011c2       0x4c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+ .text.global_stdio_init.part.0
+                0x000000008000120e       0x3e /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+ .text.__fp_unlock
+                0x000000008000124c        0x4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+ .text.__sfp    0x0000000080001250       0xb6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+                0x0000000080001250                __sfp
+ .text.__sinit  0x0000000080001306       0x18 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+                0x0000000080001306                __sinit
+ .text.__sfp_lock_acquire
+                0x000000008000131e        0x2 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+                0x000000008000131e                __sfp_lock_acquire
+ .text.__sfp_lock_release
+                0x0000000080001320        0x2 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+                0x0000000080001320                __sfp_lock_release
+ .text.__fp_lock_all
+                0x0000000080001322       0x14 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+                0x0000000080001322                __fp_lock_all
+ .text.__fp_unlock_all
+                0x0000000080001336       0x14 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+                0x0000000080001336                __fp_unlock_all
+ .text          0x000000008000134a        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fvwrite.o)
+ .text.__sfvwrite_r
+                0x000000008000134a      0x2d6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fvwrite.o)
+                0x000000008000134a                __sfvwrite_r
+ .text          0x0000000080001620        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fwalk.o)
+ .text._fwalk_sglue
+                0x0000000080001620       0x6a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fwalk.o)
+                0x0000000080001620                _fwalk_sglue
+ .text          0x000000008000168a        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-stdio.o)
+ .text.__sread  0x000000008000168a       0x32 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-stdio.o)
+                0x000000008000168a                __sread
+ .text.__seofread
+                0x00000000800016bc        0x4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-stdio.o)
+                0x00000000800016bc                __seofread
+ .text.__swrite
+                0x00000000800016c0       0x50 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-stdio.o)
+                0x00000000800016c0                __swrite
+ .text.__sseek  0x0000000080001710       0x38 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-stdio.o)
+                0x0000000080001710                __sseek
+ .text.__sclose
+                0x0000000080001748        0x6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-stdio.o)
+                0x0000000080001748                __sclose
+ .text          0x000000008000174e        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-wbuf.o)
+ .text.__swbuf_r
+                0x000000008000174e       0x9c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-wbuf.o)
+                0x000000008000174e                __swbuf_r
+ .text.__swbuf  0x00000000800017ea        0xe /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-wbuf.o)
+                0x00000000800017ea                __swbuf
+ .text          0x00000000800017f8        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-wsetup.o)
+ .text.__swsetup_r
+                0x00000000800017f8       0xce /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-wsetup.o)
+                0x00000000800017f8                __swsetup_r
+ .text          0x00000000800018c6        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memchr.o)
+ .text.memchr   0x00000000800018c6       0x1a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memchr.o)
+                0x00000000800018c6                memchr
+ .text          0x00000000800018e0        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signal.o)
+ .text._init_signal_r
+                0x00000000800018e0       0x3a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signal.o)
+                0x00000000800018e0                _init_signal_r
+ .text._signal_r
+                0x000000008000191a       0x42 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signal.o)
+                0x000000008000191a                _signal_r
+ .text._raise_r
+                0x000000008000195c       0x62 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signal.o)
+                0x000000008000195c                _raise_r
+ .text.__sigtramp_r
+                0x00000000800019be       0x56 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signal.o)
+                0x00000000800019be                __sigtramp_r
+ .text.raise    0x0000000080001a14        0xc /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signal.o)
+                0x0000000080001a14                raise
+ .text.signal   0x0000000080001a20        0xe /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signal.o)
+                0x0000000080001a20                signal
+ .text._init_signal
+                0x0000000080001a2e        0xa /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signal.o)
+                0x0000000080001a2e                _init_signal
+ .text.__sigtramp
+                0x0000000080001a38        0xc /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signal.o)
+                0x0000000080001a38                __sigtramp
+ .text          0x0000000080001a44        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-closer.o)
+ .text._close_r
+                0x0000000080001a44       0x28 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-closer.o)
+                0x0000000080001a44                _close_r
+ .text          0x0000000080001a6c        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-lseekr.o)
+ .text._lseek_r
+                0x0000000080001a6c       0x2c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-lseekr.o)
+                0x0000000080001a6c                _lseek_r
+ .text          0x0000000080001a98        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-readr.o)
+ .text._read_r  0x0000000080001a98       0x2c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-readr.o)
+                0x0000000080001a98                _read_r
+ .text          0x0000000080001ac4        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signalr.o)
+ .text._kill_r  0x0000000080001ac4       0x2a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signalr.o)
+                0x0000000080001ac4                _kill_r
+ .text._getpid_r
+                0x0000000080001aee        0x2 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signalr.o)
+                0x0000000080001aee                _getpid_r
+ .text          0x0000000080001af0        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-writer.o)
+ .text._write_r
+                0x0000000080001af0       0x2c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-writer.o)
+                0x0000000080001af0                _write_r
+ .text          0x0000000080001b1c       0x26 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memmove.o)
+                0x0000000080001b1c                memmove
+ .text          0x0000000080001b42       0x10 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memset.o)
+                0x0000000080001b42                memset
+ .text          0x0000000080001b52       0x16 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memcpy-asm.o)
+                0x0000000080001b52                memcpy
+ .text          0x0000000080001b68        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reallocr.o)
+ .text._realloc_r
+                0x0000000080001b68       0x80 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reallocr.o)
+                0x0000000080001b68                _realloc_r
+ .text          0x0000000080001be8        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fflush.o)
+ .text.__sflush_r
+                0x0000000080001be8      0x140 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fflush.o)
+                0x0000000080001be8                __sflush_r
+ .text._fflush_r
+                0x0000000080001d28       0x38 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fflush.o)
+                0x0000000080001d28                _fflush_r
+ .text.fflush   0x0000000080001d60       0x2a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fflush.o)
+                0x0000000080001d60                fflush
+ .text          0x0000000080001d8a        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-makebuf.o)
+ .text.__swhatbuf_r
+                0x0000000080001d8a       0x5c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-makebuf.o)
+                0x0000000080001d8a                __swhatbuf_r
+ .text.__smakebuf_r
+                0x0000000080001de6       0x9e /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-makebuf.o)
+                0x0000000080001de6                __smakebuf_r
+ .text          0x0000000080001e84        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fstatr.o)
+ .text._fstat_r
+                0x0000000080001e84       0x2a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fstatr.o)
+                0x0000000080001e84                _fstat_r
+ .text          0x0000000080001eae        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-isattyr.o)
+ .text._isatty_r
+                0x0000000080001eae       0x28 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-isattyr.o)
+                0x0000000080001eae                _isatty_r
+ .text          0x0000000080001ed6        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-msizer.o)
+ .text._malloc_usable_size_r
+                0x0000000080001ed6       0x18 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-msizer.o)
+                0x0000000080001ed6                _malloc_usable_size_r
+ .text          0x0000000080001eee       0x14 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+                0x0000000080001eee                _close
+ .text          0x0000000080001f02       0x22 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+                0x0000000080001f02                _exit
+ .text          0x0000000080001f24       0x14 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(fstat.o)
+                0x0000000080001f24                _fstat
+ .text          0x0000000080001f38        0x4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(getpid.o)
+                0x0000000080001f38                _getpid
+ .text          0x0000000080001f3c        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(isatty.o)
+                0x0000000080001f3c                _isatty
+ .text          0x0000000080001f44       0x14 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(kill.o)
+                0x0000000080001f44                _kill
+ .text          0x0000000080001f58       0x14 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+                0x0000000080001f58                _lseek
+ .text          0x0000000080001f6c       0x16 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+                0x0000000080001f6c                _read
+ .text          0x0000000080001f82       0x3c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+                0x0000000080001f82                _sbrk
+ .text          0x0000000080001fbe        0x6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+                0x0000000080001fbe                _write
+ .text          0x0000000080001fc4       0xa6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+                0x0000000080002036                __wrap_printf
+ .text          0x000000008000206a        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .text          0x000000008000206a        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .text          0x000000008000206a        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .text          0x000000008000206a       0x16 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+                0x000000008000206a                handle_trap
+ .text          0x0000000080002080       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+                0x0000000080002080                __init_tls
+ .text          0x00000000800020b0        0x6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+                0x00000000800020b0                __main
+ .text          0x00000000800020b6       0x4c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+                0x00000000800020b6                htif_syscall
+ .text          0x0000000080002102      0x462 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+                0x0000000080002102                simple_pow
+                0x0000000080002116                __vxprintf
+ .text          0x0000000080002564        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-atexit.o)
+ .text.atexit   0x0000000080002564        0xa /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-atexit.o)
+                0x0000000080002564                atexit
+ .text          0x000000008000256e        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-environ.o)
+ .text          0x000000008000256e        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-exit.o)
+ .text.exit     0x000000008000256e       0x26 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-exit.o)
+                0x000000008000256e                exit
+ .text          0x0000000080002594        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-strnlen.o)
+ .text.strnlen  0x0000000080002594       0x18 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-strnlen.o)
+                0x0000000080002594                strnlen
+ .text          0x00000000800025ac        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-errno.o)
+ .text.__errno  0x00000000800025ac        0xa /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-errno.o)
+                0x00000000800025ac                __errno
+ .text          0x00000000800025b6        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-init.o)
+ .text.__libc_init_array
+                0x00000000800025b6       0x5e /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-init.o)
+                0x00000000800025b6                __libc_init_array
+ .text          0x0000000080002614        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fini.o)
+ .text.__libc_fini_array
+                0x0000000080002614       0x36 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fini.o)
+                0x0000000080002614                __libc_fini_array
+ .text          0x000000008000264a        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o)
+ .text.__register_exitproc
+                0x000000008000264a       0x76 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o)
+                0x000000008000264a                __register_exitproc
+ .text          0x00000000800026c0        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__call_atexit.o)
+ .text.__call_exitprocs
+                0x00000000800026c0       0xc8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__call_atexit.o)
+                0x00000000800026c0                __call_exitprocs
+ *(.gnu.linkonce.t.*)
+                [!provide]                        PROVIDE (_etext = .)
+
+.rodata         0x0000000080002788      0x364
+ *(.rodata .rodata.*)
+ .rodata.test_matmul.str1.8
+                0x0000000080002788      0x197 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+                                         0x49 (size before relaxing)
+ .rodata.test_matvec.str1.8
+                0x000000008000291f       0x11 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .rodata.srand.str1.8
+                0x000000008000291f       0xa0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-rand.o)
+ .rodata.__assert_func.str1.8
+                0x000000008000291f       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-assert.o)
+ .rodata._vfprintf_r.str1.8
+                0x000000008000291f       0x17 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf.o)
+ .rodata._printf_i.str1.8
+                0x000000008000291f       0x29 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf_i.o)
+ *fill*         0x000000008000291f        0x1 
+ .rodata._printf_i
+                0x0000000080002920       0x58 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf_i.o)
+ .rodata        0x0000000080002978       0x19 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .rodata.str1.8
+                0x0000000080002991        0x7 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ *fill*         0x0000000080002991        0x3 
+ .rodata        0x0000000080002994      0x158 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ *(.gnu.linkonce.r.*)
+
+.eh_frame       0x0000000080002af0      0x124
+ .eh_frame      0x0000000080002af0      0x110 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .eh_frame      0x0000000080002c00       0x14 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+                                         0x28 (size before relaxing)
+
+.rela.dyn       0x0000000080002c18        0x0
+ .rela.text._vfprintf_r
+                0x0000000080002c18        0x0 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .rela.text     0x0000000080002c18        0x0 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .rela.sdata    0x0000000080002c18        0x0 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .rela.got      0x0000000080002c18        0x0 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .rela.text.init
+                0x0000000080002c18        0x0 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .rela.text.__libc_init_array
+                0x0000000080002c18        0x0 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .rela.text.__libc_fini_array
+                0x0000000080002c18        0x0 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .rela.text.__register_exitproc
+                0x0000000080002c18        0x0 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+                0x0000000080005704                . = (. + (SIZEOF (.text) + SIZEOF (.rodata)))
+
+.preinit_array  0x0000000080005700        0x0
+                0x0000000080005700                PROVIDE (__preinit_array_start = .)
+ *(.preinit_array)
+                0x0000000080005700                PROVIDE (__preinit_array_end = .)
+
+.init_array     0x0000000080005700        0x0
+                0x0000000080005700                PROVIDE (__init_array_start = .)
+ *(SORT_BY_INIT_PRIORITY(.init_array.*) SORT_BY_INIT_PRIORITY(.ctors.*))
+ *(.init_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .ctors)
+                0x0000000080005700                PROVIDE (__init_array_end = .)
+
+.fini_array     0x0000000080005700        0x0
+                0x0000000080005700                PROVIDE (__fini_array_start = .)
+ *(SORT_BY_INIT_PRIORITY(.fini_array.*) SORT_BY_INIT_PRIORITY(.dtors.*))
+ *(.fini_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .dtors)
+                0x0000000080005700                PROVIDE (__fini_array_end = .)
+
+.ctors
+ *crtbegin.o(.ctors)
+ *crtbegin?.o(.ctors)
+ *(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors)
+ *(SORT_BY_NAME(.ctors.*))
+ *(.ctors)
+
+.dtors
+ *crtbegin.o(.dtors)
+ *crtbegin?.o(.dtors)
+ *(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors)
+ *(SORT_BY_NAME(.dtors.*))
+ *(.dtors)
+
+.htif           0x0000000080005700       0x10
+ *(.htif)
+ .htif          0x0000000080005700       0x10 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+                0x0000000080005700                tohost
+                0x0000000080005708                fromhost
+                0x0000000081000000                . = (__origin + __length)
+
+.tdata          0x0000000081000000        0x0
+                0x0000000081000000                PROVIDE (__tdata_start = .)
+ *(.tdata .tdata.*)
+ *(.gnu.linkonce.td.*)
+                [!provide]                        PROVIDE (__tdata_end = .)
+                0x0000000000000000                PROVIDE (__tdata_size = SIZEOF (.tdata))
+
+.tbss           0x0000000081000000       0xc0
+                0x0000000081000000                PROVIDE (__tbss_start = .)
+                0x0000000000000000                PROVIDE (__tbss_offset = ABSOLUTE ((__tbss_start - __tdata_start)))
+ *(.tbss .tbss.*)
+ .tbss          0x0000000081000000       0xc0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+                0x0000000081000000                __printbuflen
+                0x0000000081000040                __printbuf
+ *(.gnu.linkonce.tb.*)
+ *(.tcommon)
+                0x00000000810000c0                PROVIDE (__tbss_end = .)
+                0x00000000000000c0                PROVIDE (__tbss_size = SIZEOF (.tbss))
+
+.data           0x0000000081000000        0x0
+ *(.data)
+ .data          0x0000000081000000        0x0 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mlock.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-rand.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-impure.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-sbrkr.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-assert.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-freer.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fprintf.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reent.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-abort.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf_i.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fvwrite.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fwalk.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-stdio.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-wbuf.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-wsetup.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memchr.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signal.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-closer.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-lseekr.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-readr.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signalr.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-writer.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memmove.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memset.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memcpy-asm.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reallocr.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fflush.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-makebuf.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fstatr.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-isattyr.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-msizer.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(fstat.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(getpid.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(isatty.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(kill.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-atexit.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-environ.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-exit.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-strnlen.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-errno.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-init.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fini.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o)
+ .data          0x0000000081000000        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__call_atexit.o)
+ *(.gnu.linkonce.d.*)
+
+.got            0x0000000081000000       0x18
+ .got           0x0000000081000000       0x18 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+                0x0000000081000000                _GLOBAL_OFFSET_TABLE_
+
+.got.plt        0x0000000081000018       0x10
+ .got.plt       0x0000000081000018       0x10 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+
+.data._impure_data
+                0x0000000081000028       0x90
+ .data._impure_data
+                0x0000000081000028       0x90 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-impure.o)
+                0x0000000081000028                _impure_data
+
+.data.__sglue   0x00000000810000b8       0x18
+ .data.__sglue  0x00000000810000b8       0x18 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+                0x00000000810000b8                __sglue
+
+.sdata          0x00000000810000d0       0x3c
+                0x00000000810008d0                PROVIDE (__global_pointer$ = (. + 0x800))
+ *(.sdata .sdata.*)
+ .sdata._impure_ptr
+                0x00000000810000d0        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-impure.o)
+                0x00000000810000d0                _impure_ptr
+ .sdata         0x00000000810000d8        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .sdata.environ
+                0x00000000810000e0        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-environ.o)
+                0x00000000810000e0                environ
+ .sdata.__atexit_dummy
+                0x00000000810000e8        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o)
+                0x00000000810000e8                __atexit_dummy
+ *(.gnu.linkonce.s.*)
+ *(.srodata.cst16)
+ *(.srodata.cst8)
+ .srodata.cst8  0x00000000810000f0       0x18 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-rand.o)
+                                          0x8 (size before relaxing)
+ .srodata.cst8  0x0000000081000108       0x10 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ *(.srodata.cst4)
+ .srodata.cst4  0x0000000081000108        0x4 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ *(.srodata.cst2)
+ *(.srodata .srodata.*)
+                [!provide]                        PROVIDE (_edata = .)
+
+.bss            0x0000000081000110      0x378
+                0x0000000081000110                PROVIDE (__bss_start = .)
+ *(.sbss .sbss.*)
+ .sbss          0x0000000081000110       0x10 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+                0x0000000081000110                total
+                0x0000000081000118                start
+ .sbss.__malloc_sbrk_start
+                0x0000000081000120        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+                0x0000000081000120                __malloc_sbrk_start
+ .sbss.__malloc_free_list
+                0x0000000081000128        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+                0x0000000081000128                __malloc_free_list
+ .sbss.errno    0x0000000081000130        0x4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reent.o)
+                0x0000000081000130                errno
+ *fill*         0x0000000081000134        0x4 
+ .sbss.__stdio_exit_handler
+                0x0000000081000138        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+                0x0000000081000138                __stdio_exit_handler
+ .sbss          0x0000000081000140        0x4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ *fill*         0x0000000081000144        0x4 
+ .sbss.initial_env
+                0x0000000081000148        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-environ.o)
+ .sbss.__atexit
+                0x0000000081000150        0x8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__call_atexit.o)
+                0x0000000081000150                __atexit
+ *(.gnu.linkonce.sb.*)
+ *(.bss .bss.*)
+ .bss           0x0000000081000158        0x0 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .bss           0x0000000081000158        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o)
+ .bss           0x0000000081000158        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+ .bss           0x0000000081000158        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mlock.o)
+ .bss           0x0000000081000158        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-rand.o)
+ .bss           0x0000000081000158        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-impure.o)
+ .bss           0x0000000081000158        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-sbrkr.o)
+ .bss           0x0000000081000158        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-assert.o)
+ .bss           0x0000000081000158        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-freer.o)
+ .bss           0x0000000081000158        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fprintf.o)
+ .bss           0x0000000081000158        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reent.o)
+ .bss           0x0000000081000158        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-abort.o)
+ .bss           0x0000000081000158        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf.o)
+ .bss           0x0000000081000158        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf_i.o)
+ .bss           0x0000000081000158        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+ .bss.__sf      0x0000000081000158      0x210 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+                0x0000000081000158                __sf
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fvwrite.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fwalk.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-stdio.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-wbuf.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-wsetup.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memchr.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signal.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-closer.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-lseekr.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-readr.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signalr.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-writer.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memmove.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memset.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memcpy-asm.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reallocr.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fflush.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-makebuf.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fstatr.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-isattyr.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-msizer.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(fstat.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(getpid.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(isatty.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(kill.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .bss           0x0000000081000368        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .bss           0x0000000081000368        0x4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .bss           0x000000008100036c        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .bss           0x000000008100036c        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .bss           0x000000008100036c        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .bss           0x000000008100036c        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .bss           0x000000008100036c        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ .bss           0x000000008100036c        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-atexit.o)
+ .bss           0x000000008100036c        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-environ.o)
+ .bss           0x000000008100036c        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-exit.o)
+ .bss           0x000000008100036c        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-strnlen.o)
+ .bss           0x000000008100036c        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-errno.o)
+ .bss           0x000000008100036c        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-init.o)
+ .bss           0x000000008100036c        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fini.o)
+ .bss           0x000000008100036c        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o)
+ *fill*         0x000000008100036c        0x4 
+ .bss.__atexit0
+                0x0000000081000370      0x118 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o)
+                0x0000000081000370                __atexit0
+ .bss           0x0000000081000488        0x0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__call_atexit.o)
+ *(.gnu.linkonce.b.*)
+ *(COMMON)
+                0x0000000081000488                PROVIDE (__bss_end = .)
+                0x0000000081000488                . = ALIGN (0x8)
+                0x0000000081000488                PROVIDE (_end = .)
+                0x0000000000020000                PROVIDE (__heap_size = 0x20000)
+                0x0000000081020488                . = (. + __heap_size)
+                0x0000000081021000                . = ALIGN (0x1000)
+                0x0000000081021000                PROVIDE (__heap_end = .)
+                0x00000000000000c0                PROVIDE (__tcb_size = (__tbss_end - __tdata_start))
+                0x0000000000000010                PROVIDE (__stack_align = MAX (ALIGNOF (.tdata), 0x10))
+                0x0000000081021000                PROVIDE (__stack_start = ALIGN (__stack_align))
+                0x000000000000000f                PROVIDE (__stack_shift = LOG2CEIL (ALIGN ((__stack_size_min + __tcb_size), __stack_align)))
+                0x0000000000008000                PROVIDE (__stack_size = (0x1 << __stack_shift))
+                0x0000000000000000                PROVIDE (__boot_hart = 0x0)
+OUTPUT(test_matperf_rvv elf64-littleriscv)
+
+.debug_info     0x0000000000000000     0x42a3
+ .debug_info    0x0000000000000000     0x25be CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .debug_info    0x00000000000025be       0xd1 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .debug_info    0x000000000000268f       0xe4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .debug_info    0x0000000000002773      0x2de /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(fstat.o)
+ .debug_info    0x0000000000002a51       0xa1 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(getpid.o)
+ .debug_info    0x0000000000002af2       0xab /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(isatty.o)
+ .debug_info    0x0000000000002b9d       0xdd /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(kill.o)
+ .debug_info    0x0000000000002c7a      0x111 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .debug_info    0x0000000000002d8b      0x113 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+ .debug_info    0x0000000000002e9e      0x136 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .debug_info    0x0000000000002fd4      0x178 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .debug_info    0x000000000000314c      0x2ca /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .debug_info    0x0000000000003416       0xb3 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .debug_info    0x00000000000034c9       0x29 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .debug_info    0x00000000000034f2       0x28 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .debug_info    0x000000000000351a      0x13a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .debug_info    0x0000000000003654      0x169 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .debug_info    0x00000000000037bd       0x49 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .debug_info    0x0000000000003806      0x340 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .debug_info    0x0000000000003b46      0x75d /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+
+.debug_abbrev   0x0000000000000000     0x126b
+ .debug_abbrev  0x0000000000000000      0x480 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .debug_abbrev  0x0000000000000480       0x7d /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .debug_abbrev  0x00000000000004fd       0x93 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .debug_abbrev  0x0000000000000590       0xd5 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(fstat.o)
+ .debug_abbrev  0x0000000000000665       0x45 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(getpid.o)
+ .debug_abbrev  0x00000000000006aa       0x56 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(isatty.o)
+ .debug_abbrev  0x0000000000000700       0x7f /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(kill.o)
+ .debug_abbrev  0x000000000000077f       0x9f /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .debug_abbrev  0x000000000000081e       0xa6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+ .debug_abbrev  0x00000000000008c4       0xda /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .debug_abbrev  0x000000000000099e       0xaa /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .debug_abbrev  0x0000000000000a48      0x1af /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .debug_abbrev  0x0000000000000bf7       0x69 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .debug_abbrev  0x0000000000000c60       0x14 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .debug_abbrev  0x0000000000000c74       0x14 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .debug_abbrev  0x0000000000000c88       0xba /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .debug_abbrev  0x0000000000000d42       0xe3 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .debug_abbrev  0x0000000000000e25       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .debug_abbrev  0x0000000000000e55      0x1e8 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .debug_abbrev  0x000000000000103d      0x22e /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+
+.debug_loclists
+                0x0000000000000000      0xb64
+ .debug_loclists
+                0x0000000000000000      0x288 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .debug_loclists
+                0x0000000000000288       0x1a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .debug_loclists
+                0x00000000000002a2       0x28 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(fstat.o)
+ .debug_loclists
+                0x00000000000002ca       0x1a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(isatty.o)
+ .debug_loclists
+                0x00000000000002e4       0x28 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(kill.o)
+ .debug_loclists
+                0x000000000000030c       0x36 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .debug_loclists
+                0x0000000000000342       0x36 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+ .debug_loclists
+                0x0000000000000378       0x38 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .debug_loclists
+                0x00000000000003b0       0x36 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .debug_loclists
+                0x00000000000003e6       0x85 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .debug_loclists
+                0x000000000000046b       0x4a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .debug_loclists
+                0x00000000000004b5       0x71 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .debug_loclists
+                0x0000000000000526      0x63e /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+
+.debug_aranges  0x0000000000000000      0x410
+ .debug_aranges
+                0x0000000000000000       0x90 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .debug_aranges
+                0x0000000000000090       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .debug_aranges
+                0x00000000000000c0       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .debug_aranges
+                0x00000000000000f0       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(fstat.o)
+ .debug_aranges
+                0x0000000000000120       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(getpid.o)
+ .debug_aranges
+                0x0000000000000150       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(isatty.o)
+ .debug_aranges
+                0x0000000000000180       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(kill.o)
+ .debug_aranges
+                0x00000000000001b0       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .debug_aranges
+                0x00000000000001e0       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+ .debug_aranges
+                0x0000000000000210       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .debug_aranges
+                0x0000000000000240       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .debug_aranges
+                0x0000000000000270       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .debug_aranges
+                0x00000000000002a0       0x20 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .debug_aranges
+                0x00000000000002c0       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .debug_aranges
+                0x00000000000002f0       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .debug_aranges
+                0x0000000000000320       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .debug_aranges
+                0x0000000000000350       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .debug_aranges
+                0x0000000000000380       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .debug_aranges
+                0x00000000000003b0       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .debug_aranges
+                0x00000000000003e0       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+
+.debug_rnglists
+                0x0000000000000000      0x13f
+ .debug_rnglists
+                0x0000000000000000       0x95 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .debug_rnglists
+                0x0000000000000095       0x26 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .debug_rnglists
+                0x00000000000000bb       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .debug_rnglists
+                0x00000000000000ce       0x71 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+
+.debug_line     0x0000000000000000     0x27b8
+ .debug_line    0x0000000000000000      0x93a CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .debug_line    0x000000000000093a       0x96 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .debug_line    0x00000000000009d0       0xbf /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .debug_line    0x0000000000000a8f       0xb3 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(fstat.o)
+ .debug_line    0x0000000000000b42       0x5f /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(getpid.o)
+ .debug_line    0x0000000000000ba1       0x67 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(isatty.o)
+ .debug_line    0x0000000000000c08       0x96 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(kill.o)
+ .debug_line    0x0000000000000c9e       0xa0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .debug_line    0x0000000000000d3e       0xa9 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+ .debug_line    0x0000000000000de7      0x125 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .debug_line    0x0000000000000f0c       0x8d /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .debug_line    0x0000000000000f99      0x250 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .debug_line    0x00000000000011e9       0x48 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .debug_line    0x0000000000001231      0x432 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .debug_line    0x0000000000001663       0x60 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .debug_line    0x00000000000016c3       0xb7 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .debug_line    0x000000000000177a       0xdf /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .debug_line    0x0000000000001859       0x6a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .debug_line    0x00000000000018c3      0x1f6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .debug_line    0x0000000000001ab9      0xcff /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+
+.debug_str      0x0000000000000000     0x1112
+ .debug_str     0x0000000000000000     0x1112 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+                                        0xd55 (size before relaxing)
+ .debug_str     0x0000000000001112      0x137 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .debug_str     0x0000000000001112      0x13b /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .debug_str     0x0000000000001112      0x273 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(fstat.o)
+ .debug_str     0x0000000000001112      0x12b /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(getpid.o)
+ .debug_str     0x0000000000001112      0x119 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(isatty.o)
+ .debug_str     0x0000000000001112      0x131 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(kill.o)
+ .debug_str     0x0000000000001112      0x14c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .debug_str     0x0000000000001112      0x14e /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+ .debug_str     0x0000000000001112      0x165 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .debug_str     0x0000000000001112      0x179 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .debug_str     0x0000000000001112      0x1d3 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .debug_str     0x0000000000001112      0x143 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .debug_str     0x0000000000001112       0x52 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .debug_str     0x0000000000001112       0x55 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .debug_str     0x0000000000001112      0x15d /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .debug_str     0x0000000000001112      0x186 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .debug_str     0x0000000000001112       0x95 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .debug_str     0x0000000000001112      0x1b4 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .debug_str     0x0000000000001112      0x23f /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+
+.debug_line_str
+                0x0000000000000000      0x6b8
+ .debug_line_str
+                0x0000000000000000      0x6b8 CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+                                        0x559 (size before relaxing)
+ .debug_line_str
+                0x00000000000006b8       0xf0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .debug_line_str
+                0x00000000000006b8      0x16a /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .debug_line_str
+                0x00000000000006b8      0x17d /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(fstat.o)
+ .debug_line_str
+                0x00000000000006b8       0x97 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(getpid.o)
+ .debug_line_str
+                0x00000000000006b8       0x97 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(isatty.o)
+ .debug_line_str
+                0x00000000000006b8       0xed /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(kill.o)
+ .debug_line_str
+                0x00000000000006b8      0x101 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .debug_line_str
+                0x00000000000006b8      0x166 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+ .debug_line_str
+                0x00000000000006b8      0x155 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .debug_line_str
+                0x00000000000006b8      0x1e6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .debug_line_str
+                0x00000000000006b8      0x1f6 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .debug_line_str
+                0x00000000000006b8      0x11e /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .debug_line_str
+                0x00000000000006b8       0x46 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .debug_line_str
+                0x00000000000006b8       0x49 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .debug_line_str
+                0x00000000000006b8      0x172 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .debug_line_str
+                0x00000000000006b8      0x151 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .debug_line_str
+                0x00000000000006b8       0x93 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .debug_line_str
+                0x00000000000006b8      0x180 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .debug_line_str
+                0x00000000000006b8      0x175 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+
+.comment        0x0000000000000000       0x2d
+ .comment       0x0000000000000000       0x2d CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+                                         0x1c (size before relaxing)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mlock.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-rand.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-impure.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-sbrkr.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-assert.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-freer.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fprintf.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reent.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-abort.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf_i.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fvwrite.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fwalk.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-stdio.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-wbuf.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-wsetup.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memchr.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signal.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-closer.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-lseekr.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-readr.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signalr.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-writer.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reallocr.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fflush.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-makebuf.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fstatr.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-isattyr.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-msizer.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(fstat.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(getpid.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(isatty.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(kill.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .comment       0x000000000000002d       0x1c /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-atexit.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-environ.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-exit.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-strnlen.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-errno.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-init.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fini.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o)
+ .comment       0x000000000000002d       0x13 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__call_atexit.o)
+
+.riscv.attributes
+                0x0000000000000000       0xbe
+ .riscv.attributes
+                0x0000000000000000       0xbe CMakeFiles/test_matperf_rvv.dir/test/test_matperf_rvv.cpp.o
+ .riscv.attributes
+                0x00000000000000be       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-malloc.o)
+ .riscv.attributes
+                0x0000000000000105       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mallocr.o)
+ .riscv.attributes
+                0x000000000000014c       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-mlock.o)
+ .riscv.attributes
+                0x0000000000000193       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-rand.o)
+ .riscv.attributes
+                0x00000000000001da       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-impure.o)
+ .riscv.attributes
+                0x0000000000000221       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-sbrkr.o)
+ .riscv.attributes
+                0x0000000000000268       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-assert.o)
+ .riscv.attributes
+                0x00000000000002af       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-freer.o)
+ .riscv.attributes
+                0x00000000000002f6       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fprintf.o)
+ .riscv.attributes
+                0x000000000000033d       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reent.o)
+ .riscv.attributes
+                0x0000000000000384       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-abort.o)
+ .riscv.attributes
+                0x00000000000003cb       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf.o)
+ .riscv.attributes
+                0x0000000000000412       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-nano-vfprintf_i.o)
+ .riscv.attributes
+                0x0000000000000459       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-findfp.o)
+ .riscv.attributes
+                0x00000000000004a0       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fvwrite.o)
+ .riscv.attributes
+                0x00000000000004e7       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fwalk.o)
+ .riscv.attributes
+                0x000000000000052e       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-stdio.o)
+ .riscv.attributes
+                0x0000000000000575       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-wbuf.o)
+ .riscv.attributes
+                0x00000000000005bc       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-wsetup.o)
+ .riscv.attributes
+                0x0000000000000603       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memchr.o)
+ .riscv.attributes
+                0x000000000000064a       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signal.o)
+ .riscv.attributes
+                0x0000000000000691       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-closer.o)
+ .riscv.attributes
+                0x00000000000006d8       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-lseekr.o)
+ .riscv.attributes
+                0x000000000000071f       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-readr.o)
+ .riscv.attributes
+                0x0000000000000766       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-signalr.o)
+ .riscv.attributes
+                0x00000000000007ad       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-writer.o)
+ .riscv.attributes
+                0x00000000000007f4       0x45 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memmove.o)
+ .riscv.attributes
+                0x0000000000000839       0x45 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memset.o)
+ .riscv.attributes
+                0x000000000000087e       0x45 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-memcpy-asm.o)
+ .riscv.attributes
+                0x00000000000008c3       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-reallocr.o)
+ .riscv.attributes
+                0x000000000000090a       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fflush.o)
+ .riscv.attributes
+                0x0000000000000951       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-makebuf.o)
+ .riscv.attributes
+                0x0000000000000998       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-fstatr.o)
+ .riscv.attributes
+                0x00000000000009df       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-isattyr.o)
+ .riscv.attributes
+                0x0000000000000a26       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libg_nano.a(libc_a-msizer.o)
+ .riscv.attributes
+                0x0000000000000a6d       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .riscv.attributes
+                0x0000000000000ab4       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .riscv.attributes
+                0x0000000000000afb       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(fstat.o)
+ .riscv.attributes
+                0x0000000000000b42       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(getpid.o)
+ .riscv.attributes
+                0x0000000000000b89       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(isatty.o)
+ .riscv.attributes
+                0x0000000000000bd0       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(kill.o)
+ .riscv.attributes
+                0x0000000000000c17       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .riscv.attributes
+                0x0000000000000c5e       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+ .riscv.attributes
+                0x0000000000000ca5       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .riscv.attributes
+                0x0000000000000cec       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .riscv.attributes
+                0x0000000000000d33       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .riscv.attributes
+                0x0000000000000d7a       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printbuf.o)
+ .riscv.attributes
+                0x0000000000000dc1       0x49 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crt0.o)
+ .riscv.attributes
+                0x0000000000000e0a       0x45 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(crtmain.o)
+ .riscv.attributes
+                0x0000000000000e4f       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .riscv.attributes
+                0x0000000000000e96       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .riscv.attributes
+                0x0000000000000edd       0x4b /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .riscv.attributes
+                0x0000000000000f28       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .riscv.attributes
+                0x0000000000000f6f       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)
+ .riscv.attributes
+                0x0000000000000fb6       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-atexit.o)
+ .riscv.attributes
+                0x0000000000000ffd       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-environ.o)
+ .riscv.attributes
+                0x0000000000001044       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-exit.o)
+ .riscv.attributes
+                0x000000000000108b       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-strnlen.o)
+ .riscv.attributes
+                0x00000000000010d2       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-errno.o)
+ .riscv.attributes
+                0x0000000000001119       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-init.o)
+ .riscv.attributes
+                0x0000000000001160       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-fini.o)
+ .riscv.attributes
+                0x00000000000011a7       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__atexit.o)
+ .riscv.attributes
+                0x00000000000011ee       0x47 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libc_nano.a(libc_a-__call_atexit.o)
+
+.debug_frame    0x0000000000000000      0x3d0
+ .debug_frame   0x0000000000000000       0x38 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(close.o)
+ .debug_frame   0x0000000000000038       0x28 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(exit.o)
+ .debug_frame   0x0000000000000060       0x38 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(fstat.o)
+ .debug_frame   0x0000000000000098       0x28 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(getpid.o)
+ .debug_frame   0x00000000000000c0       0x28 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(isatty.o)
+ .debug_frame   0x00000000000000e8       0x38 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(kill.o)
+ .debug_frame   0x0000000000000120       0x38 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(lseek.o)
+ .debug_frame   0x0000000000000158       0x38 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(read.o)
+ .debug_frame   0x0000000000000190       0x38 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(sbrk.o)
+ .debug_frame   0x00000000000001c8       0x28 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(write.o)
+ .debug_frame   0x00000000000001f0       0x70 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(printf.o)
+ .debug_frame   0x0000000000000260       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(traps.o)
+ .debug_frame   0x0000000000000290       0x38 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(tls.o)
+ .debug_frame   0x00000000000002c8       0x28 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(main.o)
+ .debug_frame   0x00000000000002f0       0x30 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(htif.o)
+ .debug_frame   0x0000000000000320       0xb0 /scratch2/dima/chipyard-fsim/.conda-env/riscv-tools/riscv64-unknown-elf/lib//libgloss_htif.a(vxprintf.o)

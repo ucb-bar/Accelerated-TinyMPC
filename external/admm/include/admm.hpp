@@ -1,15 +1,19 @@
 #pragma once
 
 #if defined(USE_EIGEN)
-#include <admm_eigen.hpp>
+    #include <admm_eigen.hpp>
 #elif defined(USE_RVV) || defined(USE_RVVU) || defined(USE_CPU)
-#if defined(USE_HANDOPT)
-#include <admm_rvv_handopt.hpp>
+    #if defined(USE_HANDOPT)
+        #if defined(USE_GEMMINI)
+            #include <admm_gemmini_handopt.hpp>
+        #else
+            #include <admm_rvv_handopt.hpp>
+        #endif
+    #else
+        #include <admm_matlib.hpp>
+    #endif
 #else
-#include <admm_matlib.hpp>
-#endif
-#else
-#include <admm_eigen.hpp>
+    #include <admm_eigen.hpp>
 #endif
 
 #ifdef __cplusplus

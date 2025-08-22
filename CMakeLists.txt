@@ -12,25 +12,6 @@ include_directories(include/Eigen)
 include_directories(include/Gemmini)
 include_directories(include/RoSE)
 
-if(USE_GEMMINI)
-
-    add_library (admm STATIC src/admm_eigen.cpp)
-
-    add_executable(test_gemmini test_gemmini.cpp)
-    target_link_libraries(test_gemmini LINK_PUBLIC tinympc)
-
-    add_executable(test_admm_eigen test_admm_eigen.cpp)
-    target_link_libraries(test_admm_eigen LINK_PUBLIC tinympc)
-    target_include_directories (test_admm_eigen PUBLIC tinympc)
-
-    add_executable(example_quadrotor_hovering example_quadrotor_hovering.cpp)
-    target_link_libraries(example_quadrotor_hovering LINK_PUBLIC admm)
-
-    add_executable(example_quadrotor_tracking example_quadrotor_tracking.cpp)
-    target_link_libraries(example_quadrotor_tracking LINK_PUBLIC admm)
-
-endif(USE_GEMMINI)
-
 if((USE_RVV OR USE_RVVU OR USE_RVVF) AND (USE_TYPE STREQUAL "float32" OR USE_TYPE STREQUAL "float64"))
 
     add_matlib_executable(example_quadrotor_hovering_rvv examples/example_quadrotor_hovering_rvv.cpp)
