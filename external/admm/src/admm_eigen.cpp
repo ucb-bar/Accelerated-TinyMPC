@@ -11,15 +11,13 @@ extern "C"
 
 static uint64_t startTimestamp;
 #ifdef MEASURE_CYCLES
-std::ofstream outputFile("cycle_output.csv");
 #define CYCLE_CNT_WRAPPER(func, arg, name) \
     do { \
-        struct timespec start, end; \
-        clock_gettime(CLOCK_MONOTONIC, &start); \
+        uint64_t start, end; \
+        start = read_cycles(); \
         func(arg); \
-        clock_gettime(CLOCK_MONOTONIC, &end); \
-        uint64_t timediff = (end.tv_sec - start.tv_sec)* 1e9 + (end.tv_nsec - start.tv_nsec); \
-        outputFile << name << ", " << timediff << std::endl; \
+        end = read_cycles(); \
+        printf("%s cycles: %lu\n", name, end - start); \
     } while(0)
 #else
 #define CYCLE_CNT_WRAPPER(func, arg, name) func(arg)
@@ -116,8 +114,7 @@ int tiny_solve(TinySolver *solver)
         // Update linear control cost terms using reference trajectory, duals, and slack variables
         CYCLE_CNT_WRAPPER(update_linear_cost, solver, "update_linear_cost");
         #ifdef MEASURE_CYCLES
-        struct timespec start, end;
-        clock_gettime(CLOCK_MONOTONIC, &start);
+        uint64_t start = read_cycles();
         #endif
         if (solver->work->iter % solver->settings->check_termination == 0)
         {
@@ -141,9 +138,9 @@ int tiny_solve(TinySolver *solver)
 
         solver->work->iter += 1;
         #ifdef MEASURE_CYCLES
-        clock_gettime(CLOCK_MONOTONIC, &end);
-        uint64_t timediff = (end.tv_sec - start.tv_sec)* 1e9 + (end.tv_nsec - start.tv_nsec);
-        outputFile << "termination_check" << ", " << timediff << std::endl;
+        uint64_t end = read_cycles();
+        uint64_t timediff = end - start;
+        printf("termination_check: %lu\n", timediff);
         #endif
     }
     return 1;

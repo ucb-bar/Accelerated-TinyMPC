@@ -16,7 +16,18 @@ extern "C" {
 
 static uint64_t startTimestamp;
 
+#ifdef MEASURE_CYCLES
+#define CYCLE_CNT_WRAPPER(func, arg, name) \
+    do { \
+        uint64_t start, end; \
+        start = read_cycles(); \
+        func(arg); \
+        end = read_cycles(); \
+        printf("%s cycles: %lu\n", name, end - start); \
+    } while(0)
+#else
 #define CYCLE_CNT_WRAPPER(func, arg, name) func(arg)
+#endif
 
 
 // // u1 = x[:, i] * Kinf; u2 = u1 + d; u[:, i] = -u2

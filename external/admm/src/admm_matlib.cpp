@@ -140,8 +140,7 @@ int tiny_solve(TinySolver *solver)
         CYCLE_CNT_WRAPPER(update_linear_cost, solver, "update_linear_cost");
 
         #ifdef MEASURE_CYCLES
-        struct timespec start, end;
-        clock_gettime(CLOCK_MONOTONIC, &start);
+        uint64_t start = read_cycles();
         #endif
         if (solver->work->iter % solver->settings->check_termination == 0)
         {
@@ -174,9 +173,9 @@ int tiny_solve(TinySolver *solver)
 
         solver->work->iter += 1;
         #ifdef MEASURE_CYCLES
-        clock_gettime(CLOCK_MONOTONIC, &end);
-        uint64_t timediff = (end.tv_sec - start.tv_sec)* 1e9 + (end.tv_nsec - start.tv_nsec);
-        outputFile << "termination_check" << ", " << timediff << std::endl;
+        uint64_t end = read_cycles();
+        uint64_t timediff = end - start;
+        printf("termination_check: %lu\n", timediff);
         #endif
 
         #ifdef DEBUG

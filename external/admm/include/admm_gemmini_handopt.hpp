@@ -17,15 +17,13 @@ extern "C" {
 
 static uint64_t startTimestamp;
 #ifdef MEASURE_CYCLES
-std::ofstream outputFile("cycle_output.csv");
 #define CYCLE_CNT_WRAPPER(func, arg, name) \
     do { \
-        struct timespec start, end; \
-        clock_gettime(CLOCK_MONOTONIC, &start); \
+        uint64_t start, end; \
+        start = read_cycles(); \
         func(arg); \
-        clock_gettime(CLOCK_MONOTONIC, &end); \
-        uint64_t timediff = (end.tv_sec - start.tv_sec)* 1e9 + (end.tv_nsec - start.tv_nsec); \
-        outputFile << name << ", " << timediff << std::endl; \
+        end = read_cycles(); \
+        printf("%s cycles: %lu\n", name, end - start); \
     } while(0)
 #else
 #define CYCLE_CNT_WRAPPER(func, arg, name) func(arg)
