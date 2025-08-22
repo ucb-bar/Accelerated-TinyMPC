@@ -32,7 +32,7 @@ struct default_digits_impl<T,false,false> // Floating point
 {
   EIGEN_DEVICE_FUNC EIGEN_CONSTEXPR
   static int run() {
-    using std::log2;
+    // using std::log2;
     using std::ceil;
     typedef typename NumTraits<T>::Real Real;
     return int(ceil(-log2(NumTraits<Real>::epsilon())));

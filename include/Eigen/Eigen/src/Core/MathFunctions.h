@@ -565,7 +565,7 @@ struct expm1_impl {
   EIGEN_DEVICE_FUNC static inline Scalar run(const Scalar& x)
   {
     EIGEN_STATIC_ASSERT_NON_INTEGER(Scalar)
-    EIGEN_USING_STD(expm1);
+    // EIGEN_USING_STD(expm1);
     return expm1(x);
   }
 };
@@ -626,7 +626,7 @@ struct log1p_impl {
 
   EIGEN_DEVICE_FUNC static inline Scalar run(const Scalar& x)
   {
-    EIGEN_USING_STD(log1p);
+    // EIGEN_USING_STD(log1p);
     return log1p(x);
   }
 };
@@ -952,8 +952,8 @@ template <typename Scalar, bool IsInteger = NumTraits<typename unpacket_traits<S
 struct nearest_integer_impl {
   static EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE Scalar run_floor(const Scalar& x) { EIGEN_USING_STD(floor) return floor(x); }
   static EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE Scalar run_ceil(const Scalar& x) { EIGEN_USING_STD(ceil) return ceil(x); }
-  static EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE Scalar run_rint(const Scalar& x) { EIGEN_USING_STD(rint) return rint(x); }
-  static EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE Scalar run_round(const Scalar& x) { EIGEN_USING_STD(round) return round(x); }
+  // static EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE Scalar run_rint(const Scalar& x) { EIGEN_USING_STD(rint) return rint(x); }
+  // static EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE Scalar run_round(const Scalar& x) { EIGEN_USING_STD(round) return round(x); }
 };
 template <typename Scalar>
 struct nearest_integer_impl<Scalar, true> {
@@ -1221,7 +1221,7 @@ EIGEN_ALWAYS_INLINE double absdiff(const double& x, const double& y)
 template<>
 EIGEN_DEVICE_FUNC
 EIGEN_ALWAYS_INLINE long double absdiff(const long double& x, const long double& y) {
-  return fabsl(x - y);
+  // return fabsl(x - y);
 }
 #endif
 
