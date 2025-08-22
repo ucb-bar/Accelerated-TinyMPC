@@ -4,7 +4,7 @@ message("Processing ${CMAKE_CURRENT_LIST_DIR}")
 include(${CMAKE_CURRENT_LIST_DIR}/external/matlib/matlib.cmake)
 add_subdirectory(external/matlib)
 add_subdirectory(external/admm)
-add_subdirectory(external/rtrbench)
+# add_subdirectory(external/rtrbench)
 
 project(TinyMPC VERSION 0.2.0 LANGUAGES CXX)
 
