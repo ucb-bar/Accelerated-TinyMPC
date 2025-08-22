@@ -6,6 +6,9 @@
 #include "problem_data/quadrotor_20hz_params.hpp"
 #include "trajectory_data/quadrotor_20hz_y_axis_line.hpp"
 
+
+void *__dso_handle __attribute__((weak)) = 0;
+
 Eigen::IOFormat CleanFmt(4, 0, ", ", "\n", "[", "]");
 
 extern "C"
@@ -16,7 +19,7 @@ extern "C"
     TinySettings settings;
     TinySolver solver{&settings, &cache, &work};
     
-    struct timespec start, end;
+    uint64_t start, end;
     double time1;
 
     int main()
@@ -92,7 +95,7 @@ extern "C"
         for (int k = 0; k < 10; ++k)
         // for (int k = 0; k < NTOTAL - NHORIZON - 1; ++k)
         {
-            std::cout << "tracking error: " << (x0 - work.Xref.col(1)).norm() << std::endl;
+            printf("tracking error: %0.7f\n", (x0 - work.Xref.col(1)).norm());
             
             // 1. Update measurement
             work.x.col(0) = x0;
@@ -105,11 +108,11 @@ extern "C"
             work.g = tiny_MatrixNxNh::Zero();
 
             // 4. Solve MPC problem
-            clock_gettime(CLOCK_MONOTONIC, &start);
+            start = read_cycles();
             tiny_solve(&solver);
-            clock_gettime(CLOCK_MONOTONIC, &end);
-            time1 = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
-            std::cout << "Time for iter " << k << ": " << time1 << std::endl;
+            end = read_cycles();
+            // clock_gettime(CLOCK_MONOTONIC, &end);
+            printf("Time for iter %d: %d\n", k, end-start);
 
             // std::cout << work.iter << std::endl;
             // std::cout << work.u.col(0).transpose().format(CleanFmt) << std::endl;

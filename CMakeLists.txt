@@ -45,12 +45,18 @@ endif((USE_RVV OR USE_RVVU OR USE_RVVF) AND (USE_TYPE STREQUAL "float32" OR USE_
 
 if(USE_CPU)
 
-    add_executable(example_quadrotor_hovering_cpu examples/example_quadrotor_hovering_rvv.cpp)
-    target_link_libraries(example_quadrotor_hovering_cpu LINK_PUBLIC admm matlib)
-    target_include_directories(example_quadrotor_hovering_cpu PUBLIC $<TARGET_PROPERTY:admm,INTERFACE_INCLUDE_DIRECTORIES>)
+    if(USE_EIGEN)
+        add_executable(example_quadrotor_tracking_eigen examples/example_quadrotor_tracking.cpp)
+        target_link_libraries(example_quadrotor_tracking_eigen LINK_PUBLIC admm)
+        target_include_directories(example_quadrotor_tracking_eigen PUBLIC $<TARGET_PROPERTY:admm,INTERFACE_INCLUDE_DIRECTORIES>)
+    else()
+        add_executable(example_quadrotor_hovering_cpu examples/example_quadrotor_hovering_rvv.cpp)
+        target_link_libraries(example_quadrotor_hovering_cpu LINK_PUBLIC admm matlib)
+        target_include_directories(example_quadrotor_hovering_cpu PUBLIC $<TARGET_PROPERTY:admm,INTERFACE_INCLUDE_DIRECTORIES>)
 
-    add_executable(example_quadrotor_tracking_cpu examples/example_quadrotor_tracking_rvv.cpp)
-    target_link_libraries(example_quadrotor_tracking_cpu LINK_PUBLIC admm matlib)
-    target_include_directories(example_quadrotor_tracking_cpu PUBLIC $<TARGET_PROPERTY:admm,INTERFACE_INCLUDE_DIRECTORIES>)
+        add_executable(example_quadrotor_tracking_cpu examples/example_quadrotor_tracking_rvv.cpp)
+        target_link_libraries(example_quadrotor_tracking_cpu LINK_PUBLIC admm matlib)
+        target_include_directories(example_quadrotor_tracking_cpu PUBLIC $<TARGET_PROPERTY:admm,INTERFACE_INCLUDE_DIRECTORIES>)
+    endif()
 
 endif(USE_CPU)

@@ -3,7 +3,20 @@
 #define TINYMPC_TYPES_H
 
 #include <Eigen.h>
-#include <glob_opts.hpp>
+
+typedef float tinytype;
+
+#define NSTATES 12
+#define NINPUTS 4
+
+#define NHORIZON 10
+#define NTOTAL 301
+
+static inline uint64_t read_cycles() {
+    uint64_t cycles;
+    asm volatile ("csrr %0, cycle" : "=r" (cycles));
+    return cycles;
+}
 
 using Eigen::Matrix;
 
