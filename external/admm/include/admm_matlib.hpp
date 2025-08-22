@@ -239,9 +239,5 @@ inline void update_linear_cost(TinySolver *solver)
     update_linear_cost_4(solver);
 }
 
-inline void tiny_init(TinySolver *solver) {
-
-}
-
 };
 #endif //TINYMPC_ADMM_RVV_HPP
