@@ -1,11 +1,10 @@
 #include <iostream>
 #include <time.h>
-
+#include <cmath>
 
 #include <admm.hpp>
 #include "problem_data/quadrotor_20hz_params.hpp"
 #include "trajectory_data/quadrotor_20hz_y_axis_line.hpp"
-
 
 void *__dso_handle __attribute__((weak)) = 0;
 
@@ -21,6 +20,20 @@ extern "C"
     
     uint64_t start, end;
     double time1;
+
+    // Function to print floating-point numbers
+    void printfloat(double value) {
+        int int_part = static_cast<int>(value); // Extract integer part
+        double frac_part = value - int_part;    // Extract fractional part
+        if (value < 0) {
+            putchar('-');
+            int_part = -int_part;
+            frac_part = -frac_part;
+        }
+        printf("%d.", int_part); // Print integer part
+        frac_part *= 1000000;    // Scale fractional part to 6 decimal places
+        printf("%06d", static_cast<int>(frac_part + 0.5)); // Print fractional part
+    }
 
     int main()
     {
@@ -95,7 +108,10 @@ extern "C"
         for (int k = 0; k < 10; ++k)
         // for (int k = 0; k < NTOTAL - NHORIZON - 1; ++k)
         {
-            printf("tracking error: %0.7f\n", (x0 - work.Xref.col(1)).norm());
+            double tracking_error = (x0 - work.Xref.col(1)).norm();
+            printf("tracking error: ");
+            printfloat(tracking_error);
+            printf("\n");
             
             // 1. Update measurement
             work.x.col(0) = x0;
