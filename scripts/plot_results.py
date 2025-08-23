@@ -49,14 +49,14 @@ def pick_source(env_default="rtl"):
     env_src = env_src.strip().lower()
     return "spike" if env_src == "spike" else "rtl"
 
-def config_to_hw(cfg: str) -> str:
-    if cfg == "RocketConfig":
-        return "scalar"
-    if cfg == "REFV512D256RocketConfig":
-        return "vector"
-    if cfg == "FPGemminiRocketConfig":
-        return "systolic"
-    return cfg
+# def config_to_hw(cfg: str) -> str:
+#     if cfg == "RocketConfig":
+#         return "scalar"
+#     if cfg == "REFV512D256RocketConfig":
+#         return "vector"
+#     if cfg == "FPGemminiRocketConfig":
+#         return "systolic"
+#     return cfg
 
 def bin_to_sw(basename: str) -> str:
     name = basename.lower()
@@ -140,7 +140,7 @@ def main():
     kernel_order = []
 
     # Deterministic ordering for combos
-    hw_order = ["scalar", "vector", "systolic"]
+    # hw_order = ["scalar", "vector", "systolic"]
     sw_order = ["cpu", "eigen", "rvv", "rvv-handopt", "gemmini", "unknown"]
 
     logs_found = False
@@ -188,15 +188,14 @@ def main():
         print(f"No logs found under: {base_dir}")
         return
 
-    # Order combos deterministically
     def ordered_combos(values_dict):
-        combos = sorted(values_dict.keys())
-        def key_func(c):
-            hw, sw = c.split("/", 1) if "/" in c else (c, "")
-            return (hw_order.index(hw) if hw in hw_order else len(hw_order),
-                    sw_order.index(sw) if sw in sw_order else len(sw_order),
-                    c)
-        return [c for c in sorted(combos, key=key_func)]
+    combos = list(values_dict.keys())
+    def key_func(c):
+        hw, sw = c.split("/", 1) if "/" in c else (c, "")
+        return (hw,  # lexicographic by CONFIG name
+                sw_order.index(sw) if sw in sw_order else len(sw_order),
+                c)
+    return [c for c in sorted(combos, key=key_func)]
 
     # E2E aggregated (per combo)
     e2e_combo_avgs = OrderedDict(
