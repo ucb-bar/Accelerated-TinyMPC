@@ -40,6 +40,9 @@ DRY_RUN="${DRY_RUN:-0}"
 TIMEOUT_CYCLES="${TIMEOUT_CYCLES:-100000000}"
 CLEAN="${CLEAN:-}"
 
+RESULTS_DIR_RTL="${REPO_ROOT}/results/rtl"
+mkdir -p "${RESULTS_DIR_RTL}"
+
 # ---------- helpers ----------
 red()   { printf "\033[31m%s\033[0m\n" "$*"; }
 green() { printf "\033[32m%s\033[0m\n" "$*"; }
@@ -92,6 +95,21 @@ finish_banner() {
   [[ -n "${secs}" ]] && printf "Duration: %ss\n" "${secs}"
   divider
 }
+
+copy_to_results_rtl() {
+  local cfg="$1" bin="$2"
+  local src_log; src_log="$(log_path_for "${cfg}" "${bin}")"
+  local dst_dir="${RESULTS_DIR_RTL}/${cfg}"
+  local dst_log="${dst_dir}/$(basename "${bin}").log"
+  mkdir -p "${dst_dir}"
+  if [[ -f "${src_log}" ]]; then
+    cp -f "${src_log}" "${dst_log}"
+  else
+    # don't fail the script if the log isn't present yet
+    printf "WARN: expected log not found to copy: %s\n" "${src_log}" >&2
+  fi
+}
+
 
 # ---------- sanity checks ----------
 need_dir "${CHIPYARD_DIR}"
@@ -176,6 +194,7 @@ run_group() {
       RESULTS["$key"]="SKIP"
       ((++COMPLETED_RUNS))
       finish_banner "${label}" "${cfg}" "${bin}" "SKIP (finished log found)" "" "" "${COMPLETED_RUNS}" "${TOTAL_RUNS}"
+    copy_to_results_rtl "${cfg}" "${bin}"
     else
       to_run+=("${bin}")
     fi
@@ -217,6 +236,7 @@ run_group() {
       RESULTS["$key"]="FAIL(${rc})"; red "[FAIL] ${key} (rc=${rc})"
       status="FAIL"
     fi
+    copy_to_results_rtl "${cfg}" "${bin}"     
     ((++COMPLETED_RUNS))
     finish_banner "${label}" "${cfg}" "${bin}" "${status}" "${rc}" "${secs}" "${COMPLETED_RUNS}" "${TOTAL_RUNS}"
   done
