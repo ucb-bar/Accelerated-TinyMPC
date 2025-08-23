@@ -49,15 +49,6 @@ def pick_source(env_default="rtl"):
     env_src = env_src.strip().lower()
     return "spike" if env_src == "spike" else "rtl"
 
-# def config_to_hw(cfg: str) -> str:
-#     if cfg == "RocketConfig":
-#         return "scalar"
-#     if cfg == "REFV512D256RocketConfig":
-#         return "vector"
-#     if cfg == "FPGemminiRocketConfig":
-#         return "systolic"
-#     return cfg
-
 def bin_to_sw(basename: str) -> str:
     name = basename.lower()
     if "rvv_handopt" in name or "rvv-handopt" in name:
@@ -104,6 +95,60 @@ def iter_logs(root: str):
 def mean_or_none(xs):
     return (sum(xs) / len(xs)) if xs else None
 
+# --- hardcoded ordering -----------------------------------------------------
+
+# Desired CONFIG order (present ones are kept in this exact order)
+CONFIG_ORDER = [
+    "RocketConfig",
+    "LargeBoomV3Config",
+    "REFV512D256RocketConfig",
+    "REFV512D256ShuttleConfig",
+    "FPGemminiRocketConfig",
+]
+
+# SW order within each CONFIG
+SW_ORDER = ["cpu", "eigen", "rvv", "rvv-handopt", "gemmini", "unknown"]
+
+def order_combos_by_config_sw(all_combos: list[str]) -> list[str]:
+    """
+    Order combos by:
+      1) CONFIG in CONFIG_ORDER (present ones, in that exact order),
+         then any remaining CONFIGs lexicographically.
+      2) within a CONFIG: SW in SW_ORDER, then any extras lexicographically.
+    """
+    # Map: config -> set(sw)
+    sws_by_cfg: dict[str, set[str]] = {}
+    configs_present: set[str] = set()
+    for c in all_combos:
+        hw, sw = c.split("/", 1) if "/" in c else (c, "")
+        configs_present.add(hw)
+        sws_by_cfg.setdefault(hw, set()).add(sw)
+
+    ordered: list[str] = []
+
+    # First, the explicitly-ordered CONFIGs (if present)
+    for cfg in CONFIG_ORDER:
+        if cfg not in configs_present:
+            continue
+        sws = sws_by_cfg.get(cfg, set())
+        for sw in SW_ORDER:
+            if sw in sws:
+                ordered.append(f"{cfg}/{sw}")
+        for sw in sorted(sws - set(SW_ORDER)):
+            ordered.append(f"{cfg}/{sw}")
+
+    # Then any remaining CONFIGs (not in CONFIG_ORDER), lexicographically
+    remaining_cfgs = sorted(c for c in configs_present if c not in CONFIG_ORDER)
+    for cfg in remaining_cfgs:
+        sws = sws_by_cfg.get(cfg, set())
+        for sw in SW_ORDER:
+            if sw in sws:
+                ordered.append(f"{cfg}/{sw}")
+        for sw in sorted(sws - set(SW_ORDER)):
+            ordered.append(f"{cfg}/{sw}")
+
+    return ordered
+
 # --- main ------------------------------------------------------------------
 
 def main():
@@ -129,28 +174,17 @@ def main():
     per_log_rows = []
 
     # Aggregations
-    # E2E average per combo
-    e2e_combo_values = defaultdict(list)
-
-    # Kernel averages per kernel per combo
-    # kernel_combo_values[kernel][combo] -> list of cycles
-    kernel_combo_values = defaultdict(lambda: defaultdict(list))
-
-    # Discovery order for kernels (first time any kernel name is seen across logs)
-    kernel_order = []
-
-    # Deterministic ordering for combos
-    # hw_order = ["scalar", "vector", "systolic"]
-    sw_order = ["cpu", "eigen", "rvv", "rvv-handopt", "gemmini", "unknown"]
+    e2e_combo_values = defaultdict(list)                # combo -> list[cycles]
+    kernel_combo_values = defaultdict(lambda: defaultdict(list))  # kernel -> combo -> list[cycles]
+    kernel_order = []                                   # discovery order
 
     logs_found = False
 
     for cfg, log_path in iter_logs(base_dir):
         logs_found = True
-        hw = config_to_hw(cfg)
         base = os.path.basename(log_path)
         sw = bin_to_sw(base.replace(".log", ""))
-        combo = f"{hw}/{sw}"
+        combo = f"{cfg}/{sw}"
 
         # E2E: only base logs (skip *_cycles.log)
         use_for_e2e = "_cycles" not in base
@@ -170,7 +204,7 @@ def main():
         per_log_rows.append({
             "source": src,
             "config": cfg,
-            "hardware": hw,
+            "hardware": cfg,  # use CONFIG name
             "software": sw,
             "combo": combo,
             "binary_log": base,
@@ -188,30 +222,22 @@ def main():
         print(f"No logs found under: {base_dir}")
         return
 
-    def ordered_combos(values_dict):
-        combos = list(values_dict.keys())
-        def key_func(c):
-            hw, sw = c.split("/", 1) if "/" in c else (c, "")
-            return (hw,  # lexicographic by CONFIG name
-                    sw_order.index(sw) if sw in sw_order else len(sw_order),
-                    c)
-        return [c for c in sorted(combos, key=key_func)]
-
-    # E2E aggregated (per combo)
+    # --- E2E aggregated (per combo), enforce hardcoded CONFIG order + SW order ---
+    e2e_keys = list(e2e_combo_values.keys())
+    e2e_ordered = order_combos_by_config_sw(e2e_keys)
     e2e_combo_avgs = OrderedDict(
         (combo, sum(e2e_combo_values[combo]) / len(e2e_combo_values[combo]))
-        for combo in ordered_combos(e2e_combo_values)
+        for combo in e2e_ordered
     )
 
-    # Kernel aggregated: avg per (kernel, combo)
-    # Also collect full set of combos that appear anywhere (so legend is consistent)
+    # --- Kernel legend/series order (same HW/SW policy) ---
     all_combos_for_kernels = set()
-    for kname, d in kernel_combo_values.items():
-        for combo in d.keys():
-            all_combos_for_kernels.add(combo)
-    combo_list_for_kernels = ordered_combos({c: 1 for c in all_combos_for_kernels})  # reuse ordering
+    for _k, d in kernel_combo_values.items():
+        all_combos_for_kernels.update(d.keys())
+    combo_list_for_kernels = order_combos_by_config_sw(sorted(all_combos_for_kernels))
 
-    kernel_combo_avgs = OrderedDict()  # kernel -> OrderedDict(combo -> avg or nan)
+    # kernel -> OrderedDict(combo -> avg or nan) in the same combo order
+    kernel_combo_avgs = OrderedDict()
     for kname in kernel_order:
         d = kernel_combo_values.get(kname, {})
         row = OrderedDict()
@@ -276,7 +302,7 @@ def main():
         print(f"Wrote {out}")
 
     def plot_grouped_by_kernel(filename: str, title: str,
-                            kernel_to_combo_avgs: OrderedDict, combos: list[str]):
+                               kernel_to_combo_avgs: OrderedDict, combos: list[str]):
         if not kernel_to_combo_avgs:
             print(f"[Skip] No data for {title} ({src})")
             return
@@ -288,8 +314,7 @@ def main():
             print(f"[Skip] No data for {title} ({src})")
             return
 
-        # Make it wider based on number of kernel groups
-        # (baseline 12in + 0.6in per kernel group, capped to something reasonable)
+        # Wider figure + legend to the right
         width_in = max(12.0, min(24.0, 12.0 + 0.6 * num_groups))
         height_in = 6.0
         plt.figure(figsize=(width_in, height_in))
@@ -297,7 +322,7 @@ def main():
         x = list(range(num_groups))
         bar_width = 0.8 / max(1, num_series)
 
-        # One bar series per HW/SW combo
+        # One bar series per HW/SW combo in the provided order
         for s_idx, combo in enumerate(combos):
             offsets = [xi + (s_idx - (num_series - 1) / 2.0) * bar_width for xi in x]
             heights_raw = [kernel_to_combo_avgs[k].get(combo, math.nan) for k in kernels]
@@ -308,25 +333,22 @@ def main():
         plt.ylabel("cycles (log scale)")
         plt.title(f"{title} ({src})")
         plt.yscale("log")
-
         ax = plt.gca()
         ax.yaxis.grid(True, which="both", linestyle="--", alpha=0.5)
 
-        # Legend to the RIGHT of the plot
-        # bbox_to_anchor pushes it outside; bbox_inches='tight' (on save) prevents clipping
+        # Legend outside on the right
         plt.legend(loc="upper left", bbox_to_anchor=(1.02, 1), borderaxespad=0.0, fontsize="small")
 
-        # Tight layout for plot area (legend is outside, so use bbox_inches='tight' on save)
         plt.tight_layout()
         out = os.path.join(args.out_dir, filename)
         plt.savefig(out, bbox_inches="tight")
         plt.close()
         print(f"Wrote {out}")
 
-    # E2E: same bar as before
+    # E2E
     plot_bar(f"e2e_avg_cycles{suffix}.png", "Average E2E Cycles per HW/SW Combo", e2e_combo_avgs)
 
-    # Kernel: grouped by kernel name (discovery order), one bar per combo
+    # Kernel
     plot_grouped_by_kernel(
         f"kernel_avg_cycles_by_kernel{suffix}.png",
         "Average Kernel Cycles (grouped by kernel)",
