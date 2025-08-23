@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # scripts/run_rtl.sh
 # Run Chipyard Verilator RTL sims over grouped binaries with minimal rebuilds.
-# Adds a bottom progress bar that updates as runs complete.
+# Assumes the user has already sourced tools/chipyard/env.sh (no wrapper).
 #
 # Groups:
 #   scalar  -> RocketConfig
@@ -21,7 +21,6 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 TOOLS_DIR="${REPO_ROOT}/tools"
 CHIPYARD_DIR="${TOOLS_DIR}/chipyard"
 SIM_DIR="${CHIPYARD_DIR}/sims/verilator"
-WRAPPER="${TOOLS_DIR}/chipyard_env.sh"
 
 JOBS="${JOBS:-$(command -v nproc >/dev/null 2>&1 && nproc || echo 8)}"
 DRY_RUN="${DRY_RUN:-0}"
@@ -30,32 +29,30 @@ DRY_RUN="${DRY_RUN:-0}"
 red()   { printf "\033[31m%s\033[0m\n" "$*"; }
 green() { printf "\033[32m%s\033[0m\n" "$*"; }
 blue()  { printf "\033[34m%s\033[0m\n" "$*"; }
-
 die() { red "ERROR: $*"; exit 1; }
-
-run_in_env() {
-  if [[ -x "${WRAPPER}" ]]; then
-    "${WRAPPER}" "$@"
-  else
-    "$@"
-  fi
-}
 
 need_dir() { [[ -d "$1" ]] || die "Missing directory: $1"; }
 need_file(){ [[ -f "$1" ]] || die "Missing file: $1"; }
+
+abspath() {
+  if command -v realpath >/dev/null 2>&1; then realpath "$1";
+  else python3 - <<'PY' "$1"
+import os,sys
+print(os.path.abspath(sys.argv[1]))
+PY
+  fi
+}
 
 # ---------- sanity checks ----------
 need_dir "${CHIPYARD_DIR}"
 need_dir "${SIM_DIR}"
 command -v make >/dev/null 2>&1 || die "make not found"
+# Soft check that env.sh was sourced (RISCV is set by env.sh when using riscv-tools)
+if [[ -z "${RISCV:-}" ]]; then
+  red "Warning: RISCV is not set. Did you source tools/chipyard/env.sh?"
+fi
 
 # ---------- collect binaries ----------
-abspath() { python3 - <<'PY' "$1"
-import os,sys
-print(os.path.abspath(sys.argv[1]))
-PY
-}
-
 BIN_SCALAR=()
 BIN_VECTOR=()
 BIN_GEMMINI=()
@@ -97,38 +94,30 @@ COMPLETED_RUNS=0
 PROGRESS_SETUP=0
 
 cleanup_progress() {
-  # Restore cursor on exit
   if [[ "${PROGRESS_SETUP}" -eq 1 ]]; then
     tput cnorm 2>/dev/null || true
-    printf "\n"  # ensure clean line after bar
+    printf "\n"
   fi
 }
 trap cleanup_progress EXIT
 
 progress_init() {
   [[ "${PROGRESS_SETUP}" -eq 1 ]] && return 0
-  tput civis 2>/dev/null || true   # hide cursor
+  tput civis 2>/dev/null || true
   PROGRESS_SETUP=1
   progress_draw
 }
 
 progress_draw() {
-  # choose bar width nicely within terminal width
-  local cols="${COLUMNS:-}"
-  [[ -z "${cols}" ]] && cols="$(tput cols 2>/dev/null || echo 80)"
+  local cols="${COLUMNS:-}"; [[ -z "${cols}" ]] && cols="$(tput cols 2>/dev/null || echo 80)"
   local label="Progress:"
   local suffix=" ${COMPLETED_RUNS}/${TOTAL_RUNS}"
   local base=$(( ${#label} + ${#suffix} + 10 ))
   local width=$(( cols > base ? cols - base : 30 ))
   (( width < 10 )) && width=10
-
-  local pct=0
-  if (( TOTAL_RUNS > 0 )); then
-    pct=$(( COMPLETED_RUNS * 100 / TOTAL_RUNS ))
-  fi
+  local pct=0; (( TOTAL_RUNS > 0 )) && pct=$(( COMPLETED_RUNS * 100 / TOTAL_RUNS ))
   local filled=$(( width * pct / 100 ))
   local empty=$(( width - filled ))
-
   printf "\r\033[K%s [%s%s] %3d%%%s" \
     "${label}" \
     "$(printf "%0.s#" $(seq 1 ${filled}))" \
@@ -137,10 +126,7 @@ progress_draw() {
     "${suffix}"
 }
 
-progress_tick() {
-  (( COMPLETED_RUNS++ ))
-  progress_draw
-}
+progress_tick() { (( COMPLETED_RUNS++ )); progress_draw; }
 
 # ---------- build/run orchestration ----------
 declare -A RESULTS
@@ -152,7 +138,7 @@ ensure_sim_built() {
     echo "DRY_RUN: make -C '${SIM_DIR}' -j${JOBS} CONFIG=${cfg}"
     return 0
   fi
-  run_in_env make -C "${SIM_DIR}" -j"${JOBS}" CONFIG="${cfg}"
+  make -C "${SIM_DIR}" -j"${JOBS}" CONFIG="${cfg}"
 }
 
 run_group() {
@@ -178,16 +164,14 @@ run_group() {
     fi
 
     set +e
-    run_in_env make -C "${SIM_DIR}" CONFIG="${cfg}" BINARY="${bin}" LOADMEM=1 run-binary
+    make -C "${SIM_DIR}" CONFIG="${cfg}" BINARY="${bin}" LOADMEM=1 run-binary
     rc=$?
     set -e
 
     if [[ $rc -eq 0 ]]; then
-      RESULTS["$key"]="PASS"
-      green "[PASS] ${key}"
+      RESULTS["$key"]="PASS"; green "[PASS] ${key}"
     else
-      RESULTS["$key"]="FAIL(${rc})"
-      red   "[FAIL] ${key} (rc=${rc})"
+      RESULTS["$key"]="FAIL(${rc})"; red "[FAIL] ${key} (rc=${rc})"
     fi
     progress_tick
   done
@@ -209,7 +193,6 @@ for k in "${!RESULTS[@]}"; do
   printf "%s  %s\n" "$(pad "${RESULTS[$k]}")" "$k"
 done
 
-# Non-zero exit if any FAIL
 failed=0
 for v in "${RESULTS[@]}"; do
   [[ "$v" == PASS || "$v" == DRY-RUN ]] || failed=1
