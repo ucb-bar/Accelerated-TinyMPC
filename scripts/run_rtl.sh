@@ -1,19 +1,31 @@
 #!/usr/bin/env bash
 # scripts/run_rtl.sh
 # Run Chipyard Verilator RTL sims over grouped binaries with minimal rebuilds.
-# Assumes the user has already sourced tools/chipyard/env.sh (no wrapper).
+# Assumes tools/chipyard/env.sh has been sourced already (no wrapper).
 #
 # Groups:
 #   scalar  -> RocketConfig
 #   vector  -> REFV512D256RocketConfig
 #   gemmini -> FPGemminiRocketConfig
-#
-# Usage:
-#   bash scripts/run_rtl.sh
-#   DRY_RUN=1 bash scripts/run_rtl.sh
-#   JOBS=16 bash scripts/run_rtl.sh
 
 set -euo pipefail
+
+# --- sbt/socket safety: keep tmp short to avoid AF_UNIX path limit (~108B) ---
+# Many environments inject JAVA_TOOL_OPTIONS with a long -Djava.io.tmpdir=…
+# Force a short tmpdir and make sbt non-interactive.
+export TMPDIR="${TMPDIR:-/tmp}"
+if [[ "${TMPDIR}" != "/tmp" && ${#TMPDIR} -gt 20 ]]; then
+  TMPDIR="/tmp"
+  export TMPDIR
+fi
+if [[ -n "${JAVA_TOOL_OPTIONS:-}" ]]; then
+  # Remove any preexisting -Djava.io.tmpdir=… token(s)
+  JAVA_TOOL_OPTIONS="$(sed -E 's@-Djava\.io\.tmpdir=[^ ]+@@g' <<<"${JAVA_TOOL_OPTIONS}")"
+fi
+export JAVA_TOOL_OPTIONS="${JAVA_TOOL_OPTIONS:-} -Djava.io.tmpdir=/tmp"
+export SBT_NON_INTERACTIVE=1
+# Clean stale sock dirs if present (best-effort)
+rm -rf "${TMPDIR}/.sbt"/sbt-socket* 2>/dev/null || true
 
 # ---------- config ----------
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -47,7 +59,6 @@ PY
 need_dir "${CHIPYARD_DIR}"
 need_dir "${SIM_DIR}"
 command -v make >/dev/null 2>&1 || die "make not found"
-# Soft check that env.sh was sourced (RISCV is set by env.sh when using riscv-tools)
 if [[ -z "${RISCV:-}" ]]; then
   red "Warning: RISCV is not set. Did you source tools/chipyard/env.sh?"
 fi
@@ -101,31 +112,17 @@ cleanup_progress() {
 }
 trap cleanup_progress EXIT
 
-progress_init() {
-  [[ "${PROGRESS_SETUP}" -eq 1 ]] && return 0
-  tput civis 2>/dev/null || true
-  PROGRESS_SETUP=1
-  progress_draw
-}
-
+progress_init() { [[ "${PROGRESS_SETUP}" -eq 1 ]] || { tput civis 2>/dev/null || true; PROGRESS_SETUP=1; progress_draw; }; }
 progress_draw() {
   local cols="${COLUMNS:-}"; [[ -z "${cols}" ]] && cols="$(tput cols 2>/dev/null || echo 80)"
-  local label="Progress:"
-  local suffix=" ${COMPLETED_RUNS}/${TOTAL_RUNS}"
+  local label="Progress:" suffix=" ${COMPLETED_RUNS}/${TOTAL_RUNS}"
   local base=$(( ${#label} + ${#suffix} + 10 ))
-  local width=$(( cols > base ? cols - base : 30 ))
-  (( width < 10 )) && width=10
+  local width=$(( cols > base ? cols - base : 30 )); (( width < 10 )) && width=10
   local pct=0; (( TOTAL_RUNS > 0 )) && pct=$(( COMPLETED_RUNS * 100 / TOTAL_RUNS ))
-  local filled=$(( width * pct / 100 ))
-  local empty=$(( width - filled ))
+  local filled=$(( width * pct / 100 )) empty=$(( width - filled ))
   printf "\r\033[K%s [%s%s] %3d%%%s" \
-    "${label}" \
-    "$(printf "%0.s#" $(seq 1 ${filled}))" \
-    "$(printf "%0.s-" $(seq 1 ${empty}))" \
-    "${pct}" \
-    "${suffix}"
+    "${label}" "$(printf "%0.s#" $(seq 1 ${filled}))" "$(printf "%0.s-" $(seq 1 ${empty}))" "${pct}" "${suffix}"
 }
-
 progress_tick() { (( COMPLETED_RUNS++ )); progress_draw; }
 
 # ---------- build/run orchestration ----------
@@ -136,9 +133,9 @@ ensure_sim_built() {
   blue "[Build sim] CONFIG=${cfg}"
   if (( DRY_RUN )); then
     echo "DRY_RUN: make -C '${SIM_DIR}' -j${JOBS} CONFIG=${cfg}"
-    return 0
+  else
+    make -C "${SIM_DIR}" -j"${JOBS}" CONFIG="${cfg}"
   fi
-  make -C "${SIM_DIR}" -j"${JOBS}" CONFIG="${cfg}"
 }
 
 run_group() {
@@ -180,7 +177,6 @@ run_group() {
 # ---------- execute ----------
 progress_init
 progress_draw
-
 run_group "scalar"  "RocketConfig"            "${BIN_SCALAR[@]}"
 run_group "vector"  "REFV512D256RocketConfig" "${BIN_VECTOR[@]}"
 run_group "gemmini" "FPGemminiRocketConfig"   "${BIN_GEMMINI[@]}"
@@ -189,12 +185,8 @@ run_group "gemmini" "FPGemminiRocketConfig"   "${BIN_GEMMINI[@]}"
 printf "\n"
 blue "=== RTL Simulation Summary ==="
 pad() { printf "%-12s" "$1"; }
-for k in "${!RESULTS[@]}"; do
-  printf "%s  %s\n" "$(pad "${RESULTS[$k]}")" "$k"
-done
+for k in "${!RESULTS[@]}"; do printf "%s  %s\n" "$(pad "${RESULTS[$k]}")" "$k"; done
 
 failed=0
-for v in "${RESULTS[@]}"; do
-  [[ "$v" == PASS || "$v" == DRY-RUN ]] || failed=1
-done
+for v in "${RESULTS[@]}"; do [[ "$v" == PASS || "$v" == DRY-RUN ]] || failed=1; done
 exit $failed
