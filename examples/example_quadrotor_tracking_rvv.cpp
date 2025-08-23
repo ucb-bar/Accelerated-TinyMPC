@@ -96,7 +96,7 @@ extern "C"
 
         tiny_init(&solver);
 
-        for (int k = 0; k < 2; ++k) {
+        for (int k = 0; k < 1; ++k) {
 
             // Print states array to CSV file
             // calculate the value of (x0 - work.Xref.col(1)).norm()

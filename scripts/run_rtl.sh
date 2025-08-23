@@ -1,192 +1,342 @@
-#!/usr/bin/env bash
-# scripts/run_rtl.sh
-# Run Chipyard Verilator RTL sims over grouped binaries with minimal rebuilds.
-# Assumes tools/chipyard/env.sh has been sourced already (no wrapper).
+#!/usr/bin/env python3
+# scripts/plot_results.py
 #
-# Groups:
-#   scalar  -> RocketConfig
-#   vector  -> REFV512D256RocketConfig
-#   gemmini -> FPGemminiRocketConfig
+# Generate plots + CSVs from RTL or Spike logs.
+# - E2E: average of "Time for iter X: NNN" (base logs only, skip *_cycles.log)
+# - Kernel: average of "<kernel_name> cycles: NNN"
+#   -> Plotted as grouped bars: one group per kernel (in discovery order), one bar per HW/SW combo.
+#
+# Source selection:
+#   env PLOT_SOURCE=rtl|spike (default rtl). If unset, falls back to env RUNNER.
+#   CLI override: --source rtl|spike
+#
+# Inputs:
+#   RTL   logs: results/rtl/<CONFIG>/*.log
+#   Spike logs: results/spike/<CONFIG>/*.log
+#
+# Outputs (results/plots/):
+#   - e2e_avg_cycles_<src>.png
+#   - kernel_avg_cycles_by_kernel_<src>.png
+#   - metrics_per_log_<src>.csv
+#   - metrics_per_combo_<src>.csv
+#   - metrics_per_kernel_combo_<src>.csv
 
-set -euo pipefail
+import argparse
+import csv
+import math
+import os
+import re
+from collections import defaultdict, OrderedDict
 
-# --- sbt/socket safety: keep tmp short to avoid AF_UNIX path limit (~108B) ---
-# Many environments inject JAVA_TOOL_OPTIONS with a long -Djava.io.tmpdir=…
-# Force a short tmpdir and make sbt non-interactive.
-export TMPDIR="${TMPDIR:-/tmp}"
-if [[ "${TMPDIR}" != "/tmp" && ${#TMPDIR} -gt 20 ]]; then
-  TMPDIR="/tmp"
-  export TMPDIR
-fi
-if [[ -n "${JAVA_TOOL_OPTIONS:-}" ]]; then
-  # Remove any preexisting -Djava.io.tmpdir=… token(s)
-  JAVA_TOOL_OPTIONS="$(sed -E 's@-Djava\.io\.tmpdir=[^ ]+@@g' <<<"${JAVA_TOOL_OPTIONS}")"
-fi
-export JAVA_TOOL_OPTIONS="${JAVA_TOOL_OPTIONS:-} -Djava.io.tmpdir=/tmp"
-export SBT_NON_INTERACTIVE=1
-# Clean stale sock dirs if present (best-effort)
-rm -rf "${TMPDIR}/.sbt"/sbt-socket* 2>/dev/null || true
+# Headless matplotlib
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 
-# ---------- config ----------
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-TOOLS_DIR="${REPO_ROOT}/tools"
-CHIPYARD_DIR="${TOOLS_DIR}/chipyard"
-SIM_DIR="${CHIPYARD_DIR}/sims/verilator"
 
-JOBS="${JOBS:-$(command -v nproc >/dev/null 2>&1 && nproc || echo 8)}"
-DRY_RUN="${DRY_RUN:-0}"
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+RESULTS_DIR = os.path.join(REPO_ROOT, "results")
+PLOTS_DIR = os.path.join(RESULTS_DIR, "plots")
+os.makedirs(PLOTS_DIR, exist_ok=True)
 
-# ---------- helpers ----------
-red()   { printf "\033[31m%s\033[0m\n" "$*"; }
-green() { printf "\033[32m%s\033[0m\n" "$*"; }
-blue()  { printf "\033[34m%s\033[0m\n" "$*"; }
-die() { red "ERROR: $*"; exit 1; }
+RE_E2E    = re.compile(r"^\s*Time\s+for\s+iter\s+\d+\s*:\s*(\d+)\s*$")
+RE_KERNEL = re.compile(r"^\s*([A-Za-z0-9_ ]+?)\s+cycles\s*:\s*(\d+)\s*$")
 
-need_dir() { [[ -d "$1" ]] || die "Missing directory: $1"; }
-need_file(){ [[ -f "$1" ]] || die "Missing file: $1"; }
+# --- helpers ---------------------------------------------------------------
 
-abspath() {
-  if command -v realpath >/dev/null 2>&1; then realpath "$1";
-  else python3 - <<'PY' "$1"
-import os,sys
-print(os.path.abspath(sys.argv[1]))
-PY
-  fi
-}
+def pick_source(env_default="rtl"):
+    env_src = os.environ.get("PLOT_SOURCE") or os.environ.get("RUNNER") or env_default
+    env_src = env_src.strip().lower()
+    return "spike" if env_src == "spike" else "rtl"
 
-# ---------- sanity checks ----------
-need_dir "${CHIPYARD_DIR}"
-need_dir "${SIM_DIR}"
-command -v make >/dev/null 2>&1 || die "make not found"
-if [[ -z "${RISCV:-}" ]]; then
-  red "Warning: RISCV is not set. Did you source tools/chipyard/env.sh?"
-fi
+def hw_label_from_cfg(cfg: str, src: str) -> str:
+    """Return the hardware label to use on charts.
+       Requirement: for RTL, use the *exact* Chipyard CONFIG name.
+       For Spike, config name is fine as well.
+    """
+    return cfg
 
-# ---------- collect binaries ----------
-BIN_SCALAR=()
-BIN_VECTOR=()
-BIN_GEMMINI=()
+def bin_to_sw(basename: str) -> str:
+    name = basename.lower()
+    if "rvv_handopt" in name or "rvv-handopt" in name:
+        return "rvv-handopt"
+    if "rvv" in name:
+        return "rvv"
+    if "eigen" in name:
+        return "eigen"
+    if "gemmini" in name:
+        return "gemmini"
+    if "cpu" in name:
+        return "cpu"
+    return "unknown"
 
-# Scalar (RocketConfig): cpu/eigen + cycles
-for rel in \
-  "build-cpu/example_quadrotor_tracking_cpu" \
-  "build-eigen/example_quadrotor_tracking_eigen" \
-  "build-cpu-cycles/example_quadrotor_tracking_cpu_cycles" \
-  "build-eigen-cycles/example_quadrotor_tracking_eigen_cycles"
-do
-  p="${REPO_ROOT}/${rel}"
-  [[ -x "${p}" ]] && BIN_SCALAR+=("$(abspath "${p}")")
-done
+def parse_e2e_cycles_from_log(path: str):
+    vals = []
+    with open(path, "r", errors="ignore") as f:
+        for line in f:
+            m = RE_E2E.match(line)
+            if m:
+                vals.append(int(m.group(1)))
+    return vals
 
-# Vector (REFV512D256RocketConfig): rvv + handopt + cycles
-for rel in \
-  "build-rvv/example_quadrotor_tracking_rvv" \
-  "build-rvv-handopt/example_quadrotor_tracking_rvv_handopt" \
-  "build-rvv-cycles/example_quadrotor_tracking_rvv_cycles" \
-  "build-rvv-handopt-cycles/example_quadrotor_tracking_rvv_handopt_cycles"
-do
-  p="${REPO_ROOT}/${rel}"
-  [[ -x "${p}" ]] && BIN_VECTOR+=("$(abspath "${p}")")
-done
+def parse_kernel_lines_from_log(path: str):
+    """Yield (kernel_name, cycles) in the order they appear."""
+    with open(path, "r", errors="ignore") as f:
+        for line in f:
+            m = RE_KERNEL.match(line)
+            if m:
+                yield m.group(1).strip(), int(m.group(2))
 
-# Gemmini (FPGemminiRocketConfig): systolic + cycles
-for rel in \
-  "build-gemmini/example_quadrotor_tracking_gemmini" \
-  "build-gemmini-cycles/example_quadrotor_tracking_gemmini_cycles"
-do
-  p="${REPO_ROOT}/${rel}"
-  [[ -x "${p}" ]] && BIN_GEMMINI+=("$(abspath "${p}")")
-done
+def iter_logs(root: str):
+    """Yield (config, log_path) for <root>/<CONFIG>/*.log."""
+    if not os.path.isdir(root):
+        return
+    for cfg in sorted(os.listdir(root)):
+        cfg_dir = os.path.join(root, cfg)
+        if not os.path.isdir(cfg_dir):
+            continue
+        for fn in sorted(os.listdir(cfg_dir)):
+            if fn.endswith(".log"):
+                yield cfg, os.path.join(cfg_dir, fn)
 
-# ---------- progress bar ----------
-TOTAL_RUNS=$(( ${#BIN_SCALAR[@]} + ${#BIN_VECTOR[@]} + ${#BIN_GEMMINI[@]} ))
-COMPLETED_RUNS=0
-PROGRESS_SETUP=0
+def mean_or_none(xs):
+    return (sum(xs) / len(xs)) if xs else None
 
-cleanup_progress() {
-  if [[ "${PROGRESS_SETUP}" -eq 1 ]]; then
-    tput cnorm 2>/dev/null || true
-    printf "\n"
-  fi
-}
-trap cleanup_progress EXIT
+# --- Plot helpers (log scale + gridlines) ---------------------------------
 
-progress_init() { [[ "${PROGRESS_SETUP}" -eq 1 ]] || { tput civis 2>/dev/null || true; PROGRESS_SETUP=1; progress_draw; }; }
-progress_draw() {
-  local cols="${COLUMNS:-}"; [[ -z "${cols}" ]] && cols="$(tput cols 2>/dev/null || echo 80)"
-  local label="Progress:" suffix=" ${COMPLETED_RUNS}/${TOTAL_RUNS}"
-  local base=$(( ${#label} + ${#suffix} + 10 ))
-  local width=$(( cols > base ? cols - base : 30 )); (( width < 10 )) && width=10
-  local pct=0; (( TOTAL_RUNS > 0 )) && pct=$(( COMPLETED_RUNS * 100 / TOTAL_RUNS ))
-  local filled=$(( width * pct / 100 )) empty=$(( width - filled ))
-  printf "\r\033[K%s [%s%s] %3d%%%s" \
-    "${label}" "$(printf "%0.s#" $(seq 1 ${filled}))" "$(printf "%0.s-" $(seq 1 ${empty}))" "${pct}" "${suffix}"
-}
-progress_tick() { (( COMPLETED_RUNS++ )); progress_draw; }
+def log_safe(x, eps=1e-9):
+    # Make values safe for log scale; keep NaNs as-is so matplotlib skips them
+    if x is None or (isinstance(x, float) and math.isnan(x)):
+        return x
+    return x if x > 0 else eps
 
-# ---------- build/run orchestration ----------
-declare -A RESULTS
+def plot_bar(filename: str, title: str, data: OrderedDict):
+    if not data:
+        print(f"[Skip] No data for {title} ({src})")
+        return
+    labels = list(data.keys())
+    vals = [log_safe(v) for v in data.values()]
 
-ensure_sim_built() {
-  local cfg="$1"
-  blue "[Build sim] CONFIG=${cfg}"
-  if (( DRY_RUN )); then
-    echo "DRY_RUN: make -C '${SIM_DIR}' -j${JOBS} CONFIG=${cfg}"
-  else
-    make -C "${SIM_DIR}" -j"${JOBS}" CONFIG="${cfg}"
-  fi
-}
+    plt.figure()
+    plt.bar(range(len(vals)), vals)
+    plt.xticks(range(len(vals)), labels, rotation=30, ha="right")
+    plt.ylabel("cycles (log scale)")
+    plt.title(f"{title} ({src})")
+    plt.yscale("log")
+    ax = plt.gca()
+    ax.yaxis.grid(True, which="both", linestyle="--", alpha=0.5)
+    plt.tight_layout()
+    out = os.path.join(args.out_dir, filename)
+    plt.savefig(out)
+    plt.close()
+    print(f"Wrote {out}")
 
-run_group() {
-  local label="$1"; shift
-  local cfg="$1"; shift
-  local -a bins=("$@")
+def plot_grouped_by_kernel(filename: str, title: str,
+                           kernel_to_combo_avgs: OrderedDict, combos: list[str]):
+    if not kernel_to_combo_avgs:
+        print(f"[Skip] No data for {title} ({src})")
+        return
 
-  if [[ ${#bins[@]} -eq 0 ]]; then
-    blue "[Skip] ${label}: no binaries found"
-    return 0
-  fi
+    kernels = list(kernel_to_combo_avgs.keys())
+    num_groups = len(kernels)
+    num_series = len(combos)
+    if num_groups == 0 or num_series == 0:
+        print(f"[Skip] No data for {title} ({src})")
+        return
 
-  ensure_sim_built "${cfg}"
+    # Wider figure + legend to the right
+    width_in = max(12.0, min(24.0, 12.0 + 0.6 * num_groups))
+    height_in = 6.0
+    plt.figure(figsize=(width_in, height_in))
 
-  for bin in "${bins[@]}"; do
-    local key="${label}::$(basename "${bin}")"
-    blue "[Run] ${label} CONFIG=${cfg} BINARY=$(basename "${bin}")"
-    if (( DRY_RUN )); then
-      echo "DRY_RUN: make -C '${SIM_DIR}' CONFIG=${cfg} BINARY='${bin}' LOADMEM=1 run-binary"
-      RESULTS["$key"]="DRY-RUN"
-      progress_tick
-      continue
-    fi
+    x = list(range(num_groups))
+    bar_width = 0.8 / max(1, num_series)
 
-    set +e
-    make -C "${SIM_DIR}" CONFIG="${cfg}" BINARY="${bin}" LOADMEM=1 run-binary
-    rc=$?
-    set -e
+    # One bar series per HW/SW combo
+    for s_idx, combo in enumerate(combos):
+        offsets = [xi + (s_idx - (num_series - 1) / 2.0) * bar_width for xi in x]
+        heights_raw = [kernel_to_combo_avgs[k].get(combo, math.nan) for k in kernels]
+        heights = [log_safe(v) for v in heights_raw]
+        plt.bar(offsets, heights, width=bar_width, label=combo)
 
-    if [[ $rc -eq 0 ]]; then
-      RESULTS["$key"]="PASS"; green "[PASS] ${key}"
-    else
-      RESULTS["$key"]="FAIL(${rc})"; red "[FAIL] ${key} (rc=${rc})"
-    fi
-    progress_tick
-  done
-}
+    plt.xticks(x, kernels, rotation=30, ha="right")
+    plt.ylabel("cycles (log scale)")
+    plt.title(f"{title} ({src})")
+    plt.yscale("log")
+    ax = plt.gca()
+    ax.yaxis.grid(True, which="both", linestyle="--", alpha=0.5)
 
-# ---------- execute ----------
-progress_init
-progress_draw
-run_group "scalar"  "RocketConfig"            "${BIN_SCALAR[@]}"
-run_group "vector"  "REFV512D256RocketConfig" "${BIN_VECTOR[@]}"
-run_group "gemmini" "FPGemminiRocketConfig"   "${BIN_GEMMINI[@]}"
+    # Legend outside on the right
+    plt.legend(loc="upper left", bbox_to_anchor=(1.02, 1), borderaxespad=0.0, fontsize="small")
 
-# ---------- summary ----------
-printf "\n"
-blue "=== RTL Simulation Summary ==="
-pad() { printf "%-12s" "$1"; }
-for k in "${!RESULTS[@]}"; do printf "%s  %s\n" "$(pad "${RESULTS[$k]}")" "$k"; done
+    plt.tight_layout()
+    out = os.path.join(args.out_dir, filename)
+    plt.savefig(out, bbox_inches="tight")
+    plt.close()
+    print(f"Wrote {out}")
 
-failed=0
-for v in "${RESULTS[@]}"; do [[ "$v" == PASS || "$v" == DRY-RUN ]] || failed=1; done
-exit $failed
+# --- main ------------------------------------------------------------------
+
+def main():
+    global args, src  # needed by plotting helpers
+    default_src = pick_source()
+    parser = argparse.ArgumentParser(description="Plot results into results/plots")
+    parser.add_argument("--source", choices=["rtl", "spike"], default=default_src,
+                        help="Log source to parse (default from env: PLOT_SOURCE or RUNNER)")
+    parser.add_argument("--rtl_dir", default=os.path.join(RESULTS_DIR, "rtl"),
+                        help="RTL results dir (default: results/rtl)")
+    parser.add_argument("--spike_dir", default=os.path.join(RESULTS_DIR, "spike"),
+                        help="Spike results dir (default: results/spike)")
+    parser.add_argument("--out_dir", default=PLOTS_DIR,
+                        help="Output plots dir (default: results/plots)")
+    args = parser.parse_args()
+
+    src = args.source
+    base_dir = args.rtl_dir if src == "rtl" else args.spike_dir
+    suffix = f"_{src}"
+
+    os.makedirs(args.out_dir, exist_ok=True)
+
+    # Per-log rows
+    per_log_rows = []
+
+    # Aggregations
+    # E2E average per combo
+    e2e_combo_values = defaultdict(list)
+
+    # Kernel averages per kernel per combo
+    # kernel_combo_values[kernel][combo] -> list of cycles
+    kernel_combo_values = defaultdict(lambda: defaultdict(list))
+
+    # Discovery order for kernels (first time any kernel name is seen across logs)
+    kernel_order = []
+
+    # Deterministic ordering for combos:
+    # With config names as "hardware" label, sort by hardware label (lexicographically),
+    # then by a sensible software order.
+    sw_order = ["cpu", "eigen", "rvv", "rvv-handopt", "gemmini", "unknown"]
+
+    logs_found = False
+
+    for cfg, log_path in iter_logs(base_dir):
+        logs_found = True
+        hw = hw_label_from_cfg(cfg, src)           # <-- use CONFIG name (per request)
+        base = os.path.basename(log_path)
+        sw = bin_to_sw(base.replace(".log", ""))
+        combo = f"{hw}/{sw}"
+
+        # E2E: only base logs (skip *_cycles.log)
+        use_for_e2e = "_cycles" not in base
+        e2e_vals = parse_e2e_cycles_from_log(log_path) if use_for_e2e else []
+
+        # Kernel: collect all matches, record discovery order
+        kernel_vals = []
+        for kname, cyc in parse_kernel_lines_from_log(log_path):
+            kernel_vals.append(cyc)
+            if kname not in kernel_order:
+                kernel_order.append(kname)
+            kernel_combo_values[kname][combo].append(cyc)
+
+        e2e_avg = mean_or_none(e2e_vals)
+        kernel_avg = mean_or_none(kernel_vals)
+
+        per_log_rows.append({
+            "source": src,
+            "config": cfg,
+            "hardware": hw,          # this is the CONFIG name now (RTL & Spike)
+            "software": sw,
+            "combo": combo,
+            "binary_log": base,
+            "path": os.path.relpath(log_path, REPO_ROOT),
+            "e2e_avg_cycles": f"{e2e_avg:.2f}" if e2e_avg is not None else "",
+            "e2e_samples": len(e2e_vals),
+            "kernel_avg_cycles": f"{kernel_avg:.2f}" if kernel_avg is not None else "",
+            "kernel_samples": len(kernel_vals),
+        })
+
+        if e2e_avg is not None:
+            e2e_combo_values[combo].append(e2e_avg)
+
+    if not logs_found:
+        print(f"No logs found under: {base_dir}")
+        return
+
+    # Order combos deterministically
+    def ordered_combos(values_dict):
+        combos = list(values_dict.keys())
+        def key_func(c):
+            hw, sw = c.split("/", 1) if "/" in c else (c, "")
+            return (hw,  # lexicographic order on config/hw label
+                    sw_order.index(sw) if sw in sw_order else len(sw_order),
+                    c)
+        return [c for c in sorted(combos, key=key_func)]
+
+    # E2E aggregated (per combo)
+    e2e_combo_avgs = OrderedDict(
+        (combo, sum(e2e_combo_values[combo]) / len(e2e_combo_values[combo]))
+        for combo in ordered_combos(e2e_combo_values)
+    )
+
+    # Kernel aggregated: avg per (kernel, combo)
+    all_combos_for_kernels = set()
+    for _kname, d in kernel_combo_values.items():
+        for combo in d.keys():
+            all_combos_for_kernels.add(combo)
+    combo_list_for_kernels = ordered_combos({c: 1 for c in all_combos_for_kernels})
+
+    kernel_combo_avgs = OrderedDict()  # kernel -> OrderedDict(combo -> avg or nan)
+    for kname in kernel_order:
+        d = kernel_combo_values.get(kname, {})
+        row = OrderedDict()
+        for combo in combo_list_for_kernels:
+            xs = d.get(combo, [])
+            row[combo] = (sum(xs)/len(xs)) if xs else math.nan
+        kernel_combo_avgs[kname] = row
+
+    # --- CSVs ----------------------------------------------------------------
+    per_log_csv = os.path.join(args.out_dir, f"metrics_per_log{suffix}.csv")
+    with open(per_log_csv, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=[
+            "source","config","hardware","software","combo","binary_log","path",
+            "e2e_avg_cycles","e2e_samples","kernel_avg_cycles","kernel_samples"
+        ])
+        writer.writeheader()
+        for row in per_log_rows:
+            writer.writerow(row)
+
+    per_combo_csv = os.path.join(args.out_dir, f"metrics_per_combo{suffix}.csv")
+    with open(per_combo_csv, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["source","combo","metric","avg_cycles"])
+        for combo, v in e2e_combo_avgs.items():
+            writer.writerow([src, combo, "e2e_avg_cycles", f"{v:.2f}"])
+
+    per_kernel_combo_csv = os.path.join(args.out_dir, f"metrics_per_kernel_combo{suffix}.csv")
+    with open(per_kernel_combo_csv, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["source","kernel","combo","avg_cycles"])
+        for kname, combo_row in kernel_combo_avgs.items():
+            for combo, v in combo_row.items():
+                writer.writerow([src, kname, combo, "" if math.isnan(v) else f"{v:.2f}"])
+
+    # --- Plots ---------------------------------------------------------------
+
+    # E2E: bar by HW/SW combo (HW = CONFIG name for RTL)
+    plot_bar(f"e2e_avg_cycles{suffix}.png",
+             "Average E2E Cycles per HW/SW Combo",
+             e2e_combo_avgs)
+
+    # Kernel: grouped by kernel name (discovery order), bars per combo
+    plot_grouped_by_kernel(
+        f"kernel_avg_cycles_by_kernel{suffix}.png",
+        "Average Kernel Cycles (grouped by kernel)",
+        kernel_combo_avgs,
+        combo_list_for_kernels
+    )
+
+    print(f"Wrote {per_log_csv}")
+    print(f"Wrote {per_combo_csv}")
+    print(f"Wrote {per_kernel_combo_csv}")
+
+if __name__ == "__main__":
+    main()
