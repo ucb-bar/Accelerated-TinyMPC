@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # scripts/install_chipyard.sh
-# Install Chipyard into ./tools/chipyard and source env.sh.
+# Install Chipyard into ./tools/chipyard and create a wrapper for env.sh.
 # Skips build-setup steps 6–9 (FireSim + FireMarshal related).
 
 set -euo pipefail
@@ -9,15 +9,16 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 TOOLS_DIR="${REPO_ROOT}/tools"
 CHIPYARD_DIR="${TOOLS_DIR}/chipyard"
+WRAPPER="${TOOLS_DIR}/chipyard_env.sh"
 
-# Ensure Miniforge was installed (from install.sh)
-if [[ -z "${CONDA_EXE:-}" ]]; then
+# Ensure Miniforge was installed
+if ! command -v conda >/dev/null 2>&1; then
   echo "Error: Conda not found in PATH."
   echo "Please run: source scripts/install.sh"
-  return 1 2>/dev/null || exit 1
+  exit 1
 fi
 
-# Activate base env (some systems may not have it auto-active)
+# Activate base env
 eval "$(conda shell.bash hook)"
 conda activate base
 
@@ -43,19 +44,32 @@ fi
 echo "Running Chipyard build-setup (skipping steps 6–9)..."
 ./build-setup.sh riscv-tools -s 6 -s 7 -s 8 -s 9
 
-# Source Chipyard env.sh
-if [[ -f "${CHIPYARD_DIR}/env.sh" ]]; then
-  # shellcheck disable=SC1090
-  source "${CHIPYARD_DIR}/env.sh"
-  echo "Chipyard environment initialized. RISCV toolchain at: $RISCV"
-else
+# Verify env.sh exists
+if [[ ! -f "${CHIPYARD_DIR}/env.sh" ]]; then
   echo "Error: env.sh not found in ${CHIPYARD_DIR}"
-  return 1 2>/dev/null || exit 1
+  exit 1
 fi
 
-# Reminder about sourcing
-if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
-  echo
-  echo "NOTE: You executed the script. The Chipyard environment is active only inside this process."
-  echo "To have it in your current shell, run:  source scripts/install_chipyard.sh"
+# Create a wrapper script for running commands with Chipyard env
+cat > "${WRAPPER}" <<EOF
+#!/usr/bin/env bash
+# Wrapper to run commands with Chipyard environment variables set
+# Usage: ./tools/chipyard_env.sh <command> [args...]
+
+set -euo pipefail
+source "${CHIPYARD_DIR}/env.sh"
+
+if [[ \$# -eq 0 ]]; then
+  exec "\$SHELL"
+else
+  exec "\$@"
 fi
+EOF
+chmod +x "${WRAPPER}"
+
+echo
+echo "Chipyard installation complete."
+echo "You can now run commands inside the Chipyard environment via:"
+echo "  ${WRAPPER} make verilog"
+echo "Or open a new shell with Chipyard env by running:"
+echo "  ${WRAPPER}"
