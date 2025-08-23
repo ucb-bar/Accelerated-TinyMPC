@@ -189,13 +189,13 @@ def main():
         return
 
     def ordered_combos(values_dict):
-    combos = list(values_dict.keys())
-    def key_func(c):
-        hw, sw = c.split("/", 1) if "/" in c else (c, "")
-        return (hw,  # lexicographic by CONFIG name
-                sw_order.index(sw) if sw in sw_order else len(sw_order),
-                c)
-    return [c for c in sorted(combos, key=key_func)]
+        combos = list(values_dict.keys())
+        def key_func(c):
+            hw, sw = c.split("/", 1) if "/" in c else (c, "")
+            return (hw,  # lexicographic by CONFIG name
+                    sw_order.index(sw) if sw in sw_order else len(sw_order),
+                    c)
+        return [c for c in sorted(combos, key=key_func)]
 
     # E2E aggregated (per combo)
     e2e_combo_avgs = OrderedDict(
