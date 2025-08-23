@@ -134,7 +134,9 @@ extern "C"
             start = read_cycles();
             tiny_solve(&solver);
             end = read_cycles();
+            #ifndef MEASURE_CYCLES
             printf("Time for iter %d: %d\n", k, end-start);
+            #endif
 
             // 5. Simulate forward
             // calculate x1 = work.Adyn * x0 + work.Bdyn * work.u.col(0);

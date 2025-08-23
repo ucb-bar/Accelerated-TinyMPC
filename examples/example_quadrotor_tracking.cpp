@@ -128,7 +128,9 @@ extern "C"
             tiny_solve(&solver);
             end = read_cycles();
             // clock_gettime(CLOCK_MONOTONIC, &end);
+            #ifndef MEASURE_CYCLES
             printf("Time for iter %d: %d\n", k, end-start);
+            #endif
 
             // std::cout << work.iter << std::endl;
             // std::cout << work.u.col(0).transpose().format(CleanFmt) << std::endl;
